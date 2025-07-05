@@ -1,0 +1,41 @@
+@startuml
+package "Auth" {
+  entity Auth <<Aggregate Root>> {
+    +Long authId
+    +Long memberId
+    +AuthProvider provider
+    +Email email
+    +Password password
+    --
+    +registerLocal(Email, String rawPassword)
+    +registerOAuth(AuthProvider, String providerUserId, Email)
+    +updatePassword(String rawPassword)
+    +isPasswordMatch(String rawPassword)
+  }
+
+  class AuthProvider <<Enum>> {
+    LOCAL
+    GOOGLE
+    KAKAO
+  }
+
+  class Email <<Value Object>> {
+    +String value
+    --
+    +validate()
+  }
+
+  class Password <<Value Object>> {
+    +String encryptedPassword
+    --
+    +static encrypt(String rawPassword) : Password
+    +static generateRandom() : Password
+    +matches(String rawPassword) : boolean
+    +validate(String rawPassword)
+  }
+
+  Auth --> AuthProvider
+  Auth --> Email
+  Auth --> Password
+}
+@enduml
