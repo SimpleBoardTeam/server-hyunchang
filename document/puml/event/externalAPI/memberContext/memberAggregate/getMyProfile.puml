@@ -1,4 +1,6 @@
 @startuml
+title get getMyProfile
+
 actor User
 participant MemberController
 participant MemberQueryService
