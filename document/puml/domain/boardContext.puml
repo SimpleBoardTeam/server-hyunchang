@@ -9,6 +9,6 @@ package "board context"{
 
     post.Board ..> board.Board
     comment.Post ..> post.Post
-    permissionPolicy.PermissionPolicy ..> board.Board
+
 }
 @enduml
