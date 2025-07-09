@@ -9,8 +9,7 @@ package "Auth" {
     --
     +registerLocal(Email, String rawPassword)
     +registerOAuth(AuthProvider, String providerUserId, Email)
-    +updatePassword(String rawPassword)
-    +isPasswordMatch(String rawPassword)
+    +updatePassword(String rawPassword, String newPassword)
   }
 
   class AuthProvider <<Enum>> {
@@ -31,7 +30,6 @@ package "Auth" {
     +static encrypt(String rawPassword) : Password
     +static generateRandom() : Password
     +matches(String rawPassword) : boolean
-    +validate(String rawPassword)
   }
 
   Auth --> AuthProvider
