@@ -22,9 +22,7 @@ alt 권한 있음
   PermissionService --> PermissionController : HTTP 200 OK
   PermissionController --> OuterContext : HTTP 200 OK
 else 권한 없음
-  ManagerAssignment --> PermissionPolicy : throw ForbiddenException
-  PermissionPolicy --> PermissionService : throw ForbiddenException
-  PermissionService -> ExceptionHandler : 예외 전파
+  ManagerAssignment --> ExceptionHandler : throw ForbiddenException
   ExceptionHandler --> OuterContext : HTTP 403 Forbidden
 end
 
