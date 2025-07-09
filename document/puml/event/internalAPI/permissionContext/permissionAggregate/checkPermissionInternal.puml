@@ -1,0 +1,31 @@
+@startuml
+title checkPermission - 예외 기반 방식
+
+actor OuterContext as "OuterContext\n(외부 호출자)"
+participant PermissionController
+participant PermissionService
+participant PermissionRepository
+Entity PermissionPolicy
+Entity ManagerAssignment
+participant ExceptionHandler as "GlobalExceptionHandler\n(@ControllerAdvice)"
+
+OuterContext -> PermissionController : GET /internal/permissions?userId=..&boardId=..&action=..
+PermissionController -> PermissionService : checkPermission(userId, boardId, action)
+
+PermissionService -> PermissionRepository : findByBoardId(boardId)
+PermissionRepository -> PermissionService : PermissionPolicy
+PermissionService -> PermissionPolicy : can(userId, action)
+PermissionPolicy -> ManagerAssignment : hasPermission(userId, action)
+alt 권한 있음
+  ManagerAssignment --> PermissionPolicy : 반환 없음 (성공)
+  PermissionPolicy --> PermissionService : 반환 없음 (성공)
+  PermissionService --> PermissionController : HTTP 200 OK
+  PermissionController --> OuterContext : HTTP 200 OK
+else 권한 없음
+  ManagerAssignment --> PermissionPolicy : throw ForbiddenException
+  PermissionPolicy --> PermissionService : throw ForbiddenException
+  PermissionService -> ExceptionHandler : 예외 전파
+  ExceptionHandler --> OuterContext : HTTP 403 Forbidden
+end
+
+@enduml
