@@ -3,28 +3,28 @@ title deleteBoard
 
 actor User
 participant BoardController
-participant BoardService
-participant BoardRepository
+participant BoardCommandService
+participant BoardCommandRepository
 participant DomainEventPublisher
 
 participant PermissionContextAPI as "권한검사 API \n(외부 Bounded Context)"
 
 User -> BoardController : DELETE /board/{boardId}
-BoardController -> BoardService : deleteBoard(boardId, userId)
+BoardController -> BoardCommandService : deleteBoard(boardId, userId)
 
-BoardService -> PermissionAPI : GET /internal/permissions?userId={userId}&boardId={boardId}&action=DELETE_BOARD
-PermissionContextAPI --> BoardService : HTTP 200 OK / 401 Unauthorized / 403 Forbidden / 404 NotFound
+BoardCommandService -> PermissionAPI : GET /internal/permissions?userId={userId}&boardId={boardId}&action=DELETE_BOARD
+PermissionContextAPI --> BoardCommandService : HTTP 200 OK / 401 Unauthorized / 403 Forbidden / 404 NotFound
 
 alt HTTP 200 OK
-    BoardService -> BoardRepository : findById(boardId)
-    BoardRepository --> BoardService : Board
+    BoardCommandService -> BoardCommandRepository : findById(boardId)
+    BoardCommandRepository --> BoardCommandService : Board
 
-    BoardService -> BoardRepository : delete(Board)
-    BoardService -> DomainEventPublisher : publish(BoardDeletedEvent)
+    BoardCommandService -> BoardCommandRepository : delete(Board)
+    BoardCommandService -> DomainEventPublisher : publish(BoardDeletedEvent)
 
-    BoardService --> BoardController : HTTP 200 OK
+    BoardCommandService --> BoardController : HTTP 200 OK
 else HTTP 401 / 403 / 404
-    BoardService --> BoardController : 상태 코드 전달
+    BoardCommandService --> BoardController : 상태 코드 전달
 end
 
 BoardController --> User : HTTP 응답 반환
