@@ -1,0 +1,39 @@
+@startuml
+title delegateAdminRole
+
+actor PermissionClient as "Permission Client"
+participant PermissionController
+participant PermissionService
+participant PermissionRepository
+entity PermissionPolicy
+
+participant MemberContext as "MemberContext\n(OuterContext)"
+
+PermissionClient -> PermissionController : POST /permissions/boards/{boardId}/delegations/POST_ADMIN\n(fromUserId, toUserNickname)
+PermissionController -> PermissionService : delegatePostAdminRole\n(boardId, fromUserId, toUserNickname)
+
+PermissionService -> MemberContext : GET /internal/users?nickname=toUserNickname
+
+alt 닉네임 조회 성공
+  MemberContext --> PermissionService : HTTP 200 (toUserId)
+
+  PermissionService -> PermissionRepository : findByBoardId(boardId)
+  PermissionRepository --> PermissionService : PermissionPolicy
+
+  PermissionService -> PermissionPolicy : delegate(fromUserId, toUserId, roleType)
+
+  alt 권한 있음
+    PermissionPolicy --> PermissionService : 성공 (void)
+    PermissionService --> PermissionController : 성공 (void)
+    PermissionController --> PermissionClient : HTTP 200 OK
+  else 권한 없음
+    PermissionPolicy -> PermissionPolicy : throw ForbiddenException
+    PermissionPolicy --> PermissionClient : HTTP 403 Forbidden
+  end
+
+else 닉네임 조회 실패
+  MemberContext --> PermissionService : HTTP 4XX
+  PermissionService --> PermissionController : 예외 전파
+  PermissionController --> PermissionClient : HTTP 4XX
+end
+@enduml
