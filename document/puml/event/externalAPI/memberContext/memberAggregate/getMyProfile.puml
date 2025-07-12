@@ -10,9 +10,15 @@ User -> MemberController : GET /users/me
 MemberController -> MemberQueryService : getProfileById(memberId)
 
 MemberQueryService -> MemberQueryRepository : findById(memberId)
+
+alt Member exists
 MemberQueryRepository --> MemberQueryService : Member
-
-
 MemberQueryService --> MemberController : MemberProfileResponse
 MemberController --> User : HTTP 200 OK + JSON 응답
+
+else Member not found
+MemberQueryRepository --> MemberQueryService : null
+MemberQueryService --> MemberController : MemberNotFoundException
+MemberController --> User : HTTP 404 Not Found + 에러 메시지
+end
 @enduml
