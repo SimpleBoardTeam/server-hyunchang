@@ -6,8 +6,6 @@ participant MemberController
 participant MemberCommandService
 participant MemberCommandRepository
 entity      Member
-entity      NicknameValidator
-participant NicknameDuplicateRepository
 participant DomainEventPublisher #skyblue
 
 User -> MemberController : PATCH /users/me (nickname)
@@ -17,25 +15,17 @@ activate Member
 MemberCommandRepository --> MemberCommandService : Member
 
 MemberCommandService -> Member : updateNickname(newNickname)
-Member -> NicknameValidator : validateNickname(newNickname)
-NicknameValidator -> NicknameDuplicateRepository : isExisted(newNickname)
 
 alt 닉네임이 유효하고 중복 아님
-NicknameDuplicateRepository --> NicknameValidator : false (중복 아님)
-NicknameValidator --> Member : OK
 Member --> MemberCommandService : 완료
 MemberCommandService -> DomainEventPublisher : NicknameUpdatedEvent
-MemberCommandService -> MemberCommandRepository : save(Member)
 deactivate Member
+MemberCommandService -> MemberCommandRepository : save(Member)
 MemberCommandService --> MemberController : OK
 MemberController --> User : 200 OK
 
 else 닉네임이 유효하지 않거나 중복
-NicknameDuplicateRepository --> NicknameValidator : true (또는 유효성 실패)
-NicknameValidator --> MemberCommandService : throw InvalidNicknameException
-deactivate Member
-MemberCommandService --> MemberController : InvalidNicknameException
-MemberController --> User : 400 Bad Request
+Member --> User : 400 Bad Request
 
 end
 
