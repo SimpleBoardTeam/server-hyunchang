@@ -18,7 +18,7 @@ MemberCommandRepository --> MemberCommandService : Member
 ' 인증 세션 무효화를 위해 AuthController에 요청
 MemberCommandService -> AuthController : DELETE /internal/auth/members/{memberId}
 
-alt 인증 세션 삭제 성공
+alt 인증 삭제 성공
 AuthController --> MemberCommandService : HTTP 200 OK
 MemberCommandService -> Member : withdraw()
 MemberCommandService -> MemberCommandRepository : save(member)
@@ -28,7 +28,7 @@ MemberCommandService --> MemberController : 탈퇴 성공
 MemberController --> User : HTTP 204 No Content
 User -> User : redirect(main page)
 
-else 인증 세션 삭제 실패
+else 인증 삭제 실패
 AuthController --> MemberCommandService : HTTP 500 Error
 MemberCommandService --> MemberController : 탈퇴 중단
 MemberController --> User : HTTP 500 Internal Server Error
