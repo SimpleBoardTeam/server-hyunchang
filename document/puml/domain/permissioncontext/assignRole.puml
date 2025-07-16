@@ -1,0 +1,22 @@
+@startuml
+title assignRole(userId, roleName) Flow
+
+actor Caller
+participant PermissionPolicy
+participant ManagerAssignment
+participant Role
+
+Caller -> PermissionPolicy : assignRole(userId, roleName)
+
+PermissionPolicy -> ManagerAssignment : create(userId, roleName)
+ManagerAssignment -> Role : findRoleByName(roleName)
+alt ManagerAssignment.create
+  Role --> ManagerAssignment: Role
+  ManagerAssignment -> ManagerAssignment : this.role = Role \nthis.userId = userId
+  ManagerAssignment -> PermissionPolicy : new ManagerAssignment
+  PermissionPolicy -> PermissionPolicy : addManagerAssignment(ManagerAssignment)
+  PermissionPolicy -> Caller : void(ok)
+else
+  Role --> Caller: throw exception
+end
+@enduml
