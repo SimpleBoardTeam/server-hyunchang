@@ -4,7 +4,7 @@ package "permissionPolicy" {
     - Long boardId
     - List<ManagerAssignment> managerAssignments
     + ManagerAssignment findAssignment(Long userId)
-    + ManagerAssignment deleteAssignment(Long userId)
+    + deleteAssignment(Long userId)
     + boolean can(Long userId, Permission permission)
     + assignRole(Long userId, RoleName roleName)
     + delegateRole(Long from, UserId to, RoleName roleName)
