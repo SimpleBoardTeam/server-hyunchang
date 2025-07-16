@@ -1,0 +1,20 @@
+@startuml
+title can(userId, actionType) Flow
+
+actor Caller
+participant PermissionPolicy
+participant ManagerAssignment
+
+Caller -> PermissionPolicy : can(userId, permission)
+
+PermissionPolicy -> PermissionPolicy : findAssignment(userId)
+PermissionPolicy -> ManagerAssignment : hasPermission(permission)
+
+alt 허용된 권한
+  ManagerAssignment --> PermissionPolicy : true
+  PermissionPolicy --> Caller : true
+else 권한 없음
+  ManagerAssignment --> PermissionPolicy : false
+  PermissionPolicy --> Caller : false
+end
+@enduml
