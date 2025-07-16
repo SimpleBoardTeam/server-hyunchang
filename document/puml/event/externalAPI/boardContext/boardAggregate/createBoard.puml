@@ -4,8 +4,8 @@ title createBoard
 actor Client
 participant BoardController
 participant BoardCommandService
-participant BoardCommandRepository
 Entity Board
+participant BoardCommandRepository
 participant DomainEventPublisher
 
 
