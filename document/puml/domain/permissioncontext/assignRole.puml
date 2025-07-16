@@ -12,10 +12,8 @@ PermissionPolicy -> ManagerAssignment : create(userId, roleName)
 ManagerAssignment -> Role : findRoleByName(roleName)
 alt ManagerAssignment.create
   Role --> ManagerAssignment: Role
-  ManagerAssignment -> ManagerAssignment : this.role = Role \nthis.userId = userId
   ManagerAssignment -> PermissionPolicy : new ManagerAssignment
-  PermissionPolicy -> PermissionPolicy : addManagerAssignment(ManagerAssignment)
-  PermissionPolicy -> Caller : void(ok)
+  PermissionPolicy -> Caller : void
 else
   Role --> Caller: throw exception
 end
