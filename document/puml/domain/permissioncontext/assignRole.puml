@@ -1,5 +1,5 @@
-@startuml
-title assignRole(userId, roleName) Flow
+@startuml PermissionPolicy_assignRole
+title assignRole
 
 actor Caller
 participant PermissionPolicy

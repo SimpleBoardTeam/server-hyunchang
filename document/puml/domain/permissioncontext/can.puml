@@ -1,5 +1,5 @@
-@startuml
-title can(userId, actionType) Flow
+@startuml PermissionPolicy_can
+title can
 
 actor Caller
 participant PermissionPolicy

@@ -1,5 +1,5 @@
-@startuml
-title delegateRole(from, to, roleName) Flow
+@startuml PermissionPolicy_delegateRole
+title delegateRole
 
 actor Caller
 participant PermissionPolicy
@@ -13,6 +13,7 @@ PermissionPolicy -> ManagerAssignment : hasRole(roleName)
 alt 위임 가능
   ManagerAssignment --> PermissionPolicy : true
   PermissionPolicy --> PermissionPolicy : assignRole(to, roleName)
+  PermissionPolicy -> PermissionPolicy : deleteAssignment(from)
   PermissionPolicy --> Caller : void
 
 else 위임 불가
