@@ -13,7 +13,8 @@ PermissionController -> PermissionService : checkBoardDeletePermission(userId, b
 PermissionService -> PermissionRepository : findByBoardId(boardId)
 PermissionRepository --> PermissionService : PermissionPolicy
 
-PermissionService -> PermissionPolicy : canDeleteBoard(userId)
+PermissionService -> PermissionPolicy : can(userId, BOARD_DELETE)
+
 
 alt 삭제 가능
   PermissionPolicy --> PermissionService : true
