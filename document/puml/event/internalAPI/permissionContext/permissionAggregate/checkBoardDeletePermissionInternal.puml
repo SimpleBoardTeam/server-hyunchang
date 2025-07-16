@@ -7,7 +7,7 @@ participant PermissionService
 participant PermissionRepository
 entity PermissionPolicy
 
-BoardContext -> PermissionController : GET /internal/boards/{boardId}/permissions/delete?userId=..
+BoardContext -> PermissionController : GET /internal/permissions/boards/{boardId}/delete?userId=..
 PermissionController -> PermissionService : checkBoardDeletePermission(userId, boardId)
 
 PermissionService -> PermissionRepository : findByBoardId(boardId)
@@ -21,7 +21,7 @@ alt 삭제 가능
   PermissionController --> BoardContext : HTTP 200 OK (canDelete: true)
 else 삭제 불가
   PermissionPolicy --> PermissionService : false
-  PermissionService -> PermissionService : throw ForbiddenException
-  PermissionService --> BoardContext : HTTP 403 Forbidden
+  PermissionService --> PermissionController : false
+  PermissionController --> BoardContext : HTTP 200 OK (canDelete: false)
 end
 @enduml
