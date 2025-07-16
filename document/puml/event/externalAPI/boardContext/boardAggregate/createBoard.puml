@@ -9,11 +9,11 @@ Entity Board
 participant DomainEventPublisher
 
 
-Client -> BoardController : POST /board \n(boardCreateRequest)
+Client -> BoardController : POST /board \n(boardName)
 
-BoardController -> BoardCommandService : createBoard \n(boardCreateCommand, userId)
+BoardController -> BoardCommandService : createBoard \n(userId, boardName)
 
-BoardCommandService -> Board : Board.create(boardCreateCommand)
+BoardCommandService -> Board : Board.create(userId, boardName)
 
 activate Board
 Board --> BoardCommandService : Board
@@ -22,6 +22,11 @@ deactivate Board
 BoardCommandService -> BoardCommandRepository : save(board)
 
 BoardCommandService -> DomainEventPublisher : publish(BoardCreatedEvent)
+note right
+BoardCreatedEvent
+Long boardId
+Long creatorId
+end note
 
 BoardCommandService --> BoardController : BoardId
 BoardController --> Client : HTTP 201 + BoardId
