@@ -20,6 +20,7 @@ package "permissionPolicy" {
   struct Role <<Value Object>>{
     - RoleName roleName
     - Set<Permission> permissions
+    + Role of(RoleName roleName)
     + boolean hasPermission(Permission permission)
   }
 

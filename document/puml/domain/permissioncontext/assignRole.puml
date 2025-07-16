@@ -9,8 +9,8 @@ participant Role
 Caller -> PermissionPolicy : assignRole(userId, roleName)
 
 PermissionPolicy -> ManagerAssignment : create(userId, roleName)
-ManagerAssignment -> Role : findRoleByName(roleName)
-alt ManagerAssignment.create
+ManagerAssignment -> Role : of(roleName)
+alt
   Role --> ManagerAssignment: Role
   ManagerAssignment -> PermissionPolicy : new ManagerAssignment
   PermissionPolicy -> Caller : void
