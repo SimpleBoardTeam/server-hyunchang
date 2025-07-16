@@ -6,7 +6,7 @@ participant BoardController
 participant BoardCommandService
 Entity Board
 participant BoardCommandRepository
-participant DomainEventPublisher
+participant DomainEventPublisher #pink
 
 
 Client -> BoardController : POST /board \n(boardName)
@@ -23,9 +23,9 @@ BoardCommandService -> BoardCommandRepository : save(board)
 
 BoardCommandService -> DomainEventPublisher : publish(BoardCreatedEvent)
 note right
-BoardCreatedEvent
-Long boardId
-Long creatorId
+<b>BoardCreatedEvent</b>
+* Long boardId
+* Long creatorId
 end note
 
 BoardCommandService --> BoardController : BoardId
