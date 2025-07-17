@@ -2,26 +2,19 @@
 package "board" {
     entity Board <<Aggregate Root>> {
         +Long boardId
-        +BoardName boardName
+        +String boardName
         +Creator creator
         +createdAt dateTime
         --
-        +create(boardName : String, creatorId : MemberId) : Board
+        +create(String boardName, Long creatorId) : Board
         +delete()
-        +validateBoardName() : BoardName.validate()
+        +verifyBoardName(String boardName)
     }
 
-    'VO
-    class BoardName <<Value Object>> {
-        +String : boardName
-        --
-        +validate()
-     }
     class Creator <<Value Object>> {
         +Long : memberId
      }
      
-     Board -- BoardName
      Board -- Creator
 }
 @enduml
