@@ -27,8 +27,6 @@ import java.time.LocalDateTime;
  * @domain aggregate-root
  * @since 1.0
  */
-
-
 public abstract class Post {
 
   Long id;
