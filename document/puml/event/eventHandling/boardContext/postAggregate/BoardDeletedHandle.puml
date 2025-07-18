@@ -8,9 +8,7 @@ participant PostCommandRepository
 participant CommentCommandRepository
 
 DomainEventPublisher -> BoardDeletedHandler : BoardDeletedEvent
-BoardDeletedHandler -> PostCommandRepository : findByBoardId(boardId)
-PostCommandRepository --> BoardDeletedHandler : List<Long>
 BoardDeletedHandler -> PostCommandRepository : deleteByBoardId(boardId)
-BoardDeletedHandler -> CommentCommandRepository : deleteComment(List<Long>)
+BoardDeletedHandler -> CommentCommandRepository : deleteByBoardId(boardId)
 
 @enduml
