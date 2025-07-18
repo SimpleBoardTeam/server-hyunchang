@@ -1,10 +1,12 @@
 package com.simpleboard.board.permission.domain;
 
 import java.util.*;
+
 public class Role {
-  private static final Map<RoleName, Role> ROLE_CACHE = Map.of(
-      RoleName.POST_ADMIN, new Role(RoleName.POST_ADMIN, Set.of(Permission.DELETE_BOARD, Permission.CREATE_BOARD))
-  );
+  private static final Map<RoleName, Role> ROLE_CACHE =
+      Map.of(
+          RoleName.BOARD_ADMIN,
+          new Role(RoleName.BOARD_ADMIN, Set.of(Permission.DELETE_BOARD, Permission.CREATE_BOARD)));
 
   private final RoleName roleName;
   private final Set<Permission> permissions;
@@ -22,7 +24,7 @@ public class Role {
     return permissions.contains(permission);
   }
 
-  public boolean hasSameRole(RoleName roleName){
+  public boolean hasSameRole(RoleName roleName) {
     return Objects.equals(this.roleName, roleName);
   }
 }

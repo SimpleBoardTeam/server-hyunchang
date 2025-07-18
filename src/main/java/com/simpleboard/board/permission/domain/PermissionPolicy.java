@@ -16,7 +16,7 @@ public class PermissionPolicy {
 
   public static PermissionPolicy create(Long boardId, Long userId) {
     PermissionPolicy permissionPolicy = new PermissionPolicy(boardId);
-    permissionPolicy.assignRole(userId,RoleName.POST_ADMIN);
+    permissionPolicy.assignRole(userId,RoleName.BOARD_ADMIN);
     return permissionPolicy;
   }
 

@@ -9,7 +9,7 @@ class RoleTest {
   @Test
   void of_정상적으로_권한_객체를_반환한다() {
     // given
-    Role role = Role.of(RoleName.POST_ADMIN);
+    Role role = Role.of(RoleName.BOARD_ADMIN);
 
     // then
     assertThat(role).isNotNull();
@@ -20,9 +20,9 @@ class RoleTest {
   @Test
   void hasSameRole_역할이_같으면_true를_반환한다() {
     // given
-    Role role = Role.of(RoleName.POST_ADMIN);
+    Role role = Role.of(RoleName.BOARD_ADMIN);
 
     // when & then
-    assertThat(role.hasSameRole(RoleName.POST_ADMIN)).isTrue();
+    assertThat(role.hasSameRole(RoleName.BOARD_ADMIN)).isTrue();
   }
 }

@@ -22,7 +22,7 @@ class PermissionPolicyTest {
     Long userId = 10L;
 
     // when
-    policy.assignRole(userId, RoleName.POST_ADMIN);
+    policy.assignRole(userId, RoleName.BOARD_ADMIN);
 
     // then
     assertThat(policy.can(userId, Permission.CREATE_BOARD)).isTrue();
@@ -33,7 +33,7 @@ class PermissionPolicyTest {
   void deleteAssignment_성공() {
     // given
     Long userId = 20L;
-    policy.assignRole(userId, RoleName.POST_ADMIN);
+    policy.assignRole(userId, RoleName.BOARD_ADMIN);
 
     // when
     policy.deleteAssignment(userId);
@@ -50,10 +50,10 @@ class PermissionPolicyTest {
     // given
     Long fromUser = 1L;
     Long toUser = 2L;
-    policy.assignRole(fromUser, RoleName.POST_ADMIN);
+    policy.assignRole(fromUser, RoleName.BOARD_ADMIN);
 
     // when
-    policy.delegateRole(fromUser, toUser, RoleName.POST_ADMIN);
+    policy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN);
 
     // then
     assertThatThrownBy(() -> policy.can(fromUser, Permission.CREATE_BOARD))
@@ -69,13 +69,13 @@ class PermissionPolicyTest {
     // given
     Long fromUser = 1L;
     Long toUser = 2L;
-    policy.assignRole(fromUser, RoleName.POST_ADMIN);
+    policy.assignRole(fromUser, RoleName.BOARD_ADMIN);
 
     // when
     policy.deleteAssignment(fromUser);
 
     // then
-    assertThatThrownBy(() -> policy.delegateRole(fromUser, toUser, RoleName.POST_ADMIN))
+    assertThatThrownBy(() -> policy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN))
         .isInstanceOf(AssignmentNotFoundException.class);
   }
 }
