@@ -9,73 +9,101 @@ import org.junit.jupiter.api.Test;
 
 class PermissionPolicyTest {
 
-  PermissionPolicy policy;
+  PermissionPolicy permissionPolicy;
+  Long testUserId;
 
   @BeforeEach
   void setUp() {
-    policy = new PermissionPolicy(1L);
+    testUserId = 1L;
+    permissionPolicy = PermissionPolicy.create(1L, testUserId);
+  }
+
+  @Test
+  void creat_성공() {
+    // given & when
+    Long userId = 1L;
+    PermissionPolicy policy = PermissionPolicy.create(1L, userId);
+
+    // then
+    assertThat(permissionPolicy.can(userId, Permission.CREATE_BOARD)).isTrue();
+    assertThat(permissionPolicy.can(userId, Permission.DELETE_BOARD)).isTrue();
+  }
+
+  @Test
+  void can_성공() {
+    assertThat(permissionPolicy.can(testUserId, Permission.CREATE_BOARD)).isTrue();
+    assertThat(permissionPolicy.can(testUserId, Permission.DELETE_BOARD)).isTrue();
+  }
+
+  @Test
+  void can_실패_권한이_없는_유저가_실행() {
+    Long notOwnPermissionUserId = 2L;
+    assertThatThrownBy(() -> permissionPolicy.can(notOwnPermissionUserId, Permission.CREATE_BOARD))
+        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThatThrownBy(() -> permissionPolicy.can(notOwnPermissionUserId, Permission.DELETE_BOARD))
+        .isInstanceOf(AssignmentNotFoundException.class);
   }
 
   @Test
   void assignRole_성공() {
     // given
-    Long userId = 10L;
+    Long userId = 2L;
 
     // when
-    policy.assignRole(userId, RoleName.BOARD_ADMIN);
+    permissionPolicy.assignRole(userId, RoleName.BOARD_ADMIN);
 
     // then
-    assertThat(policy.can(userId, Permission.CREATE_BOARD)).isTrue();
-    assertThat(policy.can(userId, Permission.DELETE_BOARD)).isTrue();
+    assertThat(permissionPolicy.can(userId, Permission.CREATE_BOARD)).isTrue();
+    assertThat(permissionPolicy.can(userId, Permission.DELETE_BOARD)).isTrue();
   }
 
   @Test
   void deleteAssignment_성공() {
     // given
-    Long userId = 20L;
-    policy.assignRole(userId, RoleName.BOARD_ADMIN);
+    Long userId = 2L;
+    permissionPolicy.assignRole(userId, RoleName.BOARD_ADMIN);
 
     // when
-    policy.deleteAssignment(userId);
+    permissionPolicy.deleteAssignment(userId);
 
     // then
-    assertThatThrownBy(() -> policy.can(userId, Permission.CREATE_BOARD))
-        .isInstanceOf(NoSuchElementException.class);
-    assertThatThrownBy(() -> policy.can(userId, Permission.DELETE_BOARD))
-        .isInstanceOf(NoSuchElementException.class);
+    assertThatThrownBy(() -> permissionPolicy.can(userId, Permission.CREATE_BOARD))
+        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThatThrownBy(() -> permissionPolicy.can(userId, Permission.DELETE_BOARD))
+        .isInstanceOf(AssignmentNotFoundException.class);
   }
 
   @Test
   void delegateRole_성공() {
     // given
-    Long fromUser = 1L;
-    Long toUser = 2L;
-    policy.assignRole(fromUser, RoleName.BOARD_ADMIN);
+    Long fromUser = 2L;
+    Long toUser = 3L;
+    permissionPolicy.assignRole(fromUser, RoleName.BOARD_ADMIN);
 
     // when
-    policy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN);
+    permissionPolicy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN);
 
     // then
-    assertThatThrownBy(() -> policy.can(fromUser, Permission.CREATE_BOARD))
-        .isInstanceOf(NoSuchElementException.class);
-    assertThatThrownBy(() -> policy.can(fromUser, Permission.DELETE_BOARD))
-        .isInstanceOf(NoSuchElementException.class);
-    assertThat(policy.can(toUser, Permission.CREATE_BOARD)).isTrue();
-    assertThat(policy.can(toUser, Permission.DELETE_BOARD)).isTrue();
+    assertThatThrownBy(() -> permissionPolicy.can(fromUser, Permission.CREATE_BOARD))
+        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThatThrownBy(() -> permissionPolicy.can(fromUser, Permission.DELETE_BOARD))
+        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThat(permissionPolicy.can(toUser, Permission.CREATE_BOARD)).isTrue();
+    assertThat(permissionPolicy.can(toUser, Permission.DELETE_BOARD)).isTrue();
   }
 
   @Test
-  void delegateRole_실패_권한없음() {
+  void delegateRole_실패_권한이_없는_유저가_권한_위임용() {
     // given
-    Long fromUser = 1L;
-    Long toUser = 2L;
-    policy.assignRole(fromUser, RoleName.BOARD_ADMIN);
+    Long fromUser = 2L;
+    Long toUser = 3L;
+    permissionPolicy.assignRole(fromUser, RoleName.BOARD_ADMIN);
 
     // when
-    policy.deleteAssignment(fromUser);
+    permissionPolicy.deleteAssignment(fromUser);
 
     // then
-    assertThatThrownBy(() -> policy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN))
+    assertThatThrownBy(() -> permissionPolicy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN))
         .isInstanceOf(AssignmentNotFoundException.class);
   }
 }
