@@ -16,7 +16,7 @@ public class PermissionPolicy {
 
   public static PermissionPolicy create(Long boardId, Long userId) {
     PermissionPolicy permissionPolicy = new PermissionPolicy(boardId);
-    permissionPolicy.assignRole(userId,RoleName.BOARD_ADMIN);
+    permissionPolicy.assignRole(userId, RoleName.BOARD_ADMIN);
     return permissionPolicy;
   }
 
@@ -32,7 +32,11 @@ public class PermissionPolicy {
   }
 
   public boolean can(Long userId, Permission permission) {
-    return findAssignment(userId).hasPermission(permission);
+    return managerAssignments.stream()
+        .filter(a -> a.isOwnedBy(userId))
+        .findFirst()
+        .map(a -> a.hasPermission(permission))
+        .orElse(false);
   }
 
   public void assignRole(Long userId, RoleName roleName) {
