@@ -5,7 +5,7 @@ import com.simpleboard.board.board.domain.common.vo.VisitorType;
 import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
-import com.simpleboard.board.board.domain.post.exception.PostDeletePermissionException;
+import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
 
 /**
  * <b>Post 구현체</b> Aggregate Root.
@@ -25,11 +25,11 @@ public class MemberPost extends Post {
 
   @Override
   protected void checkDeletePermission(Visitor visitor, DeleteParams params) {
-    if (visitor.type() != VisitorType.MEMBER) throw new PostDeletePermissionException(null);
+    if (visitor.type() != VisitorType.MEMBER) throw new MemberPostPermissionException(null);
   }
 
   @Override
   protected void checkEditPermission(Visitor visitor, EditParams params) {
-    if (visitor.type() != VisitorType.MEMBER) throw new PostDeletePermissionException(null);
+    if (visitor.type() != VisitorType.MEMBER) throw new MemberPostPermissionException(null);
   }
 }

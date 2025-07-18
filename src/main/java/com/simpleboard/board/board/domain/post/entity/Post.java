@@ -4,7 +4,7 @@ import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
-import com.simpleboard.board.board.domain.post.exception.PostDeletePermissionException;
+import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
 import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchException;
 import com.simpleboard.board.board.domain.post.vo.BoardVO;
 import com.simpleboard.board.board.domain.post.vo.LikesVO;
@@ -70,7 +70,7 @@ public abstract class Post {
    *
    * <p>권한 체크 후 soft deletion 적용
    *
-   * @throws PostDeletePermissionException MemberPost에서 author가 아닌 유저가 삭제 시도시 발생
+   * @throws MemberPostPermissionException MemberPost에서 author가 아닌 유저가 삭제 시도시 발생
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */
@@ -84,7 +84,7 @@ public abstract class Post {
    *
    * <p>권한 체크 후 Post와 HashTag 수정
    *
-   * @throws PostDeletePermissionException MemberPost에서 author가 아닌 유저가 삭제 시도시 발생
+   * @throws MemberPostPermissionException MemberPost에서 author가 아닌 유저가 삭제 시도시 발생
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */
@@ -98,7 +98,7 @@ public abstract class Post {
    *
    * <p>권한 미보유시 throw exception
    *
-   * @throws PostDeletePermissionException MemberPost에서 author가 아닌 유저가 삭제 시도시 발생
+   * @throws MemberPostPermissionException MemberPost에서 author가 아닌 유저가 삭제 시도시 발생
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */

@@ -17,7 +17,9 @@ public enum ErrorCode {
   /* Service Exception */
   // Post
   PASSWORD_NOT_MATCH(
-      HttpStatus.BAD_REQUEST, "400_POST_PASSWORD_NOT_MATCH", "게시글의 비밀번호가 일치하지 않습니다."),
+      HttpStatus.BAD_REQUEST, "400_POST_PASSWORD_NOT_MATCH", "Post의 비밀번호가 일치하지 않습니다."),
+  NO_DELETE_PERMISSION(
+      HttpStatus.BAD_REQUEST, "400_POST_NO_DELETE_PERMISSION", "Post에 대한 삭제 권한이 없습니다."),
 
   /* Internal Error */
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_INTERNAL", "서버 내부 오류가 발생했습니다."),

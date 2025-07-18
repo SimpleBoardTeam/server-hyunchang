@@ -19,6 +19,10 @@ public class ServiceException extends RuntimeException {
     this.errorCode = errorCode;
   }
 
+  public ServiceException(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+
   /* 정적 팩토리 method 패턴 */
   public static ServiceException of(ErrorCode code) {
     return new ServiceException(code, null);
