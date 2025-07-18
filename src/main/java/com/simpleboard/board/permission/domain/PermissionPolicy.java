@@ -10,8 +10,14 @@ public class PermissionPolicy {
 
   private final List<ManagerAssignment> managerAssignments = new ArrayList<>();
 
-  public PermissionPolicy(Long boardId) {
+  private PermissionPolicy(Long boardId) {
     this.boardId = boardId;
+  }
+
+  public static PermissionPolicy create(Long boardId, Long userId) {
+    PermissionPolicy permissionPolicy = new PermissionPolicy(boardId);
+    permissionPolicy.assignRole(userId,RoleName.POST_ADMIN);
+    return permissionPolicy;
   }
 
   private ManagerAssignment findAssignment(Long userId) {
