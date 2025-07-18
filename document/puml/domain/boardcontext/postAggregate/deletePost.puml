@@ -1,0 +1,31 @@
+ @startuml Post_Delete_Internal
+title Post.deletePost(Visitor, DeleteParams)
+
+actor Client
+actor CommandService
+entity Post
+
+CommandService -> Post : deletePost(Visitor, DeleteParams)
+activate Post
+
+
+note left
+<b>DeleteParams</b>:
+*PostType type   \t//GUEST, MEMBER
+*String password
+end note
+Post -> Post : hasDeletePermission(Visitor, DeleteParams)
+
+alt has permission
+Post -> Post : softDelete()
+
+else member not matched
+Post --> Client : 400 PostDeletePermissionException
+
+else password not matched
+Post --> Client : 400 PostPasswordNotMatchException
+deactivate Post
+
+end
+
+@enduml

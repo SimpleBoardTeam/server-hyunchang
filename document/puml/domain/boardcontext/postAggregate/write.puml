@@ -1,0 +1,30 @@
+@startuml Post_Write_Internal
+title Post.write()
+
+actor CommandService
+entity Post
+entity TagsVO        #lightyellow
+
+CommandService -> Post : write(createParams)
+activate Post
+
+note left
+<b>createParams</b>:
+*String title
+*String content
+*String hashTags
+*PostType type   \t//GUEST, MEMBER
+*Long authorId
+*String nickname
+*String password
+end note
+
+Post -> TagsVO : createTags(createParams.hashTags)
+activate TagsVO
+
+TagsVO --> Post : List<HashTag>
+deactivate TagsVO
+
+Post --> CommandService : Post
+deactivate Post
+@enduml
