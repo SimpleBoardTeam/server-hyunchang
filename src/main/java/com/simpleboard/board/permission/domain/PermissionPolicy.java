@@ -3,32 +3,38 @@ package com.simpleboard.board.permission.domain;
 import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
 import com.simpleboard.board.permission.domain.exception.RoleDelegationException;
 import java.util.*;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
 public class PermissionPolicy {
 
   private Long boardId;
 
-  private final List<ManagerAssignment> managerAssignments = new ArrayList<>();
+  private final List<ManagerAssignment> managerAssignments;
 
-  private PermissionPolicy(Long boardId) {
+  private PermissionPolicy(Long boardId, List<ManagerAssignment> managerAssignments) {
     this.boardId = boardId;
+    this.managerAssignments = new ArrayList<>(managerAssignments);
   }
 
   public static PermissionPolicy create(Long boardId, Long userId) {
-    PermissionPolicy permissionPolicy = new PermissionPolicy(boardId);
+    PermissionPolicy permissionPolicy = new PermissionPolicy(boardId, new ArrayList<>());
     permissionPolicy.assignRole(userId, RoleName.BOARD_ADMIN);
     return permissionPolicy;
   }
 
-  private ManagerAssignment findAssignment(Long userId) {
-    return managerAssignments.stream()
-        .filter(assignment -> assignment.isOwnedBy(userId))
-        .findFirst()
-        .orElseThrow(() -> new AssignmentNotFoundException(userId));
+  public static PermissionPolicy of(Long boardId, List<ManagerAssignment> assignments) {
+    return new PermissionPolicy(boardId, assignments);
+  }
+
+  public List<ManagerAssignment> getManagerAssignments() {
+    return Collections.unmodifiableList(managerAssignments);
   }
 
   public void deleteAssignment(Long userId) {
-    managerAssignments.removeIf(a -> a.isOwnedBy(userId));
+    managerAssignments.remove(findAssignmentByUserId(userId));
   }
 
   public boolean can(Long userId, Permission permission) {
@@ -40,11 +46,11 @@ public class PermissionPolicy {
   }
 
   public void assignRole(Long userId, RoleName roleName) {
-    managerAssignments.add(ManagerAssignment.create(userId, roleName));
+    managerAssignments.add(ManagerAssignment.create(this.boardId, userId, roleName));
   }
 
   public void delegateRole(Long from, Long to, RoleName roleName) {
-    ManagerAssignment fromAssignment = findAssignment(from);
+    ManagerAssignment fromAssignment = findAssignmentByUserId(from);
 
     if (!fromAssignment.hasRole(roleName)) {
       throw new RoleDelegationException(from, roleName);
@@ -52,5 +58,12 @@ public class PermissionPolicy {
 
     assignRole(to, roleName);
     deleteAssignment(from);
+  }
+
+  private ManagerAssignment findAssignmentByUserId(Long userId) {
+    return managerAssignments.stream()
+        .filter(a -> a.isOwnedBy(userId))
+        .findFirst()
+        .orElseThrow(() -> new AssignmentNotFoundException(userId));
   }
 }
