@@ -1,7 +1,9 @@
 package com.simpleboard.board.permission.domain;
 
 import java.util.*;
+import lombok.Getter;
 
+@Getter
 public class Role {
   private static final Map<RoleName, Role> ROLE_CACHE =
       Map.of(
