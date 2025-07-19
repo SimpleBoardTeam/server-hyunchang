@@ -37,10 +37,8 @@ class PermissionPolicyTest {
   @Test
   void can_실패_권한이_없는_유저가_실행() {
     Long notOwnPermissionUserId = 2L;
-    assertThatThrownBy(() -> permissionPolicy.can(notOwnPermissionUserId, Permission.CREATE_BOARD))
-        .isInstanceOf(AssignmentNotFoundException.class);
-    assertThatThrownBy(() -> permissionPolicy.can(notOwnPermissionUserId, Permission.DELETE_BOARD))
-        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThat(permissionPolicy.can(notOwnPermissionUserId, Permission.CREATE_BOARD)).isFalse();
+    assertThat(permissionPolicy.can(notOwnPermissionUserId, Permission.DELETE_BOARD)).isFalse();
   }
 
   @Test
@@ -66,10 +64,8 @@ class PermissionPolicyTest {
     permissionPolicy.deleteAssignment(userId);
 
     // then
-    assertThatThrownBy(() -> permissionPolicy.can(userId, Permission.CREATE_BOARD))
-        .isInstanceOf(AssignmentNotFoundException.class);
-    assertThatThrownBy(() -> permissionPolicy.can(userId, Permission.DELETE_BOARD))
-        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThat(permissionPolicy.can(userId, Permission.CREATE_BOARD)).isFalse();
+    assertThat(permissionPolicy.can(userId, Permission.DELETE_BOARD)).isFalse();
   }
 
   @Test
@@ -83,10 +79,9 @@ class PermissionPolicyTest {
     permissionPolicy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN);
 
     // then
-    assertThatThrownBy(() -> permissionPolicy.can(fromUser, Permission.CREATE_BOARD))
-        .isInstanceOf(AssignmentNotFoundException.class);
-    assertThatThrownBy(() -> permissionPolicy.can(fromUser, Permission.DELETE_BOARD))
-        .isInstanceOf(AssignmentNotFoundException.class);
+    assertThat(permissionPolicy.can(fromUser, Permission.CREATE_BOARD)).isFalse();
+    assertThat(permissionPolicy.can(fromUser, Permission.DELETE_BOARD)).isFalse();
+
     assertThat(permissionPolicy.can(toUser, Permission.CREATE_BOARD)).isTrue();
     assertThat(permissionPolicy.can(toUser, Permission.DELETE_BOARD)).isTrue();
   }
