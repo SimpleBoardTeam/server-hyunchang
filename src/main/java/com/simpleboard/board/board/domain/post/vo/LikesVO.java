@@ -3,6 +3,7 @@ package com.simpleboard.board.board.domain.post.vo;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.post.dto.LikeInfo;
 import com.simpleboard.board.board.domain.post.entity.PostLike;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public record LikesVO(List<PostLike> likes) {
    * @since 1.0
    */
   public static LikesVO create() {
-    return new LikesVO(List.of());
+    return new LikesVO(new ArrayList<>());
   }
 
   /**
