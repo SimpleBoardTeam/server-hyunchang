@@ -5,6 +5,7 @@ import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
 import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchException;
+import lombok.Getter;
 
 /**
  * <b>Post 구현체</b> Aggregate Root.
@@ -13,9 +14,10 @@ import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchExc
  *
  * @since 1.0
  */
+@Getter
 public class GuestPost extends Post {
-  String nickname;
-  String password;
+  private String nickname;
+  private String password;
 
   public GuestPost(CreateParams spec) {
     super(spec);

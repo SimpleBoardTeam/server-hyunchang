@@ -3,6 +3,7 @@ package com.simpleboard.board.board.domain.post.entity;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.common.vo.VisitorType;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
+import lombok.Getter;
 
 /**
  * <b>PostLike</b> Entity(non‑root)
@@ -12,9 +13,10 @@ import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
  * @domain entity
  * @since 1.0
  */
+@Getter
 public class PostLike {
-  String vid;
-  Long likedMemberId;
+  private String vid;
+  private Long likedMemberId;
 
   private PostLike(String vid, Long memberId) {
     this.vid = vid;

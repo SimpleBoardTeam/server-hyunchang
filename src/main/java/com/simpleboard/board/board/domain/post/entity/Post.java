@@ -11,6 +11,7 @@ import com.simpleboard.board.board.domain.post.vo.LikesVO;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 import com.simpleboard.board.board.domain.post.vo.TagsVO;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 /**
  * <b>Post</b> Aggregate Root.
@@ -27,18 +28,19 @@ import java.time.LocalDateTime;
  * @domain aggregate-root
  * @since 1.0
  */
+@Getter
 public abstract class Post {
 
-  Long id;
-  String title;
-  String content;
-  Long viewCount;
-  LocalDateTime createdAt;
-  LocalDateTime updatedAt;
-  Boolean isDeleted;
-  BoardVO board;
-  TagsVO tags;
-  LikesVO likes;
+  private Long id;
+  private String title;
+  private String content;
+  private Long viewCount;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private Boolean isDeleted;
+  private BoardVO board;
+  private TagsVO tags;
+  private LikesVO likes;
 
   protected Post(CreateParams params) {
     this.title = params.title();

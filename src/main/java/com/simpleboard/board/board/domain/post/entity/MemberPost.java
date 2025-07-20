@@ -6,6 +6,7 @@ import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
 import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
+import lombok.Getter;
 
 /**
  * <b>Post 구현체</b> Aggregate Root.
@@ -14,9 +15,10 @@ import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionExc
  *
  * @since 1.0
  */
+@Getter
 public class MemberPost extends Post {
 
-  Long memberId;
+  private Long memberId;
 
   public MemberPost(CreateParams spec) {
     super(spec);

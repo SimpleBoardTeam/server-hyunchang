@@ -1,5 +1,7 @@
 package com.simpleboard.board.board.domain.post.entity;
 
+import lombok.Getter;
+
 /**
  * <b>HashTag</b> Entity(non‑root)
  *
@@ -8,8 +10,9 @@ package com.simpleboard.board.board.domain.post.entity;
  * @domain entity
  * @since 1.0
  */
+@Getter
 public class HashTag {
-  String tag;
+  private String tag;
 
   public HashTag(String tag) {
     this.tag = tag.replaceAll(" ", "");
