@@ -27,11 +27,16 @@ public class MemberPost extends Post {
 
   @Override
   protected void checkDeletePermission(Visitor visitor, DeleteParams params) {
-    if (visitor.type() != VisitorType.MEMBER) throw new MemberPostPermissionException(null);
+    checkPermission(visitor);
   }
 
   @Override
   protected void checkEditPermission(Visitor visitor, EditParams params) {
-    if (visitor.type() != VisitorType.MEMBER) throw new MemberPostPermissionException(null);
+    checkPermission(visitor);
+  }
+
+  private void checkPermission(Visitor visitor) {
+    if (visitor.type() != VisitorType.MEMBER) throw new MemberPostPermissionException("Visitor is not member");
+    if (!visitor.memberId().equals(memberId)) throw new MemberPostPermissionException("Wrong member id");
   }
 }
