@@ -17,4 +17,14 @@ public class HashTag {
   public HashTag(String tag) {
     this.tag = tag.replaceAll(" ", "");
   }
+
+  @Override
+  public boolean equals(Object o) {
+    return tag.equals(((HashTag) o).tag);
+  }
+
+  @Override
+  public int hashCode() {
+    return tag.hashCode();
+  }
 }

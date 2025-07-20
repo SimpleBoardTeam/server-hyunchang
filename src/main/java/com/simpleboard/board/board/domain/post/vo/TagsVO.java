@@ -1,6 +1,7 @@
 package com.simpleboard.board.board.domain.post.vo;
 
 import com.simpleboard.board.board.domain.post.entity.HashTag;
+import com.simpleboard.board.board.domain.post.exception.HashTagsSizeException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,13 @@ public record TagsVO(List<HashTag> tags) {
    * @since 1.0
    */
   public static TagsVO createTags(String hashTags) {
-    List<HashTag> newTags = Arrays.stream(hashTags.split("[#, ]")).map(HashTag::new).toList();
+    List<HashTag> newTags =
+        Arrays.stream(hashTags.split("[#, ]"))
+            .map(HashTag::new)
+            .filter(hashTag -> !hashTag.getTag().isBlank())
+            .distinct()
+            .toList();
+    if (newTags.size() > 5) throw new HashTagsSizeException("");
     return new TagsVO(newTags);
   }
 }
