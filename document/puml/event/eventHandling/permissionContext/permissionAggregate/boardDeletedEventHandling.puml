@@ -4,10 +4,9 @@ title boardDeleteEvent
 participant BoardEventSubscriber
 participant PermissionCommandService
 participant PermissionCommandRepository
-entity PermissionPolicy
 
 BoardEventSubscriber -> PermissionCommandService : handleBoardDeleted(boardId)
 PermissionCommandService -> PermissionCommandRepository : findById(boardId)
-PermissionCommandRepository -> PermissionCommandService : PermissionPolicy
+PermissionCommandRepository --> PermissionCommandService : PermissionPolicy
 PermissionCommandService -> PermissionCommandRepository : delete(boardId)
 @enduml
