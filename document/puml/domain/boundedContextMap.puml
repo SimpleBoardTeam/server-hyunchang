@@ -95,8 +95,18 @@ package "context map" {
         }
     }
 
+    package "auth context" {
+        package "auth"{
+            entity Auth <<Aggregate Root>> {
+            }
+            struct Password <<Value Object>>{
+            }
 
-    Board <.. UserBoardRole
+            Auth -- Password
+        }
+    }
+
+
     Board <.. Post
 
     MemberPost ..> Member
@@ -105,6 +115,8 @@ package "context map" {
     Comment ..> Post
     Comment --> Comment
     Board ..> PermissionPolicy
+
+    Auth ..> Member
 
 }
 @enduml
