@@ -7,6 +7,8 @@ participant PermissionCommandRepository
 entity PermissionPolicy
 
 BoardEventSubscriber -> PermissionCommandService : handleBoardCreated(boardId, userId)
-PermissionCommandService -> PermissionCommandService : new PermissionPolicy(boardId, userId)
+PermissionCommandService -> PermissionPolicy : PermissionPolicy.of(boardId, userId)
+PermissionPolicy -> PermissionPolicy : assignRole(userId, BOARD_ADMIN)
+PermissionPolicy --> PermissionCommandService : PermissionPolicy
 PermissionCommandService -> PermissionCommandRepository : save(PermissionPolicy)
 @enduml

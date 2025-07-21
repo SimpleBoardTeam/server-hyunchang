@@ -3,6 +3,7 @@ package "permissionPolicy" {
   class PermissionPolicy <<Aggregate Root>>{
     - Long boardId
     - List<ManagerAssignment> managerAssignments
+    + of(userId, boardId)
     + ManagerAssignment findAssignment(Long userId)
     + deleteAssignment(Long userId)
     + boolean can(Long userId, Permission permission)
