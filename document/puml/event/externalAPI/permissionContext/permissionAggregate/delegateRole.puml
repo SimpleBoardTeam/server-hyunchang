@@ -7,7 +7,7 @@ participant PermissionCommandService
 participant PermissionCommandRepository
 entity PermissionPolicy
 
-participant MemberContext as "MemberContext\n(OuterContext)" #skyblue
+participant MemberFetchService #skyblue
 
 
 PermissionClient -> PermissionController : POST /permissions/boards/{boardId}/delegate\n(DelegateRoleForm)
@@ -26,9 +26,9 @@ note right
 *Role roleType   \t//POST_ADMIN
 end note
 
-PermissionCommandService -> MemberContext : GET /internal/users?nickname=toUserNickname
+PermissionCommandService -> MemberFetchService : fetchMemberId(toUserNick)
 
-MemberContext --> PermissionCommandService : HTTP 200 (toUserId)
+MemberFetchService --> PermissionCommandService : toUserId
 
 PermissionCommandService -> PermissionCommandRepository : findByBoardId(boardId)
 PermissionCommandRepository --> PermissionCommandService : PermissionPolicy
@@ -46,8 +46,7 @@ alt 권한 있음
   PermissionCommandService --> PermissionController : 성공 (void)
   PermissionController --> PermissionClient : HTTP 200 OK
 else 권한 없음
-  PermissionPolicy -> PermissionPolicy : throw ForbiddenException
-  PermissionPolicy --> PermissionClient : HTTP 403 Forbidden
+  PermissionPolicy -> PermissionClient : throw ForbiddenException
 end
 
 @enduml
