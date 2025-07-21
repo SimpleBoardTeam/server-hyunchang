@@ -5,6 +5,7 @@ import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
 import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchException;
+import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 import lombok.Getter;
 
 /**
@@ -33,5 +34,10 @@ public class GuestPost extends Post {
   @Override
   protected void checkEditPermission(Visitor visitor, EditParams params) {
     if (!this.password.equals(params.password())) throw new PostPasswordNotMatchException(null);
+  }
+
+  @Override
+  protected PostTypeEnum getPostType() {
+    return PostTypeEnum.GUEST;
   }
 }

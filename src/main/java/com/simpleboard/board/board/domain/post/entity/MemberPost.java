@@ -6,6 +6,7 @@ import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
 import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
+import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 import lombok.Getter;
 
 /**
@@ -35,8 +36,15 @@ public class MemberPost extends Post {
     checkPermission(visitor);
   }
 
+  @Override
+  protected PostTypeEnum getPostType() {
+    return PostTypeEnum.MEMBER;
+  }
+
   private void checkPermission(Visitor visitor) {
-    if (visitor.type() != VisitorType.MEMBER) throw new MemberPostPermissionException("Visitor is not member");
-    if (!visitor.memberId().equals(memberId)) throw new MemberPostPermissionException("Wrong member id");
+    if (visitor.type() != VisitorType.MEMBER)
+      throw new MemberPostPermissionException("Visitor is not member");
+    if (!visitor.memberId().equals(memberId))
+      throw new MemberPostPermissionException("Wrong member id");
   }
 }

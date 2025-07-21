@@ -5,7 +5,6 @@ import com.simpleboard.board.board.domain.post.dto.LikeInfo;
 import com.simpleboard.board.board.domain.post.entity.PostLike;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * <b>Likes</b> Value Object.
@@ -55,9 +54,7 @@ public record LikesVO(List<PostLike> likes) {
   }
 
   private PostLike getPostLike(Visitor visitor, PostTypeEnum postType) {
-    Optional<PostLike> postLike =
-        likes.stream().filter(v -> v.isLiker(visitor, postType)).findFirst();
-    return postLike.orElse(null);
+    return likes.stream().filter(v -> v.isLiker(visitor, postType)).findFirst().orElse(null);
   }
 
   private void addLike(Visitor visitor) {

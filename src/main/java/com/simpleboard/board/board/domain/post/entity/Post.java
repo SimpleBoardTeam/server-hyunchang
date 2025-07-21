@@ -4,6 +4,7 @@ import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.DeleteParams;
 import com.simpleboard.board.board.domain.post.dto.EditParams;
+import com.simpleboard.board.board.domain.post.dto.LikeInfo;
 import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
 import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchException;
 import com.simpleboard.board.board.domain.post.vo.BoardVO;
@@ -94,7 +95,21 @@ public abstract class Post {
   }
 
   /**
-   * 삭제 권한 체크 메서드.
+   * <b>PostLike를 toggle하는 메서드</b>
+   *
+   * <p>LikesVO를 통해 Visitor의 PostLike 존재 유무를 체크,
+   *
+   * <p>존재시 삭제, 미존재시 생성
+   *
+   * @return 토글 후 Like 여부, Post의 총 PostLike 수
+   * @since 1.0
+   */
+  public LikeInfo toggleLike(Visitor visitor) {
+    return likes.toggleLike(visitor, getPostType());
+  }
+
+  /**
+   * 수정/삭제 권한 체크 메서드.
    *
    * <p>권한 미보유시 throw exception
    *
@@ -102,9 +117,18 @@ public abstract class Post {
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */
+  protected abstract void checkEditPermission(Visitor visitor, EditParams params);
+
   protected abstract void checkDeletePermission(Visitor visitor, DeleteParams params);
 
-  protected abstract void checkEditPermission(Visitor visitor, EditParams params);
+  /**
+   * <b>Post의 타입 확인 메서드</b>
+   *
+   * <p>Post의 구현체가 해당 메서드를 구현하여 구현체에 맞는 Post 타입 반환
+   *
+   * @since 1.0
+   */
+  protected abstract PostTypeEnum getPostType();
 
   private void softDelete() {
     isDeleted = true;
