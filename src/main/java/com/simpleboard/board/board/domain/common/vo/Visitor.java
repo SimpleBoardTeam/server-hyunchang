@@ -8,4 +8,4 @@ package com.simpleboard.board.board.domain.common.vo;
  * @domain value-object
  * @since 1.0
  */
-public record Visitor(VisitorType type, String vid, Long memberId) {}
+public record Visitor(VisitorType type, String vId, Long memberId) {}

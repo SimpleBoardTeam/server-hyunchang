@@ -24,7 +24,7 @@ public class PostLike {
   }
 
   public static PostLike of(Visitor visitor) {
-    return new PostLike(visitor.vid(), visitor.memberId());
+    return new PostLike(visitor.vId(), visitor.memberId());
   }
 
   /**
@@ -50,12 +50,12 @@ public class PostLike {
         // 2-2. MemberId가 같으면 true
         if (likedMemberId.equals(visitor.memberId())) return true;
       }
-      return vid.equals(visitor.vid());
+      return vid.equals(visitor.vId());
       // 2-3. MemberId가 달라도 vid가 같으면 true, vid까지 다르면 false
     }
 
     // 3. GuestPost이고, PostLike에 MemberId가 없을 때
-    if (vid.equals(visitor.vid())) {
+    if (vid.equals(visitor.vId())) {
 
       likedMemberId = visitor.memberId();
       return true;
@@ -68,7 +68,7 @@ public class PostLike {
   private boolean checkMemberPost(Visitor visitor) {
     if (visitor.type() != VisitorType.MEMBER) return false;
     if (likedMemberId.equals(visitor.memberId())) {
-      vid = visitor.vid();
+      vid = visitor.vId();
       return true;
     }
 
