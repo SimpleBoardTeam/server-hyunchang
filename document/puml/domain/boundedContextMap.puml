@@ -5,6 +5,9 @@ package "context map" {
         package "board"{
             abstract Board <<Aggregate Root>>{
             }
+            struct Manager <<Value Object>>{
+            }
+            Manager -- Board
         }
 
         package "post"{
