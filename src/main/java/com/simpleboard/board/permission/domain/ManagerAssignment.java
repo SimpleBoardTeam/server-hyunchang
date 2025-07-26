@@ -24,7 +24,7 @@ public class ManagerAssignment {
   }
 
   public static ManagerAssignment create(Long boardId, Long userId, RoleName roleName) {
-    return new ManagerAssignment(boardId, userId, Role.of(roleName));
+    return new ManagerAssignment(boardId, userId, Role.getPredefined(roleName));
   }
 
   public boolean hasPermission(Permission permission) {
