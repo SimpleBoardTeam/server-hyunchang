@@ -1,19 +1,20 @@
 package com.simpleboard.board.board.domain.comment.entity;
 
-import com.simpleboard.board.board.domain.comment.dto.CreateParams;
-import com.simpleboard.board.board.domain.comment.dto.DeleteParams;
+import com.simpleboard.board.board.domain.comment.dto.CommentCreateParams;
+import com.simpleboard.board.board.domain.comment.dto.CommentDeleteParams;
 import com.simpleboard.board.board.domain.comment.exception.MemberCommentPermissionException;
+import com.simpleboard.board.board.domain.common.vo.Visitor;
 
 public class MemberComment extends Comment{
     Long writerId;
 
-    protected MemberComment(CreateParams params) {
+    protected MemberComment(CommentCreateParams params) {
         super(params);
         writerId = params.writerId();
     }
 
     @Override
-    protected void checkPermission(DeleteParams params) {
-        if(!writerId.equals(params.writerId())) throw new MemberCommentPermissionException();
+    protected void checkPermission(Visitor visitor, CommentDeleteParams params) {
+        if(!writerId.equals(visitor.memberId())) throw new MemberCommentPermissionException();
     }
 }

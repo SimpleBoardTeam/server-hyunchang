@@ -1,35 +1,38 @@
 package com.simpleboard.board.board.domain.comment.entity;
 
-import com.simpleboard.board.board.domain.comment.dto.CreateParams;
-import com.simpleboard.board.board.domain.comment.dto.DeleteParams;
+import com.simpleboard.board.board.domain.comment.dto.CommentCreateParams;
+import com.simpleboard.board.board.domain.comment.dto.CommentDeleteParams;
 import com.simpleboard.board.board.domain.comment.vo.CommentState;
 import com.simpleboard.board.board.domain.comment.vo.CommentType;
+import com.simpleboard.board.board.domain.common.vo.Visitor;
+import lombok.Getter;
 
+@Getter
 public abstract class Comment {
 
-    Long id;
-    Long parentId;
-    Long postId;
-    String content;
-    CommentState commentState;
+    private Long id;
+    private Long parentId;
+    private Long postId;
+    private String content;
+    private CommentState commentState;
 
-    protected Comment(CreateParams params){
+    protected Comment(CommentCreateParams params){
         this.parentId = params.parentCommentId();
         this.postId = params.postId();
         this.content = params.content();
         this.commentState = CommentState.ACTIVATE;
     }
 
-    public static Comment write(CreateParams params) {
+    public static Comment write(CommentCreateParams params) {
         if(params.commentType() == CommentType.GUEST) return new GuestComment(params);
         if(params.commentType() == CommentType.MEMBER) return new MemberComment(params);
         return null;
     }
 
-    public void deleteComment(DeleteParams params){
-        checkPermission(params);
+    public void deleteComment(Visitor visitor, CommentDeleteParams params){
+        checkPermission(visitor, params);
         this.commentState = CommentState.DELETED;
     }
 
-    protected abstract void checkPermission(DeleteParams params);
+    protected abstract void checkPermission(Visitor visitor, CommentDeleteParams params);
 }
