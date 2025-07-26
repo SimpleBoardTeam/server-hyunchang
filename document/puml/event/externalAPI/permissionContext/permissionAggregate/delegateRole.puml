@@ -1,0 +1,52 @@
+@startuml
+title delegateRole
+
+actor PermissionClient as "Permission Client"
+participant PermissionController
+participant PermissionCommandService
+participant PermissionCommandRepository
+entity PermissionPolicy
+
+participant MemberFetchService #skyblue
+
+
+PermissionClient -> PermissionController : POST /permissions/boards/{boardId}/delegate\n(DelegateRoleForm)
+note right
+<b>DelegateRoleForm</b>:
+*Long fromUserId
+*String toUserNickname
+*Role roleType   \t//POST_ADMIN
+end note
+
+PermissionController -> PermissionCommandService : delegateRole(boardId, DelegateRoleCommand)
+note right
+<b>DelegateRoleCommand</b>:
+*Long fromUserId
+*String toUserNickname
+*Role roleType   \t//POST_ADMIN
+end note
+
+PermissionCommandService -> MemberFetchService : fetchMemberId(toUserNick)
+
+MemberFetchService --> PermissionCommandService : toUserId
+
+PermissionCommandService -> PermissionCommandRepository : findByBoardId(boardId)
+PermissionCommandRepository --> PermissionCommandService : PermissionPolicy
+
+PermissionCommandService -> PermissionPolicy : delegateRole(delegateRoleInfo)
+note right
+<b>DelegateRoleInfo</b>:
+*Long fromUserId
+*Long toUserId
+*Role roleType   \t//POST_ADMIN
+end note
+
+alt 권한 있음
+  PermissionPolicy --> PermissionCommandService : 성공 (void)
+  PermissionCommandService --> PermissionController : 성공 (void)
+  PermissionController --> PermissionClient : HTTP 200 OK
+else 권한 없음
+  PermissionPolicy -> PermissionClient : throw ForbiddenException
+end
+
+@enduml

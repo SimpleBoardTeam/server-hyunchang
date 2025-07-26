@@ -1,0 +1,23 @@
+@startuml PermissionPolicy_delegateRole
+title delegateRole
+
+actor Caller
+participant PermissionPolicy
+participant ManagerAssignment
+
+Caller -> PermissionPolicy : delegateRole(from, to, roleName)
+
+PermissionPolicy -> PermissionPolicy : findAssignment(from) : ManagerAssignment
+PermissionPolicy -> ManagerAssignment : hasRole(roleName)
+
+alt 위임 가능
+  ManagerAssignment --> PermissionPolicy : true
+  PermissionPolicy --> PermissionPolicy : assignRole(to, roleName)
+  PermissionPolicy -> PermissionPolicy : deleteAssignment(from)
+  PermissionPolicy --> Caller : void
+
+else 위임 불가
+  ManagerAssignment --> PermissionPolicy : false
+  PermissionPolicy -> Caller : throw ForbiddenException
+end
+@enduml

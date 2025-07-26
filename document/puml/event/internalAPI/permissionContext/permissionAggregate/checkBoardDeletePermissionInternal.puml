@@ -1,0 +1,28 @@
+@startuml
+title checkBoardDeletePermission
+
+actor BoardContext as "BoardContext\n(외부 호출자)"
+participant PermissionController
+participant PermissionService
+participant PermissionRepository
+entity PermissionPolicy
+
+BoardContext -> PermissionController : GET /internal/permissions/boards/{boardId}/delete?userId=..
+PermissionController -> PermissionService : checkBoardDeletePermission(userId, boardId)
+
+PermissionService -> PermissionRepository : findByBoardId(boardId)
+PermissionRepository --> PermissionService : PermissionPolicy
+
+PermissionService -> PermissionPolicy : can(userId, BOARD_DELETE)
+
+
+alt 삭제 가능
+  PermissionPolicy --> PermissionService : true
+  PermissionService --> PermissionController : true
+  PermissionController --> BoardContext : HTTP 200 OK (canDelete: true)
+else 삭제 불가
+  PermissionPolicy --> PermissionService : false
+  PermissionService --> PermissionController : false
+  PermissionController --> BoardContext : HTTP 200 OK (canDelete: false)
+end
+@enduml

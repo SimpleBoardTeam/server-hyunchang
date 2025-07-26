@@ -1,0 +1,20 @@
+@startuml
+package "board" {
+    entity Board <<Aggregate Root>> {
+        +Long boardId
+        +String boardName
+        +Manager manager
+        +createdAt dateTime
+        --
+        +create(String boardName) : Board
+        +delete()
+        +verifyBoardName(String boardName)
+    }
+
+    class Manager <<Value Object>> {
+        +Long : memberId
+     }
+
+     Board -- Manager
+}
+@enduml

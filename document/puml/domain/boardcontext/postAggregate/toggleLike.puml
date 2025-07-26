@@ -1,0 +1,23 @@
+@startuml Post_ToggleLike_Internal
+title Post.toggleLike()
+
+actor CommandService
+entity Post
+entity PostLike        #lightyellow
+
+CommandService -> Post : toggleLike(Visitor, PostTypeEnum)
+activate Post
+
+Post -> PostLike : toggleLike(Visitor, PostTypeEnum)
+activate PostLike
+PostLike --> Post : PostLike
+deactivate PostLike
+
+Post --> CommandService : LikeInfo
+note right
+<b>LikeInfo</b>
+Boolean isLiked
+Integer likeCount
+end note
+deactivate Post
+@enduml

@@ -1,0 +1,32 @@
+ @startuml Post_Edit_Internal
+title Post.editPost(Visitor, EditParams)
+
+actor Client
+actor CommandService
+entity Post
+entity TagsVO
+
+CommandService -> Post : hasEditPermission(Visitor, EditParams)
+activate Post
+
+note left
+<b>EditParams</b>:
+*PostType type   \t//GUEST, MEMBER
+*String password
+end note
+
+Post -> Post : hasEditPermission(Visitor, EditParams)
+alt has permission
+Post -> TagsVO : editTags(String)
+
+
+else no permission: not same member
+Post --> Client : 400 PostPermissionException
+
+else no permission: password not matched
+Post --> Client : 400 PostPasswordNotMatchException
+deactivate Post
+
+end
+
+@enduml
