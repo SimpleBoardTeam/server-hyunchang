@@ -8,6 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * <b>Tags VO 단위 테스트 클래스</b>
+ *
+ * <p>TagsVO를 통한 HashTag 생성, 파싱 테스트
+ */
 class TagsTest {
 
   @Test

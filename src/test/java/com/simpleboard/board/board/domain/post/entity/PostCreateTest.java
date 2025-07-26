@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.post.dto.CreateParams;
-import com.simpleboard.board.board.domain.post.testutil.CreateParamsBuilder;
+import com.simpleboard.board.board.domain.post.testutil.PostCreateParamsBuilder;
 import com.simpleboard.board.board.domain.post.testutil.VisitorUtil;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ class PostCreateTest {
   void guestPost_Type_Test() {
     // given
     Visitor guestVisitor = VisitorUtil.guest("vid");
-    CreateParams params = CreateParamsBuilder.builder(guestVisitor).build();
+    CreateParams params = PostCreateParamsBuilder.builder(guestVisitor).build();
 
     // when
     Post post = Post.write(params);
@@ -47,7 +47,7 @@ class PostCreateTest {
   void memberPost_Type_Test() {
     // given
     Visitor memberVisitor = VisitorUtil.member("vid", 1L);
-    CreateParams params = CreateParamsBuilder.builder(memberVisitor).build();
+    CreateParams params = PostCreateParamsBuilder.builder(memberVisitor).build();
 
     // when
     Post post = Post.write(params);
@@ -72,7 +72,7 @@ class PostCreateTest {
     List<String> tagList = List.of("tag1", "tag2", "tag3", "tag4", "tag5");
     Visitor visitor = VisitorUtil.guest("vid");
     CreateParams params =
-        CreateParamsBuilder.builder(visitor).hashTags("tag1 tag2,tag3#tag4 # # tag5").build();
+        PostCreateParamsBuilder.builder(visitor).hashTags("tag1 tag2,tag3#tag4 # # tag5").build();
 
     List<HashTag> tags = Post.write(params).getTags().tags();
 

@@ -6,8 +6,7 @@ import com.simpleboard.board.board.domain.common.vo.VisitorType;
 /**
  * <b>Test utility 클래스
  *
- * <p>Guest/Member visitor를 생성</p>
- *
+ * <p>Guest/Member visitor를 생성
  */
 public class VisitorUtil {
   public static Visitor guest(String vid) {

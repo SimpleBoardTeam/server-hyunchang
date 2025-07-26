@@ -8,6 +8,11 @@ import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * <b>PostLike 엔티티 단위 테스트 클래스</b>
+ *
+ * <p>PostLike 엔티티의 생성과 메서드를 테스트
+ */
 class PostLikeTest {
 
   @Test

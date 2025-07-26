@@ -146,9 +146,9 @@ class LikesVOTest {
     LikesVO vo = LikesVO.create();
     Visitor member = VisitorUtil.member("mm", 77L);
 
-    LikeInfo first = vo.toggleLike(member, PostTypeEnum.MEMBER);  // add
+    LikeInfo first = vo.toggleLike(member, PostTypeEnum.MEMBER); // add
     LikeInfo second = vo.toggleLike(member, PostTypeEnum.MEMBER); // remove
-    LikeInfo third = vo.toggleLike(member, PostTypeEnum.MEMBER);  // add
+    LikeInfo third = vo.toggleLike(member, PostTypeEnum.MEMBER); // add
 
     assertThat(first.isLiked()).isTrue();
     assertThat(first.likeCount()).isEqualTo(1);
