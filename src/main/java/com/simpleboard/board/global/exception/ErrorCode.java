@@ -19,6 +19,10 @@ public enum ErrorCode {
   PASSWORD_NOT_MATCH(
       HttpStatus.BAD_REQUEST, "400_POST_PASSWORD_NOT_MATCH", "게시글의 비밀번호가 일치하지 않습니다."),
 
+  // Comment
+  COMMENT_MEMBER_NO_PERMISSION(HttpStatus.FORBIDDEN, "403_COMMENT_MEMBER_NO_PERMISSION", "댓글에 대한 권한이 없는 유저입니다."),
+  COMMENT_PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
+
   /* Internal Error */
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_INTERNAL", "서버 내부 오류가 발생했습니다."),
   DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_DATABASE", "데이터베이스 처리 중 오류가 발생했습니다."),

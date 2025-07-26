@@ -1,6 +1,7 @@
 package com.simpleboard.board.board.domain.comment.entity;
 
 import com.simpleboard.board.board.domain.comment.dto.CreateParams;
+import com.simpleboard.board.board.domain.comment.dto.DeleteParams;
 import com.simpleboard.board.board.domain.comment.vo.CommentState;
 import com.simpleboard.board.board.domain.comment.vo.CommentType;
 
@@ -24,4 +25,11 @@ public abstract class Comment {
         if(params.commentType() == CommentType.MEMBER) return new MemberComment(params);
         return null;
     }
+
+    public void deleteComment(DeleteParams params){
+        checkPermission(params);
+        this.commentState = CommentState.DELETED;
+    }
+
+    protected abstract void checkPermission(DeleteParams params);
 }
