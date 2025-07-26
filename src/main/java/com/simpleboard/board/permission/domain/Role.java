@@ -18,7 +18,7 @@ public class Role {
     this.permissions = permissions;
   }
 
-  public static Role of(RoleName roleName) {
+  public static Role getPredefined(RoleName roleName) {
     return ROLE_CACHE.get(roleName);
   }
 
