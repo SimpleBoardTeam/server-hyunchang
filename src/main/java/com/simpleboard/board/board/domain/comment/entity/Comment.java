@@ -7,6 +7,20 @@ import com.simpleboard.board.board.domain.comment.vo.CommentType;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import lombok.Getter;
 
+/**
+ * <b>Comment</b> Aggregate Root.
+ *
+ * <p>Comment의 생성, 삭제 담당</p>
+ * <p>작성자에 따라 GuestComment와 MemberComment로 나뉨
+ *
+ * 포함 엔티티
+ * <ul> -
+ *
+ * @domain aggregate-root
+ * @see GuestComment
+ * @see MemberComment
+ * @since 1.0
+ */
 @Getter
 public abstract class Comment {
 
