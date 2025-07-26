@@ -5,9 +5,6 @@ package "context map" {
         package "board"{
             abstract Board <<Aggregate Root>>{
             }
-            struct Creator <<Value Object>>{
-            }
-            Creator -- Board
         }
 
         package "post"{

@@ -3,18 +3,11 @@ package "board" {
     entity Board <<Aggregate Root>> {
         +Long boardId
         +String boardName
-        +Creator creator
         +createdAt dateTime
         --
-        +create(String boardName, Long creatorId) : Board
+        +create(String boardName) : Board
         +delete()
         +verifyBoardName(String boardName)
     }
-
-    class Creator <<Value Object>> {
-        +Long : memberId
-     }
-     
-     Board -- Creator
 }
 @enduml
