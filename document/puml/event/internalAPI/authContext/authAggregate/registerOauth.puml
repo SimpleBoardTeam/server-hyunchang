@@ -1,0 +1,57 @@
+@startuml
+title OAuth 기반 회원가입
+
+actor User
+participant OAuth2LoginFilter
+participant CustomOAuth2UserService
+participant AuthRepository
+entity Auth
+participant MemberController
+participant MemberService
+participant AuthService
+participant AuthClient
+participant Email
+participant AuthRepository
+participant MemberRepository
+participant SecurityContext
+
+User -> OAuth2LoginFilter : GET /oauth2/authorization/kakao
+OAuth2LoginFilter -> CustomOAuth2UserService : loadUser(oAuth2UserRequest)
+CustomOAuth2UserService -> AuthRepository : findByProviderAndProviderUserId()
+alt 존재함
+  AuthRepository --> CustomOAuth2UserService : Auth
+  CustomOAuth2UserService -> SecurityContext : saveAuthentication(Auth)
+  OAuth2LoginFilter --> User : 로그인 성공
+else 최초 로그인
+  AuthRepository --> CustomOAuth2UserService : null
+  CustomOAuth2UserService --> OAuth2LoginFilter : 인증은 안 됨
+  OAuth2LoginFilter -> Frontend : redirect to /signup-form
+end
+
+User -> MemberController : POST /members/signup\n(accessToken, nickname, birthYear, gender)
+MemberController -> MemberService : registerSocialMember(token, nickname, ...)
+
+MemberService -> AuthClient : getSocialInfo(token)
+AuthClient --> MemberService : provider, providerUserId, email
+
+MemberService -> AuthService : registerOAuth(provider, providerUserId, email)
+AuthService -> Auth : Auth.createOAuth(provider, providerUserId, rawEmail)
+activate Auth
+Auth -> Email : Email.of(rawEmail)
+Email --> Auth : Email
+deactivate Auth
+
+AuthService -> AuthRepository : save(Auth)
+
+MemberService -> MemberRepository : save(nickname, birthYear, gender)
+MemberRepository --> MemberService : memberId
+
+MemberService -> AuthService : linkMember(authId, memberId)
+AuthService -> AuthRepository : findById(authId)
+AuthService -> Auth : linkMember(memberId)
+AuthService -> AuthRepository : save(Auth)
+
+AuthService -> SecurityContext : saveAuthentication(Auth)
+
+MemberService --> MemberController : HTTP 201 Created
+@enduml
