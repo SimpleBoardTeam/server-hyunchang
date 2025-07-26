@@ -42,6 +42,11 @@ package "context map" {
             }
         }
 
+        package "userBoardRole"{
+            abstract UserBoardRole <<Aggregate Root>>{
+            }
+        }
+
         GuestPost --|> Post
         MemberPost --|> Post
         GuestComment --|> Comment
@@ -97,6 +102,7 @@ package "context map" {
             Auth -- Password
         }
     }
+
 
     Board <.. Post
 

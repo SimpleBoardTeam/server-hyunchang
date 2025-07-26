@@ -1,0 +1,36 @@
+@startuml
+title deleteBoard
+
+actor User
+participant BoardController
+participant BoardCommandService
+participant BoardCommandRepository
+participant DomainEventPublisher #pink
+
+participant PermissionContextAPI as "권한검사 API \n(외부 Bounded Context)" #skyblue
+
+User -> BoardController : DELETE /board/{boardId}
+BoardController -> BoardCommandService : deleteBoard(boardId, userId)
+
+BoardCommandService -> PermissionContextAPI : GET /internal/permissions/boards/{boardId}/delete?userId={userId}
+PermissionContextAPI --> BoardCommandService : HTTP 200 OK(true/false)
+
+alt hasPermission = true
+  BoardCommandService -> BoardCommandRepository : findById(boardId)
+  BoardCommandRepository --> BoardCommandService : Board
+
+  BoardCommandService -> BoardCommandRepository : delete(Board)
+  BoardCommandService -> DomainEventPublisher : publish(BoardDeletedEvent)
+note right
+<b>BoardCreatedEvent</b>
+* Long boardId
+end note
+  BoardCommandService --> BoardController : void
+  BoardController --> User : HTTP 204 No Content
+else hasPermission = false
+  BoardCommandService --> BoardController : throw ForbiddenException
+  BoardController --> User : HTTP 403 Forbidden
+end
+
+
+@enduml

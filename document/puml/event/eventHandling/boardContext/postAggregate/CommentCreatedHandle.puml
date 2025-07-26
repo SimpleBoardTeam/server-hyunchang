@@ -1,0 +1,11 @@
+@startuml CommentCreatedHandling
+
+title Comment created handle (on Post)
+
+participant DomainEventPublisher
+participant CommentCreatedHandler
+participant PostMetaInfoRepository
+
+DomainEventPublisher -> CommentCreatedHandler : CommentCreatedEvent
+CommentCreatedHandler -> PostMetaInfoRepository : increaseCommentCount(postId)
+@enduml

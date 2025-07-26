@@ -23,7 +23,7 @@ else Post deleted
     PostQueryController --> Client : 410_POST_DELETED
 end
 
-'!include ../../../eventHandling/boardContext/postAggregate/PostDetailQueriedHandle.puml
+!include ../../../eventHandling/boardContext/postAggregate/PostDetailQueriedHandle.puml
 
 @enduml
 

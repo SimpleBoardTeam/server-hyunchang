@@ -1,0 +1,72 @@
+@startuml
+
+package "post" {
+    abstract Post <<Aggregate Root>>{
+        +Long \t\t postId
+        +Board \t\t board  \t//외부 BC 키
+        +Title \t\t\t title
+        +Content \t\t content
+        +Long \t\t viewCnt
+        +DateTime \t createdAt
+        +DateTime \t updatedAt
+        +Boolean \t\t isDeleted
+        --
+        +{static}write(CreateParams) : Post
+        +editPost(Visitor, EditParams) : void
+        +deletePost(Visitor, DeleteParams) : void
+        +toggleLike(MemberId) : LikeInfo
+    }
+    class GuestPost <<ImplClass>>{
+        +String nickname
+        +String password
+        --
+        +hasDeletePermission(Visitor, DeleteParams)
+        +hasUpdatePermission(Visitor, DeleteParams)
+    }
+    class MemberPost <<ImplClass>>{
+        +Author author
+        --
+        +hasDeletePermission(Visitor, DeleteParams)
+        +hasUpdatePermission(Visitor, DeleteParams)
+    }
+
+    'VO
+    struct Board <<ValueObject>>{
+        Long \t boardId
+        String\t boardName
+    }
+    Post -- Board
+
+
+    '해시태그
+    entity HashTag <<Entity>>{
+        +String tag
+    }
+    struct Tags <<Value Object>>{
+        +List<HashTag>  tags
+        --
+        +{static}createTags(String) : Tags
+    }
+    Post -- Tags
+    Tags "1" --> "N" HashTag
+
+
+    '좋아요
+    entity PostLike <<Entity>>{
+        +Vid \t\t vid
+        +Long \t likedMemberId
+    }
+    struct Likes <<Value Object>>{
+        +List<PostLike>  likes
+        --
+        +isLiked(Vid, PostType) : Boolean
+        +toggleLike(Vid, PostType) : LikeInfo
+    }
+    Post -- Likes
+    Likes "1" --> "N" PostLike
+
+    '공통
+    GuestPost --|> Post
+    MemberPost --|> Post
+}
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+title createBoard
+
+actor Client
+participant BoardController
+participant BoardCommandService
+Entity Board
+participant BoardCommandRepository
+participant DomainEventPublisher #pink
+
+
+Client -> BoardController : POST /board \n(boardName)
+
+BoardController -> BoardCommandService : createBoard \n(userId, boardName)
+
+BoardCommandService -> Board : Board.create(userId, boardName)
+
+activate Board
+Board --> BoardCommandService : Board
+deactivate Board
+
+BoardCommandService -> BoardCommandRepository : save(board)
+
+BoardCommandService -> DomainEventPublisher : publish(BoardCreatedEvent)
+note right
+<b>BoardCreatedEvent</b>
+* Long boardId
+* Long creatorId
+end note
+
+BoardCommandService --> BoardController : BoardId
+BoardController --> Client : HTTP 201 + BoardId
+@enduml
