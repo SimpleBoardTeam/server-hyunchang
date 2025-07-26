@@ -9,11 +9,12 @@ import lombok.Getter;
 /**
  * <b>Comment 구현체</b> Aggregate Root.
  *
- * <p>Guest가 작성한 Comment 구현체</p>
- * <p>
- * 포함 엔티티
+ * <p>Guest가 작성한 Comment 구현체
+ *
+ * <p>포함 엔티티
+ *
  * <ul>
- *   <li>-</li>
+ *   <li>-
  * </ul>
  *
  * @domain aggregate-root
@@ -22,17 +23,17 @@ import lombok.Getter;
  */
 @Getter
 public class GuestComment extends Comment {
-    private String nickname;
-    private String password;
+  private String nickname;
+  private String password;
 
-    public GuestComment(CommentCreateParams params) {
-        super(params);
-        this.nickname = params.nickname();
-        this.password = params.password();
-    }
+  public GuestComment(CommentCreateParams params) {
+    super(params);
+    this.nickname = params.nickname();
+    this.password = params.password();
+  }
 
-    @Override
-    protected void checkPermission(Visitor visitor, CommentDeleteParams params) {
-        if(!password.equals(params.password())) throw new CommentPasswordException();
-    }
+  @Override
+  protected void checkPermission(Visitor visitor, CommentDeleteParams params) {
+    if (!password.equals(params.password())) throw new CommentPasswordException();
+  }
 }

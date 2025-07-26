@@ -7,16 +7,16 @@ import com.simpleboard.board.board.domain.common.vo.Visitor;
 import lombok.Getter;
 
 @Getter
-public class MemberComment extends Comment{
-    private Long writerId;
+public class MemberComment extends Comment {
+  private Long writerId;
 
-    protected MemberComment(CommentCreateParams params) {
-        super(params);
-        writerId = params.writerId();
-    }
+  protected MemberComment(CommentCreateParams params) {
+    super(params);
+    writerId = params.writerId();
+  }
 
-    @Override
-    protected void checkPermission(Visitor visitor, CommentDeleteParams params) {
-        if(!writerId.equals(visitor.memberId())) throw new MemberCommentPermissionException();
-    }
+  @Override
+  protected void checkPermission(Visitor visitor, CommentDeleteParams params) {
+    if (!writerId.equals(visitor.memberId())) throw new MemberCommentPermissionException();
+  }
 }

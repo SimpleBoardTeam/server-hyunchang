@@ -10,11 +10,14 @@ import lombok.Getter;
 /**
  * <b>Comment</b> Aggregate Root.
  *
- * <p>Comment의 생성, 삭제 담당</p>
+ * <p>Comment의 생성, 삭제 담당
+ *
  * <p>작성자에 따라 GuestComment와 MemberComment로 나뉨
  *
- * 포함 엔티티
- * <ul> -
+ * <p>포함 엔티티
+ *
+ * <ul>
+ *   -
  *
  * @domain aggregate-root
  * @see GuestComment
@@ -24,30 +27,30 @@ import lombok.Getter;
 @Getter
 public abstract class Comment {
 
-    private Long id;
-    private Long parentId;
-    private Long postId;
-    private String content;
-    private CommentState commentState;
+  private Long id;
+  private Long parentId;
+  private Long postId;
+  private String content;
+  private CommentState commentState;
 
-    protected Comment(CommentCreateParams params){
-        this.parentId = params.parentCommentId();
-        this.postId = params.postId();
-        this.content = params.content();
-        this.commentState = CommentState.ACTIVATE;
-    }
+  protected Comment(CommentCreateParams params) {
+    this.parentId = params.parentCommentId();
+    this.postId = params.postId();
+    this.content = params.content();
+    this.commentState = CommentState.ACTIVATE;
+  }
 
-    public static Comment write(CommentCreateParams params) {
-        if(params.commentType() == CommentType.GUEST) return new GuestComment(params);
-        if(params.commentType() == CommentType.MEMBER) return new MemberComment(params);
-        return null;
-    }
+  public static Comment write(CommentCreateParams params) {
+    if (params.commentType() == CommentType.GUEST) return new GuestComment(params);
+    if (params.commentType() == CommentType.MEMBER) return new MemberComment(params);
+    return null;
+  }
 
-    public Long deleteComment(Visitor visitor, CommentDeleteParams params){
-        checkPermission(visitor, params);
-        this.commentState = CommentState.DELETED;
-        return this.id;
-    }
+  public Long deleteComment(Visitor visitor, CommentDeleteParams params) {
+    checkPermission(visitor, params);
+    this.commentState = CommentState.DELETED;
+    return this.id;
+  }
 
-    protected abstract void checkPermission(Visitor visitor, CommentDeleteParams params);
+  protected abstract void checkPermission(Visitor visitor, CommentDeleteParams params);
 }
