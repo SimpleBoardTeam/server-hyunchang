@@ -29,9 +29,10 @@ public abstract class Comment {
         return null;
     }
 
-    public void deleteComment(Visitor visitor, CommentDeleteParams params){
+    public Long deleteComment(Visitor visitor, CommentDeleteParams params){
         checkPermission(visitor, params);
         this.commentState = CommentState.DELETED;
+        return this.id;
     }
 
     protected abstract void checkPermission(Visitor visitor, CommentDeleteParams params);
