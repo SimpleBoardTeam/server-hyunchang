@@ -3,28 +3,29 @@ package "permissionPolicy" {
   class PermissionPolicy <<Aggregate Root>>{
     - Long boardId
     - List<ManagerAssignment> managerAssignments
+    + of(userId, boardId)
+    + ManagerAssignment findAssignment(Long userId)
+    + deleteAssignment(Long userId)
     + boolean can(Long userId, Permission permission)
-    + assignManager(Long userId, Role role)
-    + delegate(Long from, UserId to, RoleType roleType)
+    + assignRole(Long userId, RoleName roleName)
+    + delegateRole(Long from, UserId to, RoleName roleName)
   }
 
   entity ManagerAssignment <<Entity>>{
     - Long managerAssignmentId
     - Long userId
     - Role role
-    + boolean isSameUser(Long userId)
     + boolean hasPermission(Permission permission)
   }
 
   struct Role <<Value Object>>{
-    - RoleType roleType
+    - RoleName roleName
     - Set<Permission> permissions
+    + Role of(RoleName roleName)
     + boolean hasPermission(Permission permission)
   }
 
-  enum RoleType {
-    SUPER_ADMIN
-    COMMENT_ADMIN
+  enum RoleName {
     POST_ADMIN
   }
 
@@ -35,7 +36,7 @@ package "permissionPolicy" {
 
   PermissionPolicy "1" o-- "*" ManagerAssignment
   ManagerAssignment "*" --> "1" Role
-  Role --> RoleType
+  Role --> RoleName
   Role --> Permission
 }
 @enduml

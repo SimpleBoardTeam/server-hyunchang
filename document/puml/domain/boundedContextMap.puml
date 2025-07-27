@@ -5,12 +5,9 @@ package "context map" {
         package "board"{
             abstract Board <<Aggregate Root>>{
             }
-            struct BoardName <<Value Object>>{
+            struct Manager <<Value Object>>{
             }
-            struct Creator <<Value Object>>{
-            }
-            BoardName -- Board
-            Creator -- Board
+            Manager -- Board
         }
 
         package "post"{
@@ -42,6 +39,11 @@ package "context map" {
             class GuestComment <<ImplClass>>{
             }
             class MemberComment <<ImplClass>>{
+            }
+        }
+
+        package "userBoardRole"{
+            abstract UserBoardRole <<Aggregate Root>>{
             }
         }
 
@@ -100,6 +102,7 @@ package "context map" {
             Auth -- Password
         }
     }
+
 
     Board <.. Post
 

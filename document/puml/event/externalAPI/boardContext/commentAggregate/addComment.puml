@@ -34,6 +34,6 @@ else Post not exist
 PostQueryRepository --> Client : POST_NOT_EXIST
 end
 
-'!include ../../../eventHandling/boardContext/postAggregate/CommentCreatedHandle.puml
-'
+!include ../../../eventHandling/boardContext/postAggregate/CommentCreatedHandle.puml
+
 @enduml

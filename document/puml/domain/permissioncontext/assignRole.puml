@@ -1,0 +1,20 @@
+@startuml PermissionPolicy_assignRole
+title assignRole
+
+actor Caller
+participant PermissionPolicy
+participant ManagerAssignment
+participant Role
+
+Caller -> PermissionPolicy : assignRole(userId, roleName)
+
+PermissionPolicy -> ManagerAssignment : create(userId, roleName)
+ManagerAssignment -> Role : of(roleName)
+alt
+  Role --> ManagerAssignment: Role
+  ManagerAssignment -> PermissionPolicy : new ManagerAssignment
+  PermissionPolicy -> Caller : void
+else
+  Role --> Caller: throw exception
+end
+@enduml

@@ -1,0 +1,11 @@
+@startuml PostDetailQueriedHandling
+
+title Post detail queried handle (on Post)
+participant DomainEventPublisher
+participant PostViewCountIncrementHandler
+participant PostMetaInfoRepository
+
+DomainEventPublisher --> PostViewCountIncrementHandler : PostDetailQueriedEvent
+PostViewCountIncrementHandler -> PostMetaInfoRepository : increaseViewCount(postId)
+
+@enduml
