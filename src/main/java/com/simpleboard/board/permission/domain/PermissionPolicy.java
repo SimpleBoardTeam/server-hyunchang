@@ -66,7 +66,7 @@ public class PermissionPolicy {
     ManagerAssignment fromAssignment = findAssignmentByUserId(from);
 
     if (!fromAssignment.hasRole(roleName)) {
-      throw new RoleDelegationException(from, roleName);
+      throw new RoleDelegationException();
     }
 
     assignRole(to, roleName);
@@ -77,6 +77,6 @@ public class PermissionPolicy {
     return managerAssignments.stream()
         .filter(a -> a.isOwnedBy(userId))
         .findFirst()
-        .orElseThrow(() -> new AssignmentNotFoundException(userId));
+        .orElseThrow(() -> new AssignmentNotFoundException());
   }
 }
