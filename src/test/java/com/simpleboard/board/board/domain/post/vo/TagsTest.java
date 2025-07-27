@@ -3,6 +3,7 @@ package com.simpleboard.board.board.domain.post.vo;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.simpleboard.board.board.domain.post.entity.HashTag;
 import com.simpleboard.board.board.domain.post.exception.HashTagsSizeException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -38,9 +39,7 @@ class TagsTest {
     TagsVO tags = TagsVO.createTags(hashTagString);
 
     assertNotNull(tags);
-    assertThat(tags.tags().size()).isEqualTo(4);
-
-    for (int i = 0; i < 4; i++) assertThat(tags.tags().get(i).getTag()).isEqualTo(tagList.get(i));
+    assertThat(tags.tags()).extracting(HashTag::getTag).containsExactlyElementsOf(tagList);
   }
 
   @Test
@@ -60,9 +59,7 @@ class TagsTest {
     TagsVO tags = TagsVO.createTags(hashTagString);
 
     assertNotNull(tags);
-    assertThat(tags.tags().size()).isEqualTo(4);
-
-    for (int i = 0; i < 4; i++) assertThat(tags.tags().get(i).getTag()).isEqualTo(tagList.get(i));
+    assertThat(tags.tags()).extracting(HashTag::getTag).containsExactlyElementsOf(tagList);
   }
 
   @Test
@@ -75,9 +72,7 @@ class TagsTest {
     TagsVO tags = TagsVO.createTags(hashTagString);
 
     assertNotNull(tags);
-    assertThat(tags.tags().size()).isEqualTo(3);
-
-    for (int i = 0; i < 3; i++) assertThat(tags.tags().get(i).getTag()).isEqualTo(tagList.get(i));
+    assertThat(tags.tags()).extracting(HashTag::getTag).containsExactlyElementsOf(tagList);
   }
 
   @Test

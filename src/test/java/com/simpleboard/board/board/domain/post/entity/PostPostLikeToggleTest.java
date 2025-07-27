@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test;
  */
 public class PostPostLikeToggleTest {
 
+  private Long memberId = 1001L;
+
   @Test
   @DisplayName("GuestPost toggle 테스트")
   void guestPost_Toggle_Test() {
@@ -41,9 +43,9 @@ public class PostPostLikeToggleTest {
   @Test
   @DisplayName("MemberPost toggle 테스트")
   void memberPost_Toggle_Test() {
-    Visitor visitor1 = VisitorUtil.member("vid1", 1L);
+    Visitor visitor1 = VisitorUtil.member("vid1", memberId);
     Visitor visitor2 = VisitorUtil.guest("vid2");
-    Visitor visitor1_dup = VisitorUtil.member("vid3", 1L);
+    Visitor visitor1_dup = VisitorUtil.member("vid3", memberId);
 
     CreateParams params = PostCreateParamsBuilder.builder(visitor1).build();
     Post post = Post.write(params);

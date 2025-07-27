@@ -17,6 +17,9 @@ import org.junit.jupiter.api.Test;
  */
 class PostCreateTest {
 
+  private Long memberId = 1001L;
+  private Long otherMemberId = 1002L;
+
   @Test
   @DisplayName("GuestPost 생성 타입 테스트")
   void guestPost_Type_Test() {
@@ -46,7 +49,7 @@ class PostCreateTest {
   @DisplayName("MemberPost 생성 타입 테스트")
   void memberPost_Type_Test() {
     // given
-    Visitor memberVisitor = VisitorUtil.member("vid", 1L);
+    Visitor memberVisitor = VisitorUtil.member("vid", memberId);
     CreateParams params = PostCreateParamsBuilder.builder(memberVisitor).build();
 
     // when
@@ -76,7 +79,6 @@ class PostCreateTest {
 
     List<HashTag> tags = Post.write(params).getTags().tags();
 
-    assertThat(tags.size()).isEqualTo(5);
-    for (int i = 0; i < 5; i++) assertThat(tags.get(i).getTag()).isEqualTo(tagList.get(i));
+    assertThat(tags).extracting(HashTag::getTag).containsExactlyElementsOf(tagList);
   }
 }

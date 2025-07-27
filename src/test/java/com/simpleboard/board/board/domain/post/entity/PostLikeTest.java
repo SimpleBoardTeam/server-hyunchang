@@ -15,10 +15,14 @@ import org.junit.jupiter.api.Test;
  */
 class PostLikeTest {
 
+  private Long memberId = 1001L;
+  private Long otherMemberId = 1002L;
+  private String vid = "vid";
+  private String wrongVid = "wrongVid";
+
   @Test
   @DisplayName("PostLike 생성 테스트 - Guest")
   void postLike_Create_Guest_Test() {
-    String vid = "vid";
     Visitor visitor = VisitorUtil.guest(vid);
 
     PostLike postLike = PostLike.of(visitor);
@@ -30,8 +34,6 @@ class PostLikeTest {
   @Test
   @DisplayName("PostLike 생성 테스트 - Member")
   void postLike_Create_Member_Test() {
-    String vid = "vid";
-    Long memberId = 1L;
     Visitor visitor = VisitorUtil.member(vid, memberId);
 
     PostLike postLike = PostLike.of(visitor);
@@ -43,11 +45,9 @@ class PostLikeTest {
   @Test
   @DisplayName("isLiker - GuestPost & Guest 테스트")
   void isLiker_GuestPost_And_Guest_Test() {
-    String vid = "vid";
     Visitor visitor = VisitorUtil.guest(vid);
     PostLike postLike = PostLike.of(visitor);
 
-    String wrongVid = "wrongVid";
     Visitor wrongVisitor = VisitorUtil.guest(wrongVid);
 
     assertThat(postLike.isLiker(visitor, PostTypeEnum.GUEST)).isTrue();
@@ -57,13 +57,10 @@ class PostLikeTest {
   @Test
   @DisplayName("isLiker - GuestPost & Member 테스트")
   void isLiker_GuestPost_And_Member_Test() {
-    String vid = "vid";
     Visitor visitor = VisitorUtil.guest(vid);
 
-    Long memberId = 1L;
     Visitor sameVidMember = VisitorUtil.member(vid, memberId); // vid가 같은 member
 
-    String wrongVid = "wrongVid";
     Visitor wrongVidMember =
         VisitorUtil.member(wrongVid, memberId); // vid가 다른 member, sameVidMember와 memberId가 같음
 
@@ -81,13 +78,10 @@ class PostLikeTest {
   @Test
   @DisplayName("isLiker - MemberPost & Guest 테스트")
   void isLiker_MemberPost_And_Guest_Test() {
-    String vid = "vid";
-    Long memberId = 1L;
     Visitor visitor = VisitorUtil.member(vid, memberId);
 
     Visitor sameVidGuest = VisitorUtil.guest(vid);
 
-    String wrongVid = "wrongVid";
     Visitor wrongVidGuest = VisitorUtil.guest(wrongVid);
 
     PostLike postLike = PostLike.of(visitor);
@@ -99,17 +93,13 @@ class PostLikeTest {
   @Test
   @DisplayName("isLiker - MemberPost & Member 테스트")
   void isLiker_memberPost_And_Member_Test() {
-    String vid = "vid";
-    Long memberId = 1L;
     Visitor visitor = VisitorUtil.member(vid, memberId);
 
-    Long wrongMemberId = 1002L;
-    Visitor sameVidMember = VisitorUtil.member(vid, wrongMemberId); // vid만 같은 멤버
+    Visitor sameVidMember = VisitorUtil.member(vid, otherMemberId); // vid만 같은 멤버
 
-    String wrongVid = "wrongVid";
     Visitor sameMemberIdMember = VisitorUtil.member(wrongVid, memberId); // memberId만 같은 멤버
 
-    Visitor wrongMember = VisitorUtil.member(wrongVid, wrongMemberId); // 둘다 다른 멤버
+    Visitor wrongMember = VisitorUtil.member(wrongVid, otherMemberId); // 둘다 다른 멤버
 
     PostLike postLike = PostLike.of(visitor);
 

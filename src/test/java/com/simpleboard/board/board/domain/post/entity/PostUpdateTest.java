@@ -22,6 +22,9 @@ import org.junit.jupiter.api.Test;
  */
 public class PostUpdateTest {
 
+  private Long memberId = 1001L;
+  private Long otherMemberId = 1002L;
+
   @Test
   @DisplayName("GuestPost update title,content 수정 테스트")
   public void guestPost_Update_Succeed_Test() {
@@ -55,8 +58,8 @@ public class PostUpdateTest {
   @Test
   @DisplayName("MemberPost update title,content 수정 테스트")
   public void memberPost_Update_Succeed_Test() {
-    Visitor visitor = VisitorUtil.member("vid", 1L);
-    Visitor reqVisitor = VisitorUtil.member("vid2", 1L); // 같은 memberId, 다른 vid
+    Visitor visitor = VisitorUtil.member("vid", memberId);
+    Visitor reqVisitor = VisitorUtil.member("vid2", memberId); // 같은 memberId, 다른 vid
     CreateParams params = PostCreateParamsBuilder.builder(visitor).build();
 
     Post memberPost = Post.write(params);
@@ -70,12 +73,12 @@ public class PostUpdateTest {
   @Test
   @DisplayName("MemberPost update 실패 테스트")
   public void memberPost_Update_Fail_Test() {
-    Visitor visitor = VisitorUtil.member("vid", 1L);
+    Visitor visitor = VisitorUtil.member("vid", memberId);
     CreateParams params = PostCreateParamsBuilder.builder(visitor).build();
     Post memberPost = Post.write(params);
 
     Visitor guestVisitor = VisitorUtil.guest("vid");
-    Visitor diffMemberVisitor = VisitorUtil.member("vid2", 1002L);
+    Visitor diffMemberVisitor = VisitorUtil.member("vid2", otherMemberId);
     EditParams editParams = getEditParamsMember("");
 
     assertThatThrownBy(() -> memberPost.editPost(guestVisitor, editParams))
@@ -89,7 +92,7 @@ public class PostUpdateTest {
   public void MemberPost_HashTag_Update_Succeed_Test() {
     List<String> tagList = List.of("Tag1", "Tag2", "Tag3");
 
-    Visitor visitor = VisitorUtil.member("vid", 1L);
+    Visitor visitor = VisitorUtil.member("vid", memberId);
     CreateParams params =
         PostCreateParamsBuilder.builder(visitor).hashTags("tag1#tag2#tag3#tag4").build();
     Post post = Post.write(params);

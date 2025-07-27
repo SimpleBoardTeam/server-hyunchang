@@ -36,7 +36,8 @@ public class PostCreateParamsBuilder {
   public static PostCreateParamsBuilder builder(Visitor visitor) {
 
     if (visitor.type() == VisitorType.GUEST) return new PostCreateParamsBuilder().guest(visitor);
-    else if (visitor.type() == VisitorType.MEMBER) return new PostCreateParamsBuilder().member(visitor);
+    else if (visitor.type() == VisitorType.MEMBER)
+      return new PostCreateParamsBuilder().member(visitor);
     return null;
   }
 

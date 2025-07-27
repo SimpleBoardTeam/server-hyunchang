@@ -15,6 +15,9 @@ import org.junit.jupiter.api.*;
  */
 class LikesVOTest {
 
+  private Long memberId = 1001L;
+  private Long otherMemberId = 1002L;
+
   @Test
   @DisplayName("create() 초기 상태")
   void create_initial_state() {
@@ -43,7 +46,7 @@ class LikesVOTest {
   @DisplayName("MemberPost - Member 토글(add/remove)")
   void toggle_memberPost_member() {
     LikesVO vo = LikesVO.create();
-    Visitor member = VisitorUtil.member("mvid-1", 10L);
+    Visitor member = VisitorUtil.member("mvid-1", memberId);
 
     LikeInfo add = vo.toggleLike(member, PostTypeEnum.MEMBER);
     assertThat(add.isLiked()).isTrue();
@@ -62,7 +65,7 @@ class LikesVOTest {
     LikesVO vo = LikesVO.create();
     String vid = "share-vid";
     Visitor guest = VisitorUtil.guest(vid);
-    Visitor memberSameVid = VisitorUtil.member(vid, 99L);
+    Visitor memberSameVid = VisitorUtil.member(vid, memberId);
 
     vo.toggleLike(guest, PostTypeEnum.GUEST); // 추가
     PostLike stored = vo.likes().get(0);
@@ -71,10 +74,10 @@ class LikesVOTest {
     // 동일 vid Member 가 접근 → isLiker 로직이 likedMemberId 채움
     boolean likedByMember = vo.isLiked(memberSameVid, PostTypeEnum.GUEST);
     assertThat(likedByMember).isTrue();
-    assertThat(stored.getLikedMemberId()).isEqualTo(99L);
+    assertThat(stored.getLikedMemberId()).isEqualTo(memberId);
 
     // 같은 memberId, 다른 vid: memberId 동일 → 2-2 분기 true
-    Visitor sameMemberDifferentVid = VisitorUtil.member("another-vid", 99L);
+    Visitor sameMemberDifferentVid = VisitorUtil.member("another-vid", memberId);
     assertThat(vo.isLiked(sameMemberDifferentVid, PostTypeEnum.GUEST)).isTrue();
   }
 
@@ -87,19 +90,19 @@ class LikesVOTest {
     vo.toggleLike(guest, PostTypeEnum.GUEST);
 
     // Member 동일 vid → likedMemberId 세팅
-    Visitor memberSameVid = VisitorUtil.member(vid, 11L);
+    Visitor memberSameVid = VisitorUtil.member(vid, memberId);
     assertThat(vo.isLiked(memberSameVid, PostTypeEnum.GUEST)).isTrue();
 
     // (2-2) memberId 같음 → vid 달라도 true
-    Visitor memberSameIdDifferentVid = VisitorUtil.member("otherVid", 11L);
+    Visitor memberSameIdDifferentVid = VisitorUtil.member("otherVid", memberId);
     assertThat(vo.isLiked(memberSameIdDifferentVid, PostTypeEnum.GUEST)).isTrue();
 
     // (2-3) memberId 다르고 vid 같음 → vid equals → true
-    Visitor memberDifferentIdSameVid = VisitorUtil.member(vid, 999L);
+    Visitor memberDifferentIdSameVid = VisitorUtil.member(vid, otherMemberId);
     assertThat(vo.isLiked(memberDifferentIdSameVid, PostTypeEnum.GUEST)).isTrue();
 
     // 모두 다르면 false
-    Visitor memberDifferentBoth = VisitorUtil.member("zzz", 999L);
+    Visitor memberDifferentBoth = VisitorUtil.member("zzz", otherMemberId);
     assertThat(vo.isLiked(memberDifferentBoth, PostTypeEnum.GUEST)).isFalse();
   }
 
@@ -107,14 +110,14 @@ class LikesVOTest {
   @DisplayName("MemberPost - 동일 memberId 다른 vid 접근 시 vid 갱신")
   void memberPost_vid_update_side_effect() {
     LikesVO vo = LikesVO.create();
-    Visitor member = VisitorUtil.member("vid-A", 100L);
+    Visitor member = VisitorUtil.member("vid-A", memberId);
     vo.toggleLike(member, PostTypeEnum.MEMBER);
 
     PostLike like = vo.likes().get(0);
     assertThat(like.getVid()).isEqualTo("vid-A");
 
     // 동일 memberId, 다른 vid → checkMemberPost 에서 vid 재설정
-    Visitor sameMemberDifferentVid = VisitorUtil.member("vid-B", 100L);
+    Visitor sameMemberDifferentVid = VisitorUtil.member("vid-B", memberId);
     assertThat(vo.isLiked(sameMemberDifferentVid, PostTypeEnum.MEMBER)).isTrue();
     assertThat(like.getVid()).isEqualTo("vid-B");
   }
@@ -124,8 +127,8 @@ class LikesVOTest {
   void multiple_users_like_and_unlike() {
     LikesVO vo = LikesVO.create();
 
-    Visitor m1 = VisitorUtil.member("m1", 1L);
-    Visitor m2 = VisitorUtil.member("m2", 2L);
+    Visitor m1 = VisitorUtil.member("m1", memberId);
+    Visitor m2 = VisitorUtil.member("m2", otherMemberId);
     Visitor g1 = VisitorUtil.guest("g1");
 
     vo.toggleLike(m1, PostTypeEnum.MEMBER); // 1
@@ -144,7 +147,7 @@ class LikesVOTest {
   @DisplayName("토글 연속 수행 시 LikeInfo.isLiked 플래그 확인")
   void likeInfo_flag_semantics() {
     LikesVO vo = LikesVO.create();
-    Visitor member = VisitorUtil.member("mm", 77L);
+    Visitor member = VisitorUtil.member("mm", memberId);
 
     LikeInfo first = vo.toggleLike(member, PostTypeEnum.MEMBER); // add
     LikeInfo second = vo.toggleLike(member, PostTypeEnum.MEMBER); // remove
@@ -166,7 +169,7 @@ class LikesVOTest {
     LikesVO vo = LikesVO.create();
     String vid = "shared";
     Visitor guest = VisitorUtil.guest(vid);
-    Visitor member = VisitorUtil.member(vid, 5L);
+    Visitor member = VisitorUtil.member(vid, memberId);
 
     vo.toggleLike(guest, PostTypeEnum.GUEST);
 

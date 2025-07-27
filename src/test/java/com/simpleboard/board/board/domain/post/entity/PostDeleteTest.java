@@ -20,17 +20,20 @@ import org.junit.jupiter.api.Test;
  */
 public class PostDeleteTest {
 
+  private Long memberId = 1001L;
+  private Long otherMemberId = 1002L;
+  private Visitor guest1 = VisitorUtil.guest("vid");
+  private Visitor guest2 = VisitorUtil.guest("vid2");
+
   @Test
   @DisplayName("GuestPost 삭제 성공 테스트")
   void guestPost_Deletion_Succeed_Test() {
-    Visitor visitor = VisitorUtil.guest("vid");
-    Visitor diffVisitor = VisitorUtil.guest("vid2");
-    CreateParams params = PostCreateParamsBuilder.builder(visitor).password("password").build();
+    CreateParams params = PostCreateParamsBuilder.builder(guest1).password("password").build();
 
     Post post = Post.write(params);
 
     DeleteParams deleteParams = new DeleteParams("password");
-    post.deletePost(diffVisitor, deleteParams);
+    post.deletePost(guest2, deleteParams);
 
     assertThat(post.getIsDeleted()).isTrue();
   }
@@ -38,34 +41,33 @@ public class PostDeleteTest {
   @Test
   @DisplayName("GuestPost 삭제 실페 테스트")
   void guestPost_Deletion_Fail_Test() {
-    Visitor visitor = VisitorUtil.guest("vid");
-    Visitor diffVisitor = VisitorUtil.guest("vid2");
-    CreateParams params = PostCreateParamsBuilder.builder(visitor).build();
+    CreateParams params = PostCreateParamsBuilder.builder(guest1).build();
     Post post = Post.write(params);
-
     DeleteParams deleteParams = new DeleteParams("wrong p.w");
-    assertThatThrownBy(() -> post.deletePost(diffVisitor, deleteParams))
+
+    assertThatThrownBy(() -> post.deletePost(guest2, deleteParams))
         .isInstanceOf(PostPasswordNotMatchException.class);
   }
 
   @Test
   @DisplayName("MemberPost 삭제 성공 테스트")
   void memberPost_Deletion_Succeed_Test() {
-    Visitor visitor = VisitorUtil.member("vid", 1L);
-    Visitor diffVisitor = VisitorUtil.member("vid2", 1L);
+    Visitor visitor = VisitorUtil.member("vid", memberId);
+    Visitor diffVisitor = VisitorUtil.member("vid2", memberId);
     CreateParams params = PostCreateParamsBuilder.builder(visitor).build();
     Post post = Post.write(params);
-
     DeleteParams deleteParams = new DeleteParams("");
+
     post.deletePost(diffVisitor, deleteParams);
+
     assertThat(post.getIsDeleted()).isTrue();
   }
 
   @Test
   @DisplayName("MemberPost 삭제 실패 테스트")
   void memberPost_Deletion_Fail_Test() {
-    Visitor visitor = VisitorUtil.member("vid", 1L);
-    Visitor diffVisitor = VisitorUtil.member("vid1", 2L);
+    Visitor visitor = VisitorUtil.member("vid", memberId);
+    Visitor diffVisitor = VisitorUtil.member("vid1", otherMemberId);
     CreateParams params = PostCreateParamsBuilder.builder(visitor).build();
     Post post = Post.write(params);
 
