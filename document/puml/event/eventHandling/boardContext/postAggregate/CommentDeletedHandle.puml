@@ -1,0 +1,11 @@
+@startuml CommentDeletedHandling
+
+title Comment Deleted Handling (on Post)
+participant DomainEventPublisher
+participant CommentDeletedHandler
+participant PostMetaInfoRepository
+
+DomainEventPublisher -> CommentDeletedHandler : CommentDeletedEvent
+CommentDeletedHandler -> PostMetaInfoRepository : decreaseCommentCount(postId)
+
+@enduml

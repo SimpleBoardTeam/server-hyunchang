@@ -1,0 +1,14 @@
+@startuml BoardDeletedHandling
+
+title Board deleted handle (on Comment & Post)
+
+participant DomainEventPublisher
+participant BoardDeletedHandler
+participant PostCommandRepository
+participant CommentCommandRepository
+
+DomainEventPublisher -> BoardDeletedHandler : BoardDeletedEvent
+BoardDeletedHandler -> PostCommandRepository : deleteByBoardId(boardId)
+BoardDeletedHandler -> CommentCommandRepository : deleteByBoardId(boardId)
+
+@enduml

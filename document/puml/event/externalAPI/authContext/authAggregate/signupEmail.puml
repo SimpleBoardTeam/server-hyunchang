@@ -1,0 +1,33 @@
+@startuml
+title 이메일 인증 기반 회원가입
+
+actor User
+participant AuthController
+participant AuthService
+participant JWTProvider
+entity Auth
+entity Password
+participant AuthRepository
+participant MemberBoundedContext
+
+User -> AuthController : POST /auth/complete-signup\n(nickname, rawPW, gender, birthYear, SignupToken)
+AuthController -> AuthService : completeSignup\n(nickname, rawPW, gender,birthYear, SignupToken)
+
+AuthService -> JWTProvider : validate(SignupToken)
+JWTProvider --> AuthService : email
+
+AuthService -> MemberBoundedContext : Post /internal/member \n(nickname, gender, birthYear)
+MemberBoundedContext --> AuthService : userId
+
+activate Auth
+AuthService -> Auth : createAuth(userId, email, rawPW)
+
+Auth -> Password : encrypt(rawPW)
+Password -> Auth : encryptedPW
+deactivate Auth
+
+AuthService -> AuthRepository : save(Auth)
+
+AuthController --> User : HTTP 201 Created
+
+@enduml

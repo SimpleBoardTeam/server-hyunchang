@@ -1,0 +1,23 @@
+@startuml PermissionPolicy_can
+title can
+
+actor Caller
+participant PermissionPolicy
+participant ManagerAssignment
+participant Role
+
+Caller -> PermissionPolicy : can(userId, permission)
+
+PermissionPolicy -> ManagerAssignment : hasPermission(permission)
+alt 허용된 권한
+  ManagerAssignment -> Role : hasPermission(permission)
+  Role --> ManagerAssignment : true
+  ManagerAssignment --> PermissionPolicy : true
+  PermissionPolicy --> Caller : true
+else 권한 없음
+  ManagerAssignment -> Role : hasPermission(permission)
+  Role --> ManagerAssignment : false
+  ManagerAssignment --> PermissionPolicy : false
+  PermissionPolicy --> Caller : false
+end
+@enduml

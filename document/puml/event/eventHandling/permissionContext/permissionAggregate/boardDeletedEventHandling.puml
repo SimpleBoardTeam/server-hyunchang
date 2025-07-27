@@ -1,0 +1,12 @@
+@startuml PermissionPolicy_BOARD_DELETED_HANDLE
+title boardDeleteEvent
+
+participant BoardEventSubscriber
+participant PermissionCommandService
+participant PermissionCommandRepository
+
+BoardEventSubscriber -> PermissionCommandService : handleBoardDeleted(boardId)
+PermissionCommandService -> PermissionCommandRepository : findById(boardId)
+PermissionCommandRepository --> PermissionCommandService : PermissionPolicy
+PermissionCommandService -> PermissionCommandRepository : delete(boardId)
+@enduml
