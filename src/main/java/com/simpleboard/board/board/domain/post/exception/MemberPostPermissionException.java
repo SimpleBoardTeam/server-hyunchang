@@ -5,7 +5,7 @@ import com.simpleboard.board.global.exception.ServiceException;
 
 public class MemberPostPermissionException extends ServiceException {
 
-  private static final ErrorCode ERROR_CODE = ErrorCode.NO_DELETE_PERMISSION;
+  private static final ErrorCode ERROR_CODE = ErrorCode.POST_NO_DELETE_PERMISSION;
 
   public MemberPostPermissionException(String customMsg) {
     super(ERROR_CODE, customMsg);

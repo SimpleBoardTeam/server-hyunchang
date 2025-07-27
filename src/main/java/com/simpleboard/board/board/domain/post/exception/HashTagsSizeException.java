@@ -5,7 +5,7 @@ import com.simpleboard.board.global.exception.ServiceException;
 
 public class HashTagsSizeException extends ServiceException {
 
-  private static final ErrorCode ERROR_CODE = ErrorCode.HASHTAG_SIZE_EXCEED;
+  private static final ErrorCode ERROR_CODE = ErrorCode.POST_HASHTAG_SIZE_EXCEED;
 
   public HashTagsSizeException(String customMsg) {
     super(ERROR_CODE, customMsg);

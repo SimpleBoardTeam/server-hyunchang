@@ -16,11 +16,11 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
   /* Service Exception */
   // Post
-  PASSWORD_NOT_MATCH(
+  POST_PASSWORD_NOT_MATCH(
       HttpStatus.BAD_REQUEST, "400_POST_PASSWORD_NOT_MATCH", "Post의 비밀번호가 일치하지 않습니다."),
-  NO_DELETE_PERMISSION(
+  POST_NO_DELETE_PERMISSION(
       HttpStatus.BAD_REQUEST, "400_POST_NO_DELETE_PERMISSION", "Post에 대한 삭제 권한이 없습니다."),
-  HASHTAG_SIZE_EXCEED(
+  POST_HASHTAG_SIZE_EXCEED(
       HttpStatus.BAD_REQUEST, "400_HASHTAG_SIZE_TOO_LARGE", "Hashtag의 개수가 너무 많습니다."),
 
   /* Internal Error */
