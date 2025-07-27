@@ -1,53 +1,25 @@
 package com.simpleboard.board.global.exception;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
+ * <b>Error 응답 모델</b>
  *
+ * <p>Error 응답에 추가적인 데이터가 필요하다면 해당 클래스를 extends하여 처리한다.
  *
- * <h5>에러 응답 클래스</h5>
+ * <p>Res: Client <- Exception handler
  *
- * <li>record + static factory 로 불변 응답 캡슐
- * <li>timestamp·path·requestId 포함
- * <li><b>fieldErrors</b>는 Validation 에러일 때만 사용
+ * @domain response-dto
  */
-public record ErrorResponse(
-    String code,
-    String message,
-    int status,
-    String path,
-    String requestId,
-    LocalDateTime timestamp,
-    @JsonInclude(JsonInclude.Include.NON_EMPTY) List<FieldError> fieldErrors) {
-
-  /* Validation 오류용 필드*/
-  public record FieldError(String field, String reason) {}
+@AllArgsConstructor
+@Getter
+public class ErrorResponse {
+  String code;
+  String message;
 
   /* 일반 예외용 */
-  public static ErrorResponse of(ErrorCode e, HttpServletRequest req, String requestId) {
-    return new ErrorResponse(
-        e.getCode(),
-        e.getMessage(),
-        e.getStatus().value(),
-        req.getRequestURI(),
-        requestId,
-        LocalDateTime.now(),
-        List.of());
-  }
-
-  /* Validation 실패용 */
-  public static ErrorResponse ofValidation(
-      ErrorCode e, HttpServletRequest req, String requestId, List<FieldError> errors) {
-    return new ErrorResponse(
-        e.getCode(),
-        e.getMessage(),
-        e.getStatus().value(),
-        req.getRequestURI(),
-        requestId,
-        LocalDateTime.now(),
-        errors);
+  public static ErrorResponse of(ErrorCode e) {
+    return new ErrorResponse(e.getCode(), e.getMessage());
   }
 }

@@ -1,12 +1,9 @@
 package com.simpleboard.board.global.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,25 +13,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
+ * <b>>Global exception handler</b>
  *
- *
- * <h4>>Global exception handler</h4>
- *
- * <p>ControllerAdvice를 사용한 exception handler
- * <li>Service exception
- * <li>Validation error
- * <li>Request error
- * <li>Runtime Error
+ * <p>ServiceException 상속 클래스 + unhandled exception 핸들링
  */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  // TODO: MDC에 request ID 삽입 기능 추가
   private String rid() { // Request-ID 를 MDC에서 꺼내기 (필터에서 put)
     return MDC.get("rid");
   }
 
-  private void logEx(HttpServletRequest req, Exception e) {
+  // TODO: logging 분리하기
+  private void logException(HttpServletRequest req, Exception e) {
     log.error(
         "[EXCEPTION] rid={} uri={} method={} type={} msg={}",
         rid(),
@@ -45,73 +38,62 @@ public class GlobalExceptionHandler {
         e);
   }
 
-  private ResponseEntity<ErrorResponse> build(ErrorCode code, HttpServletRequest req) {
-    return ResponseEntity.status(code.getStatus()).body(ErrorResponse.of(code, req, rid()));
+  private ResponseEntity<ErrorResponse> buildResponse(ErrorCode errorCode) {
+    return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
   }
 
-  /** 1. 도메인(Service) 예외 */
+  /** 1. 커스텀 예외 */
   @ExceptionHandler(ServiceException.class)
-  public ResponseEntity<ErrorResponse> handleService(ServiceException e, HttpServletRequest req) {
-    logEx(req, e);
-    return build(e.getErrorCode(), req);
+  private ResponseEntity<ErrorResponse> handleCustomException(
+      HttpServletRequest request, ServiceException e) {
+    logException(request, e);
+    return buildResponse(e.getErrorCode());
   }
 
   /** 2. Bean Validation 실패 */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidation(
-      MethodArgumentNotValidException ex, HttpServletRequest req) {
-    logEx(req, ex);
-
-    List<ErrorResponse.FieldError> fields =
-        ex.getBindingResult().getFieldErrors().stream()
-            .map(
-                f ->
-                    new ErrorResponse.FieldError(
-                        f.getField(),
-                        (f.getDefaultMessage() != null) ? f.getDefaultMessage() : "invalid"))
-            .collect(Collectors.toList());
-
-    ErrorResponse body =
-        ErrorResponse.ofValidation(ErrorCode.VALIDATION_FAILED, req, rid(), fields);
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  public ResponseEntity<ErrorResponse> handleValidationException(
+      MethodArgumentNotValidException e, HttpServletRequest req) {
+    logException(req, e);
+    return buildResponse(ErrorCode.INVALID_INPUT);
   }
 
   /** 3. 파라미터 누락 */
   @ExceptionHandler(MissingRequestValueException.class)
-  public ResponseEntity<ErrorResponse> handleMissing(
+  public ResponseEntity<ErrorResponse> handleMissingParameterException(
       MissingRequestValueException ex, HttpServletRequest req) {
-    logEx(req, ex);
-    return build(ErrorCode.MISSING_PARAMETER, req);
+    logException(req, ex);
+    return buildResponse(ErrorCode.MISSING_PARAMETER);
   }
 
   /** 4. HTTP 메서드 오류 */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleMethodNotAllowed(
+  public ResponseEntity<ErrorResponse> handleMethodNotAllowedException(
       HttpRequestMethodNotSupportedException ex, HttpServletRequest req) {
-    logEx(req, ex);
-    return build(ErrorCode.METHOD_NOT_ALLOWED, req);
+    logException(req, ex);
+    return buildResponse(ErrorCode.METHOD_NOT_ALLOWED);
   }
 
   /** 5. 리소스 없음 */
   @ExceptionHandler({NoSuchElementException.class})
-  public ResponseEntity<ErrorResponse> handleNoSuch(
+  public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
       NoSuchElementException ex, HttpServletRequest req) {
-    logEx(req, ex);
-    return build(ErrorCode.NO_SUCH_RESOURCE, req); // 필요시 분기
+    logException(req, ex);
+    return buildResponse(ErrorCode.NO_SUCH_RESOURCE);
   }
 
   /** 6. 존재하지 않는 API */
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<ErrorResponse> handleNoHandler(
       NoHandlerFoundException ex, HttpServletRequest req) {
-    logEx(req, ex);
-    return build(ErrorCode.API_NOT_FOUND, req);
+    logException(req, ex);
+    return buildResponse(ErrorCode.API_NOT_FOUND);
   }
 
   /** 7. 예상치 못한 모든 예외 – 500 Fallback */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleUnknown(Exception ex, HttpServletRequest req) {
-    logEx(req, ex);
-    return build(ErrorCode.UNKNOWN_ERROR, req);
+    logException(req, ex);
+    return buildResponse(ErrorCode.UNKNOWN_ERROR);
   }
 }
