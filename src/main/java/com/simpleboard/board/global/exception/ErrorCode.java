@@ -5,9 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 /**
- *
- *
- * <h4>Error Code Enum</h4>
+ * <b>Error Code Enum<b>
  *
  * <p>Service Exception 클래스를 사용한 커스텀 예외 정의 Enum
  */
@@ -33,7 +31,8 @@ public enum ErrorCode {
   NO_SUCH_RESOURCE(HttpStatus.NOT_FOUND, "404_API_NOT_FOUND", "요청한 리소스를 찾을 수 없습니다."),
 
   METHOD_NOT_ALLOWED(
-      HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다.");
+      HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다."),
+  ;
 
   private final HttpStatus status;
   private final String code;
