@@ -1,0 +1,19 @@
+@startuml
+title 이메일 인증
+
+actor User
+participant AuthController
+participant AuthService
+participant EmailService
+participant PendingAuthRepository
+
+User -> AuthController : POST /auth/request-verification\n{email}
+AuthController -> AuthService : sendVerificationEmail(email)
+
+AuthService -> EmailService : sendVerificationCode(email)
+EmailService --> AuthService : verificationCode
+
+AuthService -> PendingAuthRepository : save(email, verificationCode)
+
+AuthService --> User : HTTP 200 OK (이메일 확인 요청)
+@enduml

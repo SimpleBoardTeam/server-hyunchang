@@ -5,9 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 /**
- *
- *
- * <h4>Error Code Enum</h4>
+ * <b>Error Code Enum<b>
  *
  * <p>Service Exception 클래스를 사용한 커스텀 예외 정의 Enum
  */
@@ -16,8 +14,12 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
   /* Service Exception */
   // Post
-  PASSWORD_NOT_MATCH(
-      HttpStatus.BAD_REQUEST, "400_POST_PASSWORD_NOT_MATCH", "게시글의 비밀번호가 일치하지 않습니다."),
+  POST_PASSWORD_NOT_MATCH(
+      HttpStatus.BAD_REQUEST, "400_POST_PASSWORD_NOT_MATCH", "Post의 비밀번호가 일치하지 않습니다."),
+  POST_NO_DELETE_PERMISSION(
+      HttpStatus.BAD_REQUEST, "400_POST_NO_DELETE_PERMISSION", "Post에 대한 삭제 권한이 없습니다."),
+  POST_HASHTAG_SIZE_EXCEED(
+      HttpStatus.BAD_REQUEST, "400_HASHTAG_SIZE_TOO_LARGE", "Hashtag의 개수가 너무 많습니다."),
 
   // Comment
   COMMENT_MEMBER_NO_PERMISSION(
@@ -39,7 +41,8 @@ public enum ErrorCode {
   NO_SUCH_RESOURCE(HttpStatus.NOT_FOUND, "404_API_NOT_FOUND", "요청한 리소스를 찾을 수 없습니다."),
 
   METHOD_NOT_ALLOWED(
-      HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다.");
+      HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다."),
+  ;
 
   private final HttpStatus status;
   private final String code;

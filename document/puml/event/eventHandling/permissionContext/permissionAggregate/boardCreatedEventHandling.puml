@@ -1,0 +1,14 @@
+@startuml PermissionPolicy_BOARD_CREATED_HANDLE
+title boardCreateEvent
+
+participant BoardEventSubscriber
+participant PermissionCommandService
+participant PermissionCommandRepository
+entity PermissionPolicy
+
+BoardEventSubscriber -> PermissionCommandService : handleBoardCreated(boardId, userId)
+PermissionCommandService -> PermissionPolicy : PermissionPolicy.of(boardId, userId)
+PermissionPolicy -> PermissionPolicy : assignRole(userId, BOARD_ADMIN)
+PermissionPolicy --> PermissionCommandService : PermissionPolicy
+PermissionCommandService -> PermissionCommandRepository : save(PermissionPolicy)
+@enduml
