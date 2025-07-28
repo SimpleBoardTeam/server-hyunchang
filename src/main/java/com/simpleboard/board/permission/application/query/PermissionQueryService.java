@@ -6,6 +6,12 @@ import com.simpleboard.board.permission.domain.PermissionPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * PermissionQuery 유스케이스.
+ *
+ * @domain application-service
+ * @transactional
+ */
 @Service
 @RequiredArgsConstructor
 public class PermissionQueryService {

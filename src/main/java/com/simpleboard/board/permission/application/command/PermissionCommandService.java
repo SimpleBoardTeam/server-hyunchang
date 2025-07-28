@@ -6,6 +6,12 @@ import com.simpleboard.board.permission.application.common.UserFetchService;
 import com.simpleboard.board.permission.domain.PermissionPolicy;
 import org.springframework.stereotype.Service;
 
+/**
+ * PermissionCommand 유스케이스.
+ *
+ * @domain application-service
+ * @transactional
+ */
 @Service
 public class PermissionCommandService {
   private final PermissionCommandRepository permissionCommandRepository;

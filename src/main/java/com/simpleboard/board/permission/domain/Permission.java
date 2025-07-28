@@ -3,7 +3,7 @@ package com.simpleboard.board.permission.domain;
 /**
  * <b>Permission</b> 열거형.
  *
- * <p>권한의 종류</p>
+ * <p>권한의 종류
  *
  * @domain enum
  * @since 1.0
