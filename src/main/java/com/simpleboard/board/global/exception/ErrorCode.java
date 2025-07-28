@@ -28,6 +28,10 @@ public enum ErrorCode {
   COMMENT_PASSWORD_NOT_MATCH(
       HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
 
+  // Member
+  NOT_VALIDDATE_BIRTH_YEAR(
+      HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생년도 값이 올바르지 않습니다."),
+
   // Permission
   ASSIGNMENT_NOT_FOUND(
       HttpStatus.NOT_FOUND, "404_PERMISSION_ASSIGNMENT_NOT_FOUND", "권한 할당 정보를 찾을 수 없습니다."),
