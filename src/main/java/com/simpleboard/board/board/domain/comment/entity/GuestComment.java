@@ -11,12 +11,6 @@ import lombok.Getter;
  *
  * <p>Guest가 작성한 Comment 구현체
  *
- * <p>포함 엔티티
- *
- * <ul>
- *   <li>-
- * </ul>
- *
  * @domain aggregate-root
  * @see Comment
  * @since 1.0

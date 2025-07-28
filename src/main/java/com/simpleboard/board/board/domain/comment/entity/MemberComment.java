@@ -6,6 +6,15 @@ import com.simpleboard.board.board.domain.comment.exception.MemberCommentPermiss
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import lombok.Getter;
 
+/**
+ * <b>Comment 구현체</b> Aggregate Root.
+ *
+ * <p>Guest가 작성한 Comment 구현체
+ *
+ * @domain aggregate-root
+ * @see Comment
+ * @since 1.0
+ */
 @Getter
 public class MemberComment extends Comment {
   private Long writerId;
