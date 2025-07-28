@@ -29,8 +29,8 @@ public enum ErrorCode {
       HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
 
   // Member
-  NOT_VALIDDATE_BIRTH_YEAR(
-      HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생년도 값이 올바르지 않습니다."),
+  INVALID_BIRTH_YEAR(
+      HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
 
   // Permission
   ASSIGNMENT_NOT_FOUND(

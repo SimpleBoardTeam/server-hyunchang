@@ -1,5 +1,6 @@
 package com.simpleboard.board.member.domain;
 
+import com.simpleboard.board.member.domain.exception.InvalidBirthYearException;
 import java.time.Year;
 import lombok.EqualsAndHashCode;
 
@@ -18,19 +19,16 @@ public class BirthYear {
   }
 
   public static void validate(String input) {
-    if (input == null || input.isBlank()) {
-      throw new IllegalArgumentException("출생 연도는 비어 있을 수 없습니다.");
-    }
 
     if (!input.matches("\\d{4}")) {
-      throw new IllegalArgumentException("출생 연도는 4자리 숫자여야 합니다.");
+      throw new InvalidBirthYearException("출생 연도는 4자리 숫자여야 합니다.");
     }
 
     int year = Integer.parseInt(input);
     int currentYear = Year.now().getValue();
 
     if (year < 1900 || year > currentYear) {
-      throw new IllegalArgumentException("출생 연도가 유효하지 않습니다.");
+      throw new InvalidBirthYearException();
     }
   }
 
