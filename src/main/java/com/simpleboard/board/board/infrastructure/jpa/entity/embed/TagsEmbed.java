@@ -11,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 public class TagsEmbed {
+
+  /** TagEmbed의 tags는 외부에서 Setter를 통해 주입해주어야 한다. */
   @Setter
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
