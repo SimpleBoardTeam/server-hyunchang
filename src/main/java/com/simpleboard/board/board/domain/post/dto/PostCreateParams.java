@@ -1,6 +1,7 @@
 package com.simpleboard.board.board.domain.post.dto;
 
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
+import lombok.Builder;
 
 /**
  * Post create 요청 모델.
@@ -9,7 +10,8 @@ import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
  *
  * @domain request-dto
  */
-public record CreateParams(
+@Builder
+public record PostCreateParams(
     Long boardId,
     String boardName,
     String title,

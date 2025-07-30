@@ -1,10 +1,10 @@
 package com.simpleboard.board.board.domain.post.entity;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
-import com.simpleboard.board.board.domain.post.dto.CreateParams;
-import com.simpleboard.board.board.domain.post.dto.DeleteParams;
-import com.simpleboard.board.board.domain.post.dto.EditParams;
+import com.simpleboard.board.board.domain.post.dto.PostDeleteParams;
+import com.simpleboard.board.board.domain.post.dto.PostEditParams;
 import com.simpleboard.board.board.domain.post.dto.LikeInfo;
+import com.simpleboard.board.board.domain.post.dto.PostCreateParams;
 import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
 import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchException;
 import com.simpleboard.board.board.domain.post.vo.BoardVO;
@@ -13,6 +13,7 @@ import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 import com.simpleboard.board.board.domain.post.vo.TagsVO;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <b>Post</b> Aggregate Root.
@@ -30,6 +31,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@SuperBuilder
 public abstract class Post {
 
   private Long id;
@@ -43,7 +45,7 @@ public abstract class Post {
   private TagsVO tags;
   private LikesVO likes;
 
-  protected Post(CreateParams params) {
+  protected Post(PostCreateParams params) {
     this.title = params.title();
     this.content = params.content();
     viewCount = 0L;
@@ -60,7 +62,7 @@ public abstract class Post {
    *
    * @since 1.0
    */
-  public static Post write(CreateParams params) {
+  public static Post write(PostCreateParams params) {
     if (params.type() == PostTypeEnum.GUEST) return new GuestPost(params);
     if (params.type() == PostTypeEnum.MEMBER) return new MemberPost(params);
     return null;
@@ -75,7 +77,7 @@ public abstract class Post {
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */
-  public void deletePost(Visitor visitor, DeleteParams params) {
+  public void deletePost(Visitor visitor, PostDeleteParams params) {
     checkDeletePermission(visitor, params);
     softDelete();
   }
@@ -89,7 +91,7 @@ public abstract class Post {
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */
-  public void editPost(Visitor visitor, EditParams params) {
+  public void editPost(Visitor visitor, PostEditParams params) {
     checkEditPermission(visitor, params);
     edit(params);
   }
@@ -117,9 +119,9 @@ public abstract class Post {
    * @throws PostPasswordNotMatchException GuestPost의 password 불일치
    * @since 1.0
    */
-  protected abstract void checkEditPermission(Visitor visitor, EditParams params);
+  protected abstract void checkEditPermission(Visitor visitor, PostEditParams params);
 
-  protected abstract void checkDeletePermission(Visitor visitor, DeleteParams params);
+  protected abstract void checkDeletePermission(Visitor visitor, PostDeleteParams params);
 
   /**
    * <b>Post의 타입 확인 메서드</b>
@@ -134,7 +136,7 @@ public abstract class Post {
     isDeleted = true;
   }
 
-  private void edit(EditParams params) {
+  private void edit(PostEditParams params) {
     this.title = params.title();
     this.content = params.content();
     this.tags = TagsVO.createTags(params.hashTags());

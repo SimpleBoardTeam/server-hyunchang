@@ -5,6 +5,7 @@ import com.simpleboard.board.board.domain.post.dto.LikeInfo;
 import com.simpleboard.board.board.domain.post.entity.PostLike;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 
 /**
  * <b>Likes</b> Value Object.
@@ -14,6 +15,7 @@ import java.util.List;
  * @domain value-object
  * @since 1.0
  */
+@Builder
 public record LikesVO(List<PostLike> likes) {
 
   /**
