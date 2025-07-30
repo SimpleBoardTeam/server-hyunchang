@@ -2,9 +2,9 @@ package com.simpleboard.board.board.domain.post.entity;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.common.vo.VisitorType;
+import com.simpleboard.board.board.domain.post.dto.PostCreateParams;
 import com.simpleboard.board.board.domain.post.dto.PostDeleteParams;
 import com.simpleboard.board.board.domain.post.dto.PostEditParams;
-import com.simpleboard.board.board.domain.post.dto.PostCreateParams;
 import com.simpleboard.board.board.domain.post.exception.MemberPostPermissionException;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 import lombok.Getter;

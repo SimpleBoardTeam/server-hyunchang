@@ -6,7 +6,7 @@ import lombok.Builder;
 /**
  * Post 수정 요청 모델.
  *
- * <p>Req: Presentation -> application</p>
+ * <p>Req: Presentation -> application
  *
  * @domain request-dto
  */

@@ -3,8 +3,8 @@ package com.simpleboard.board.board.domain.post.entity;
 import static org.assertj.core.api.Assertions.*;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
-import com.simpleboard.board.board.domain.post.dto.CreateParams;
 import com.simpleboard.board.board.domain.post.dto.LikeInfo;
+import com.simpleboard.board.board.domain.post.dto.PostCreateParams;
 import com.simpleboard.board.board.domain.post.testutil.PostCreateParamsBuilder;
 import com.simpleboard.board.board.domain.post.testutil.VisitorUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ public class PostPostLikeToggleTest {
     Visitor visitor2 = VisitorUtil.guest("vid2");
     Visitor visitor1_dup = VisitorUtil.guest("vid1");
 
-    CreateParams params = PostCreateParamsBuilder.builder(visitor1).build();
+    PostCreateParams params = PostCreateParamsBuilder.builder(visitor1).build();
     Post post = Post.write(params);
 
     post.toggleLike(visitor1);
@@ -47,7 +47,7 @@ public class PostPostLikeToggleTest {
     Visitor visitor2 = VisitorUtil.guest("vid2");
     Visitor visitor1_dup = VisitorUtil.member("vid3", memberId);
 
-    CreateParams params = PostCreateParamsBuilder.builder(visitor1).build();
+    PostCreateParams params = PostCreateParamsBuilder.builder(visitor1).build();
     Post post = Post.write(params);
 
     post.toggleLike(visitor1);
