@@ -20,6 +20,7 @@ public enum ErrorCode {
       HttpStatus.BAD_REQUEST, "400_POST_NO_DELETE_PERMISSION", "Post에 대한 삭제 권한이 없습니다."),
   POST_HASHTAG_SIZE_EXCEED(
       HttpStatus.BAD_REQUEST, "400_HASHTAG_SIZE_TOO_LARGE", "Hashtag의 개수가 너무 많습니다."),
+  POST_NOT_FOUNT(HttpStatus.NOT_FOUND, "404_POST_NOT_FOUND", "Post를 찾을 수 없습니다."),
 
   // Permission
   ASSIGNMENT_NOT_FOUND(
