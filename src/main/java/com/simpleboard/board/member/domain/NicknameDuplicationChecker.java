@@ -1,6 +1,7 @@
 package com.simpleboard.board.member.domain;
 
 import com.simpleboard.board.member.domain.exception.DuplicatedNicknameException;
+import com.simpleboard.board.member.domain.repository.UserRepository;
 
 public class NicknameDuplicationChecker {
 
