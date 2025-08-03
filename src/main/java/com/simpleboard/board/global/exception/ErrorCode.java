@@ -31,6 +31,8 @@ public enum ErrorCode {
   // Member
   INVALID_BIRTH_YEAR(
       HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
+  DUPLICATED_NICKNAME(
+      HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
 
   // Permission
   ASSIGNMENT_NOT_FOUND(

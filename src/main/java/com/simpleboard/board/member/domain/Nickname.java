@@ -13,9 +13,7 @@ public class Nickname {
     this.nickname = nickname;
   }
 
-  public static Nickname of(String rawNickname, NicknamePolicy policy) {
-    policy.checkFormat(rawNickname);
-    policy.checkDuplicate(rawNickname);
+  public static Nickname of(String rawNickname) {
     return new Nickname(rawNickname);
   }
 

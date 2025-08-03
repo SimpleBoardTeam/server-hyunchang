@@ -26,7 +26,7 @@ public class Member {
     this.isWithdrawn = true;
   }
 
-  public void updateNickname(String rawNickname, NicknamePolicy policy) {
-    this.nickname = Nickname.of(rawNickname, policy);
+  public void updateNickname(String rawNickname) {
+    this.nickname = Nickname.of(rawNickname);
   }
 }
