@@ -21,6 +21,12 @@ public enum ErrorCode {
   POST_HASHTAG_SIZE_EXCEED(
       HttpStatus.BAD_REQUEST, "400_HASHTAG_SIZE_TOO_LARGE", "Hashtag의 개수가 너무 많습니다."),
 
+  // Comment
+  COMMENT_MEMBER_NO_PERMISSION(
+      HttpStatus.FORBIDDEN, "403_COMMENT_MEMBER_NO_PERMISSION", "댓글에 대한 권한이 없는 유저입니다."),
+  COMMENT_PASSWORD_NOT_MATCH(
+      HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
+
   // Permission
   ASSIGNMENT_NOT_FOUND(
       HttpStatus.NOT_FOUND, "404_PERMISSION_ASSIGNMENT_NOT_FOUND", "권한 할당 정보를 찾을 수 없습니다."),

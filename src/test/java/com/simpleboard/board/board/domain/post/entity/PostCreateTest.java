@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.post.dto.CreateParams;
-import com.simpleboard.board.board.domain.post.testutil.PostCreateParamsBuilder;
-import com.simpleboard.board.board.domain.post.testutil.VisitorUtil;
+import com.simpleboard.board.board.domain.testUtil.PostCreateParamsBuilder;
+import com.simpleboard.board.board.domain.testUtil.VisitorUtil;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
