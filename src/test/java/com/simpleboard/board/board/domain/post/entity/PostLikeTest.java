@@ -3,8 +3,8 @@ package com.simpleboard.board.board.domain.post.entity;
 import static org.assertj.core.api.Assertions.*;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
-import com.simpleboard.board.board.domain.post.testutil.VisitorUtil;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
+import com.simpleboard.board.board.domain.testUtil.VisitorUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

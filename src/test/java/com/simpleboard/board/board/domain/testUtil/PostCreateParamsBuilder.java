@@ -1,4 +1,4 @@
-package com.simpleboard.board.board.domain.post.testutil;
+package com.simpleboard.board.board.domain.testUtil;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.common.vo.VisitorType;
