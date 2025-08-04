@@ -1,5 +1,7 @@
 package com.simpleboard.board.global.exception;
 
+import com.simpleboard.board.global.exception.webClient.ClientErrorException;
+import com.simpleboard.board.global.exception.webClient.ServerErrorException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
@@ -90,7 +92,21 @@ public class GlobalExceptionHandler {
     return buildResponse(ErrorCode.API_NOT_FOUND);
   }
 
-  /** 7. 예상치 못한 모든 예외 – 500 Fallback */
+  /** 7. WebClient – 4xx 예외 처리 */
+  @ExceptionHandler(ClientErrorException.class)
+  public ResponseEntity<ErrorResponse> handleClientError(ClientErrorException ex, HttpServletRequest req) {
+    logException(req, ex);
+    return buildResponse(ErrorCode.EXTERNAL_CLIENT_ERROR);
+  }
+
+  /** 8. WebClient – 5xx 예외 처리 */
+  @ExceptionHandler(ServerErrorException.class)
+  public ResponseEntity<ErrorResponse> handleServerError(ServerErrorException ex, HttpServletRequest req) {
+    logException(req, ex);
+    return buildResponse(ErrorCode.EXTERNAL_SERVER_ERROR);
+  }
+
+  /** 9. 예상치 못한 모든 예외 – 500 Fallback */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleUnknown(Exception ex, HttpServletRequest req) {
     logException(req, ex);
