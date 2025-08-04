@@ -44,6 +44,9 @@ dependencies {
 
 	// AOP
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+	// WebClient(webFlux)
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 spotless {
