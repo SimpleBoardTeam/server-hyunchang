@@ -1,6 +1,4 @@
-package com.simpleboard.board.permission.application.command.repository;
-
-import com.simpleboard.board.permission.domain.PermissionPolicy;
+package com.simpleboard.board.permission.domain;
 
 /**
  * PermissionCommandRepository
@@ -9,7 +7,7 @@ import com.simpleboard.board.permission.domain.PermissionPolicy;
  *
  * @domain repository-port
  */
-public interface PermissionCommandRepository {
+public interface PermissionRepository {
   PermissionPolicy getByBoardId(Long boardId);
 
   void delete(PermissionPolicy permissionPolicy);

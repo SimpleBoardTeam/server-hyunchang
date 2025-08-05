@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.simpleboard.board.permission.application.command.dto.DelegateRoleCommand;
-import com.simpleboard.board.permission.application.command.repository.PermissionCommandRepository;
+import com.simpleboard.board.permission.domain.PermissionRepository;
 import com.simpleboard.board.permission.application.common.UserFetchService;
 import com.simpleboard.board.permission.domain.Permission;
 import com.simpleboard.board.permission.domain.PermissionPolicy;
@@ -21,7 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class PermissionCommandServiceTest {
 
-  @Mock PermissionCommandRepository permissionCommandRepository;
+  @Mock
+  PermissionRepository permissionRepository;
 
   @Mock UserFetchService userFetchService;
 
@@ -45,7 +46,7 @@ class PermissionCommandServiceTest {
     Long toUserId = 20L;
     RoleName roleName = RoleName.BOARD_ADMIN;
     DelegateRoleCommand command = new DelegateRoleCommand(creatorId, toNickname, roleName);
-    when(permissionCommandRepository.getByBoardId(boardId)).thenReturn(permissionPolicy);
+    when(permissionRepository.getByBoardId(boardId)).thenReturn(permissionPolicy);
     when(userFetchService.getUserIdByNickname(toNickname)).thenReturn(toUserId);
 
     // when
@@ -66,7 +67,7 @@ class PermissionCommandServiceTest {
     Long toUserId = 20L;
     RoleName roleName = RoleName.BOARD_ADMIN;
     DelegateRoleCommand command = new DelegateRoleCommand(fromUserId, toNickname, roleName);
-    when(permissionCommandRepository.getByBoardId(boardId)).thenReturn(permissionPolicy);
+    when(permissionRepository.getByBoardId(boardId)).thenReturn(permissionPolicy);
     when(userFetchService.getUserIdByNickname(toNickname)).thenReturn(toUserId);
 
     // when & then

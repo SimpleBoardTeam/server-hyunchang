@@ -1,6 +1,6 @@
 package com.simpleboard.board.permission.infrastructure.repository.command;
 
-import com.simpleboard.board.permission.application.command.repository.PermissionCommandRepository;
+import com.simpleboard.board.permission.domain.PermissionRepository;
 import com.simpleboard.board.permission.domain.PermissionPolicy;
 import com.simpleboard.board.permission.infrastructure.entity.PermissionPolicyEntity;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PermissionCommandRepositoryImpl implements PermissionCommandRepository {
+public class PermissionRepositoryImpl implements PermissionRepository {
 
   private final PermissionCommandJpaRepository jpaRepository;
 
