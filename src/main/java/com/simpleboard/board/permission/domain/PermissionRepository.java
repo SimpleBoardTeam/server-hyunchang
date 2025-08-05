@@ -1,9 +1,9 @@
 package com.simpleboard.board.permission.domain;
 
 /**
- * PermissionCommandRepository
+ * PermissionRepository
  *
- * <p>Permission Command 인터페이스
+ * <p>PermissionRepository 인터페이스
  *
  * @domain repository-port
  */
