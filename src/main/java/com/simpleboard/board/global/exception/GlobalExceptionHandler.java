@@ -1,7 +1,7 @@
 package com.simpleboard.board.global.exception;
 
-import com.simpleboard.board.global.exception.webClient.ClientErrorException;
-import com.simpleboard.board.global.exception.webClient.ServerErrorException;
+import com.simpleboard.board.global.exception.webclient.ClientErrorException;
+import com.simpleboard.board.global.exception.webclient.ServerErrorException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.simpleboard.board.global.exception.webClient;
+package com.simpleboard.board.global.exception.webclient;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

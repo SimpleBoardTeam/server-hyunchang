@@ -1,4 +1,4 @@
-package com.simpleboard.board.global.exception.webClient;
+package com.simpleboard.board.global.exception.webclient;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientResponse;
