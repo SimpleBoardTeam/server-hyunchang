@@ -1,18 +1,18 @@
 package com.simpleboard.board.member.domain;
 
 import com.simpleboard.board.member.domain.exception.DuplicatedNicknameException;
-import com.simpleboard.board.member.domain.repository.UserRepository;
+import com.simpleboard.board.member.domain.repository.MemberRepository;
 
 public class NicknameDuplicationChecker {
 
-  private final UserRepository userRepository;
+  private final MemberRepository memberRepository;
 
-  public NicknameDuplicationChecker(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public NicknameDuplicationChecker(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
   }
 
   public void checkDuplicated(String nickname) {
-    if (userRepository.existsByNickname(nickname)) {
+    if (memberRepository.existsByNickname(nickname)) {
       throw new DuplicatedNicknameException();
     }
   }
