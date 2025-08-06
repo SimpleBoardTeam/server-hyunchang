@@ -44,9 +44,14 @@ public class TokenTTLPolicy {
    * @since 1.0
    */
   public Duration accessTtlFor(Role role) {
-    if (role.equals(Role.MEMBER)) return Duration.ofMinutes(accessMinutes);
-    else if (role.equals(Role.ADMIN)) return Duration.ofMinutes(accessMinutes / 2);
-    return Duration.ZERO;
+    switch (role) {
+      case MEMBER:
+        return Duration.ofMinutes(accessMinutes);
+      case ADMIN:
+        return Duration.ofMinutes(accessMinutes / 2);
+      default:
+        return Duration.ZERO;
+    }
   }
 
   /**
@@ -57,9 +62,14 @@ public class TokenTTLPolicy {
    * @since 1.0
    */
   public Duration refreshTtlFor(Role role) {
-    if (role.equals(Role.MEMBER)) return Duration.ofDays(refreshDays);
-    else if (role.equals(Role.ADMIN)) return Duration.ofDays(refreshDays / 2);
-    return Duration.ZERO;
+    switch (role) {
+      case MEMBER:
+        return Duration.ofDays(refreshDays);
+      case ADMIN:
+        return Duration.ofDays(refreshDays / 2);
+      default:
+        return Duration.ZERO;
+    }
   }
 
   /**
@@ -70,9 +80,15 @@ public class TokenTTLPolicy {
    * @since 1.0
    */
   public Duration verifyTtlFor(VerifyPurpose purpose) {
-    if (purpose.equals(VerifyPurpose.EMAIL)) return Duration.ofMinutes(emailMinutes);
-    else if (purpose.equals(VerifyPurpose.PASSWORD)) return Duration.ofMinutes(passwordMinutes);
-    else if (purpose.equals(VerifyPurpose.NICKNAME)) return Duration.ofMinutes(nicknameMinutes);
-    return Duration.ZERO;
+    switch (purpose) {
+      case EMAIL:
+        return Duration.ofMinutes(emailMinutes);
+      case PASSWORD:
+        return Duration.ofMinutes(passwordMinutes);
+      case NICKNAME:
+        return Duration.ofMinutes(nicknameMinutes);
+      default:
+        return Duration.ZERO;
+    }
   }
 }

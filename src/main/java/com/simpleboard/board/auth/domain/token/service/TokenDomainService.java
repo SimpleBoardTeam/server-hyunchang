@@ -76,13 +76,8 @@ public class TokenDomainService {
 
     Instant now = clockManager.now();
 
-    Token accessToken =
-        tokenProvider.issueToken(createAccessClaims(command.memberId(), command.role(), now));
-
-    TokenClaims refreshClaims = createRefreshClaims(command.memberId(), command.role(), now);
-    Token refreshToken = tokenProvider.issueToken(refreshClaims);
-
-    return TokenPair.builder().access(accessToken).refresh(refreshToken).build();
+    // Create new token pair
+    return createLoginTokenPair(command.memberId(), command.role(), now, now);
   }
 
   /**
@@ -125,14 +120,12 @@ public class TokenDomainService {
     // Enroll old token to blacklist
     blacklistRepository.save(oldClaims.tokenId(), oldClaims.expiredAt());
 
-    // Create new raw pair
-    Long memberId = uuidRepository.getMemberId(oldClaims.subject());
-    Role role = oldClaims.role();
-    Token accessToken = tokenProvider.issueToken(createAccessClaims(memberId, role, now));
-    TokenClaims refreshClaims = createRefreshClaims(memberId, role, oldClaims.expiredAt());
-    Token newRefreshToken = tokenProvider.issueToken(refreshClaims);
-
-    return TokenPair.builder().access(accessToken).refresh(newRefreshToken).build();
+    // Create new token pair
+    return createLoginTokenPair(
+        uuidRepository.getMemberId(oldClaims.subject()),
+        oldClaims.role(),
+        now,
+        oldClaims.issueAt());
   }
 
   /**
@@ -191,5 +184,15 @@ public class TokenDomainService {
         .issueAt(now)
         .expiredAt(now.plus(ttlPolicy.verifyTtlFor(purpose)))
         .build();
+  }
+
+  private TokenPair createLoginTokenPair(
+      Long memberId, Role role, Instant accessTokenIssueTime, Instant refreshTokenIssueTime) {
+    Token accessToken =
+        tokenProvider.issueToken(createAccessClaims(memberId, role, accessTokenIssueTime));
+    Token newRefreshToken =
+        tokenProvider.issueToken(createRefreshClaims(memberId, role, refreshTokenIssueTime));
+
+    return TokenPair.builder().access(accessToken).refresh(newRefreshToken).build();
   }
 }
