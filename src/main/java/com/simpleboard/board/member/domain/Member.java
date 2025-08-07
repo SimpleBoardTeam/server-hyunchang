@@ -14,11 +14,15 @@ public class Member {
   private boolean isWithdrawn;
 
   public Member(Long memberId, Nickname nickname, String gender, String birthYear) {
+    this(memberId, nickname, gender, birthYear, LocalDateTime.now());
+  }
+
+  public Member(Long memberId, Nickname nickname, String gender, String birthYear, LocalDateTime signUpDate) {
     this.memberId = memberId;
     this.nickname = nickname;
     this.gender = Gender.valueOf(gender);
     this.birthYear = BirthYear.of(birthYear);
-    this.signUpDate = LocalDateTime.now();
+    this.signUpDate = signUpDate;
     this.isWithdrawn = false;
   }
 
