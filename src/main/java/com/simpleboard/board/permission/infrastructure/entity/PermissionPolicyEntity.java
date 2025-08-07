@@ -1,0 +1,45 @@
+package com.simpleboard.board.permission.infrastructure.entity;
+
+import com.simpleboard.board.permission.domain.ManagerAssignment;
+import com.simpleboard.board.permission.domain.PermissionPolicy;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "permission_policy")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+public class PermissionPolicyEntity {
+
+  @Id
+  @Column(name = "board_id")
+  private Long boardId;
+
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "board_id", insertable = false, updatable = false)
+  private List<ManagerAssignmentEntity> managerAssignments = new ArrayList<>();
+
+  public static PermissionPolicyEntity from(PermissionPolicy domain) {
+    List<ManagerAssignmentEntity> managerAssignmentEntityList =
+        domain.getManagerAssignments().stream().map(ManagerAssignmentEntity::new).toList();
+    return new PermissionPolicyEntity(domain.getBoardId(), managerAssignmentEntityList);
+  }
+
+  public PermissionPolicy toDomain() {
+    List<ManagerAssignment> domainAssignments =
+        managerAssignments.stream().map(ManagerAssignmentEntity::toDomain).toList();
+    return PermissionPolicy.of(boardId, domainAssignments);
+  }
+}
