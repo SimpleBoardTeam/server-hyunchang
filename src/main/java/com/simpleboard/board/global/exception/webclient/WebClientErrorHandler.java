@@ -26,7 +26,7 @@ public class WebClientErrorHandler {
             return Mono.error(new RuntimeException("Unknown 4xx status code: " + code));
           }
 
-          return Mono.error(new ClientErrorException(status, body));
+          return Mono.error(new WebClient4xxException(status, body));
         });
   }
 
@@ -41,7 +41,7 @@ public class WebClientErrorHandler {
             return Mono.error(new RuntimeException("Unknown 5xx status code: " + code));
           }
 
-          return Mono.error(new ServerErrorException(status, body));
+          return Mono.error(new WebClient5xxException(status, body));
         });
   }
 }

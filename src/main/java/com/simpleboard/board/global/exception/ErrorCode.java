@@ -51,10 +51,10 @@ public enum ErrorCode {
 
 
   /* WebClient Error */
-  EXTERNAL_CLIENT_ERROR(
-      HttpStatus.BAD_REQUEST, "400_EXTERNAL_CLIENT_ERROR", "외부 API 요청 중 클라이언트 오류가 발생했습니다."),
-  EXTERNAL_SERVER_ERROR(
-      HttpStatus.BAD_GATEWAY, "502_EXTERNAL_SERVER_ERROR", "외부 API 요청 중 서버 오류가 발생했습니다.");
+  WEBCLIENT_4XX_ERROR(
+      HttpStatus.BAD_REQUEST, "400_WEBCLIENT_4XX_ERROR", "WebClient 요청 중 클라이언트 오류가 발생했습니다."),
+  WEBCLIENT_5XX_ERROR(
+      HttpStatus.BAD_GATEWAY, "502_WEBCLIENT_5XX_ERROR", "WebClient 요청 중 서버 오류가 발생했습니다.");
 
   private final HttpStatus status;
   private final String code;
