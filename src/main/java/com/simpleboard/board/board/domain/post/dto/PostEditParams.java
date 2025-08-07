@@ -1,6 +1,7 @@
 package com.simpleboard.board.board.domain.post.dto;
 
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
+import lombok.Builder;
 
 /**
  * Post edit 요청 모델.
@@ -9,5 +10,6 @@ import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
  *
  * @domain request-dto
  */
-public record EditParams(
+@Builder
+public record PostEditParams(
     String title, String content, String hashTags, PostTypeEnum type, String password) {}

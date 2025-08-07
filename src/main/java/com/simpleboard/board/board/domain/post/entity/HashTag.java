@@ -1,5 +1,7 @@
 package com.simpleboard.board.board.domain.post.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -11,7 +13,10 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@Builder
+@AllArgsConstructor
 public class HashTag {
+  private Long id;
   private String tag;
 
   public HashTag(String tag) {

@@ -9,11 +9,12 @@ import lombok.Getter;
 /**
  * <b>PermissionPolicy</b> Aggregate Root.
  *
- * <p>멤버를 역할을 부여해 관리하고 권한 단위로 체크하는 도메인</p>
- * <p>
- * 포함 엔티티
+ * <p>멤버를 역할을 부여해 관리하고 권한 단위로 체크하는 도메인
+ *
+ * <p>포함 엔티티
+ *
  * <ul>
- *   <li>ManagerAssignment</li>
+ *   <li>ManagerAssignment
  * </ul>
  *
  * @domain aggregate-root

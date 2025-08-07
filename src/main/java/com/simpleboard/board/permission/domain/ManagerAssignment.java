@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * <b>ManagerAssignment</b> Entity(non‑root)
  *
- * <p>멤버와 역할을 맵핑</p>
+ * <p>멤버와 역할을 맵핑
  *
  * @domain entity
  * @since 1.0
