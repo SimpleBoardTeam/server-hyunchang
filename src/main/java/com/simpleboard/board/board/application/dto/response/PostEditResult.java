@@ -1,0 +1,3 @@
+package com.simpleboard.board.board.application.dto.response;
+
+public record PostEditResult(Long postId) {}

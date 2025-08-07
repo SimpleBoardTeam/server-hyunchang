@@ -1,5 +1,7 @@
 package com.simpleboard.board.board.domain.post.dto;
 
+import lombok.Builder;
+
 /**
  * Post delete 요청 모델.
  *
@@ -7,4 +9,5 @@ package com.simpleboard.board.board.domain.post.dto;
  *
  * @domain request-dto
  */
-public record DeleteParams(String password) {}
+@Builder
+public record PostDeleteParams(String password) {}
