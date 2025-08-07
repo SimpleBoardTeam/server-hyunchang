@@ -2,6 +2,7 @@ package com.simpleboard.board.permission.presentation;
 
 import com.simpleboard.board.permission.application.command.PermissionCommandService;
 import com.simpleboard.board.permission.application.command.dto.DelegateRoleCommand;
+import com.simpleboard.board.permission.presentation.converter.DelegateRoleConverter;
 import com.simpleboard.board.permission.presentation.dto.DelegateRoleForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,11 @@ public class PermissionController {
   @PostMapping("/boards/{boardId}/delegate")
   public ResponseEntity<Void> delegateRole(
       @PathVariable Long boardId, @RequestBody DelegateRoleForm form) {
+
     permissionCommandService.delegateRole(
         boardId,
-        new DelegateRoleCommand(form.fromUserId(), form.toUserNickname(), form.roleType()));
+        DelegateRoleConverter.toCommand(form)
+    );
     return ResponseEntity.ok().build();
   }
 }
