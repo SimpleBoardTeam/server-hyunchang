@@ -55,7 +55,13 @@ public enum ErrorCode {
 
   METHOD_NOT_ALLOWED(
       HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다."),
-  ;
+
+
+  /* WebClient Error */
+  WEBCLIENT_4XX_ERROR(
+      HttpStatus.BAD_REQUEST, "400_WEBCLIENT_4XX_ERROR", "WebClient 요청 중 클라이언트 오류가 발생했습니다."),
+  WEBCLIENT_5XX_ERROR(
+      HttpStatus.BAD_GATEWAY, "502_WEBCLIENT_5XX_ERROR", "WebClient 요청 중 서버 오류가 발생했습니다.");
 
   private final HttpStatus status;
   private final String code;
