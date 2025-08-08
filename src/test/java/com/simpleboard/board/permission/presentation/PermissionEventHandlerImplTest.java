@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import static org.mockito.Mockito.*;
 
 @SpringJUnitConfig
-@ContextConfiguration(classes = PermissionEventHandlerTest.TestConfig.class)
-class PermissionEventHandlerTest {
+@ContextConfiguration(classes = PermissionEventHandlerImplTest.TestConfig.class)
+class PermissionEventHandlerImplTest {
 
   @Autowired
   private ApplicationEventPublisher eventPublisher;
@@ -53,7 +53,7 @@ class PermissionEventHandlerTest {
   }
 
   @Configuration
-  @Import(PermissionEventHandler.class)
+  @Import(PermissionEventHandlerImpl.class)
   static class TestConfig {
 
     @Bean
