@@ -1,6 +1,7 @@
 package com.simpleboard.board.board.domain.comment.dto;
 
 import com.simpleboard.board.board.domain.comment.vo.CommentType;
+import lombok.Builder;
 
 /**
  * Comment 생성 요청 모델.
@@ -9,6 +10,7 @@ import com.simpleboard.board.board.domain.comment.vo.CommentType;
  *
  * @domain request-dto
  */
+@Builder
 public record CommentCreateParams(
     Long postId,
     Long parentCommentId,
