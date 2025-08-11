@@ -2,8 +2,8 @@ package com.simpleboard.board.permission.infrastructure.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.simpleboard.board.permission.domain.ManagerAssignment;
-import com.simpleboard.board.permission.domain.RoleName;
+import com.simpleboard.board.permission.domain.entity.ManagerAssignment;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

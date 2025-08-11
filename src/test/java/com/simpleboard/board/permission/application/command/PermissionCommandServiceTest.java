@@ -6,9 +6,9 @@ import static org.mockito.Mockito.*;
 
 import com.simpleboard.board.permission.application.command.dto.DelegateRoleCommand;
 import com.simpleboard.board.permission.application.common.UserFetchService;
-import com.simpleboard.board.permission.domain.Permission;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
-import com.simpleboard.board.permission.domain.RoleName;
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
 import com.simpleboard.board.permission.infrastructure.entity.PermissionPolicyEntity;
 import com.simpleboard.board.permission.infrastructure.repository.command.PermissionCommandJpaRepository;

@@ -1,7 +1,7 @@
 package com.simpleboard.board.permission.infrastructure.repository.query;
 
 import com.simpleboard.board.permission.application.query.repository.PermissionQueryRepository;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

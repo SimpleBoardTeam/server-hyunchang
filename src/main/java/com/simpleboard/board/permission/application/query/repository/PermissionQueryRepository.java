@@ -1,6 +1,6 @@
 package com.simpleboard.board.permission.application.query.repository;
 
-import com.simpleboard.board.permission.domain.PermissionPolicy;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 
 /**
  * PermissionQueryRepository

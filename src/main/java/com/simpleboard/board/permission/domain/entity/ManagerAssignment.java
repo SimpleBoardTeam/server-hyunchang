@@ -1,5 +1,8 @@
-package com.simpleboard.board.permission.domain;
+package com.simpleboard.board.permission.domain.entity;
 
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import lombok.Getter;
 
 /**

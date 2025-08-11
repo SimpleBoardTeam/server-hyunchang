@@ -1,7 +1,9 @@
-package com.simpleboard.board.permission.domain;
+package com.simpleboard.board.permission.domain.entity;
 
 import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
 import com.simpleboard.board.permission.domain.exception.RoleDelegationException;
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import java.util.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -2,8 +2,8 @@ package com.simpleboard.board.permission.application.command;
 
 import com.simpleboard.board.permission.application.command.dto.DelegateRoleCommand;
 import com.simpleboard.board.permission.application.common.UserFetchService;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
-import com.simpleboard.board.permission.domain.PermissionRepository;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
+import com.simpleboard.board.permission.domain.repository.PermissionRepository;
 import org.springframework.stereotype.Service;
 
 /**

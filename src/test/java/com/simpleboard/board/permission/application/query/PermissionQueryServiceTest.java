@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.simpleboard.board.permission.application.query.repository.PermissionQueryRepository;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

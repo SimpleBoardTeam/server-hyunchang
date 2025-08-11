@@ -1,7 +1,7 @@
 package com.simpleboard.board.permission.infrastructure.entity;
 
-import com.simpleboard.board.permission.domain.ManagerAssignment;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
+import com.simpleboard.board.permission.domain.entity.ManagerAssignment;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

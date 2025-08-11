@@ -2,6 +2,9 @@ package com.simpleboard.board.permission.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import org.junit.jupiter.api.Test;
 
 class RoleTest {

@@ -1,4 +1,6 @@
-package com.simpleboard.board.permission.domain;
+package com.simpleboard.board.permission.domain.repository;
+
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 
 /**
  * PermissionRepository

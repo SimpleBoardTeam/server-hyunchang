@@ -2,7 +2,11 @@ package com.simpleboard.board.permission.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.simpleboard.board.permission.domain.entity.ManagerAssignment;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

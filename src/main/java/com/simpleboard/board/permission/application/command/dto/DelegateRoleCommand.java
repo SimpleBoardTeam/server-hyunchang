@@ -1,6 +1,6 @@
 package com.simpleboard.board.permission.application.command.dto;
 
-import com.simpleboard.board.permission.domain.RoleName;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 
 /**
  * 권한 위임 요청 모델.
