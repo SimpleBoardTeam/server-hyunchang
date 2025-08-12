@@ -28,4 +28,13 @@ public interface MemberUUIDRepository {
    * @since 1.0
    */
   Optional<Long> getMemberId(String UUID);
+
+  /**
+   * <b>UUID 재발급</b>
+   *
+   * <p>memberId에 대한 UUID 재발급을 진행한다
+   *
+   * @since 1.0
+   */
+  String updateUUID(Long memberId);
 }
