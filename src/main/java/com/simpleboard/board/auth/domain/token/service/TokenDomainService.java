@@ -1,8 +1,9 @@
 package com.simpleboard.board.auth.domain.token.service;
 
-import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueCommand;
-import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationCommand;
-import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueCommand;
+import com.simpleboard.board.auth.domain.common.vo.Role;
+import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueParam;
+import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationParam;
+import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueParam;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenEnrollBlacklistException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenExpiredException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenInvalidException;
@@ -72,7 +73,7 @@ public class TokenDomainService {
    * @return Access/Refresh TokenPair
    * @since 1.0
    */
-  public TokenPair issueLoginToken(LoginTokenIssueCommand command) {
+  public TokenPair issueLoginToken(LoginTokenIssueParam command) {
 
     Instant now = clockManager.now();
 
@@ -89,7 +90,7 @@ public class TokenDomainService {
    * @return Verify 토큰
    * @since 1.0
    */
-  public Token issueVerifyToken(VerifyTokenIssueCommand command) {
+  public Token issueVerifyToken(VerifyTokenIssueParam command) {
     Instant now = clockManager.now();
     TokenClaims claims = createVerifyClaims(command.subject(), command.purpose(), now);
     return tokenProvider.issueToken(claims);
@@ -106,7 +107,7 @@ public class TokenDomainService {
    * @throws RefreshTokenInvalidException 블랙리스트 존재 등 무효
    * @since 1.0
    */
-  public TokenPair rotateRefreshToken(RefreshTokenRotationCommand command) {
+  public TokenPair rotateRefreshToken(RefreshTokenRotationParam command) {
     Instant now = clockManager.now();
 
     TokenClaims oldClaims = tokenProvider.verifyAndParseToken(command.oldRefreshRaw());

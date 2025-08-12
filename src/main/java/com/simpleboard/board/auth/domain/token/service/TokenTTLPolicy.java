@@ -1,6 +1,6 @@
 package com.simpleboard.board.auth.domain.token.service;
 
-import com.simpleboard.board.auth.domain.token.vo.Role;
+import com.simpleboard.board.auth.domain.common.vo.Role;
 import com.simpleboard.board.auth.domain.token.vo.VerifyPurpose;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;

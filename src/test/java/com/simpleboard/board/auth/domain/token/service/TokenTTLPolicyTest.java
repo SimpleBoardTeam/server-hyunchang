@@ -2,7 +2,7 @@ package com.simpleboard.board.auth.domain.token.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import com.simpleboard.board.auth.domain.token.vo.Role;
+import com.simpleboard.board.auth.domain.common.vo.Role;
 import com.simpleboard.board.auth.domain.token.vo.VerifyPurpose;
 import java.time.Duration;
 import org.junit.jupiter.api.DisplayName;

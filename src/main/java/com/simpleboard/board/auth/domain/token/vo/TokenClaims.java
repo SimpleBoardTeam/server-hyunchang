@@ -1,5 +1,6 @@
 package com.simpleboard.board.auth.domain.token.vo;
 
+import com.simpleboard.board.auth.domain.common.vo.Role;
 import java.time.Instant;
 import lombok.Builder;
 
