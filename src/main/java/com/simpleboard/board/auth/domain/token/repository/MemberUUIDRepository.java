@@ -1,5 +1,7 @@
 package com.simpleboard.board.auth.domain.token.repository;
 
+import java.util.Optional;
+
 /**
  * <b>MemberUUIDRepository</b> Repository.
  *
@@ -25,5 +27,5 @@ public interface MemberUUIDRepository {
    *
    * @since 1.0
    */
-  Long getMemberId(String UUID);
+  Optional<Long> getMemberId(String UUID);
 }

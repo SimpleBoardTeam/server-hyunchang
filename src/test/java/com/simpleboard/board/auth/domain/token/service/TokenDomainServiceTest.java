@@ -24,6 +24,7 @@ import com.simpleboard.board.auth.domain.token.vo.TokenPurpose;
 import com.simpleboard.board.auth.domain.token.vo.VerifyPurpose;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -148,7 +149,7 @@ class TokenDomainServiceTest {
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
     when(blacklistRepository.exists("oldId")).thenReturn(false);
     doNothing().when(blacklistRepository).save("oldId", oldClaims.expiredAt());
-    when(uuidRepository.getMemberId("uuid")).thenReturn(99L);
+    when(uuidRepository.getMemberId("uuid")).thenReturn(Optional.of(99L));
     when(idGenerator.newTokenId()).thenReturn("newAccessId", "newRefreshId");
     when(ttlPolicy.accessTtlFor(Role.ADMIN)).thenReturn(Duration.ofMinutes(5));
     when(ttlPolicy.refreshTtlFor(Role.ADMIN)).thenReturn(Duration.ofDays(15));
@@ -168,7 +169,8 @@ class TokenDomainServiceTest {
             .build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummyA, dummyR);
 
-    RefreshTokenRotationParam cmd = RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when
     TokenPair result = service.rotateRefreshToken(cmd);
@@ -196,7 +198,8 @@ class TokenDomainServiceTest {
     when(clockManager.now()).thenReturn(now);
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
 
-    RefreshTokenRotationParam cmd = RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))
@@ -220,7 +223,8 @@ class TokenDomainServiceTest {
     when(clockManager.now()).thenReturn(now);
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
 
-    RefreshTokenRotationParam cmd = RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))
@@ -245,7 +249,8 @@ class TokenDomainServiceTest {
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
     when(blacklistRepository.exists("id")).thenReturn(true);
 
-    RefreshTokenRotationParam cmd = RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))
