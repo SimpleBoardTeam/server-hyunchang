@@ -1,6 +1,6 @@
 package com.simpleboard.board.auth.domain.token.dto;
 
-import com.simpleboard.board.auth.domain.token.vo.Role;
+import com.simpleboard.board.auth.domain.common.vo.Role;
 import lombok.Builder;
 
 /**
@@ -12,4 +12,4 @@ import lombok.Builder;
  * @since 1.0
  */
 @Builder
-public record LoginTokenIssueCommand(Long memberId, Role role) {}
+public record LoginTokenIssueParam(Long memberId, Role role) {}

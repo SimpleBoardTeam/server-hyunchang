@@ -1,5 +1,6 @@
 package com.simpleboard.board.auth.domain.token.vo;
 
+import com.simpleboard.board.auth.domain.common.vo.Role;
 import java.time.Instant;
 import lombok.Builder;
 
@@ -16,7 +17,7 @@ public record TokenClaims(
     String tokenId,
     TokenPurpose tokenPurpose,
     VerifyPurpose verifyPurpose,
-    String subject,
+    String subject, // login 토큰의 경우 memberUUID, verify token의 경우 verify 대상(email, nickname 등)
     Role role,
     String audience,
     String issuer,

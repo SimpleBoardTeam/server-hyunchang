@@ -5,9 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueCommand;
-import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationCommand;
-import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueCommand;
+import com.simpleboard.board.auth.domain.common.vo.Role;
+import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueParam;
+import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationParam;
+import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueParam;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenEnrollBlacklistException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenExpiredException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenInvalidException;
@@ -16,7 +17,6 @@ import com.simpleboard.board.auth.domain.token.repository.TokenBlacklistReposito
 import com.simpleboard.board.auth.domain.token.util.ClockManager;
 import com.simpleboard.board.auth.domain.token.util.IdGenerator;
 import com.simpleboard.board.auth.domain.token.util.TokenProvider;
-import com.simpleboard.board.auth.domain.token.vo.Role;
 import com.simpleboard.board.auth.domain.token.vo.Token;
 import com.simpleboard.board.auth.domain.token.vo.TokenClaims;
 import com.simpleboard.board.auth.domain.token.vo.TokenPair;
@@ -24,6 +24,7 @@ import com.simpleboard.board.auth.domain.token.vo.TokenPurpose;
 import com.simpleboard.board.auth.domain.token.vo.VerifyPurpose;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,8 +88,7 @@ class TokenDomainServiceTest {
             .build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummyAccess, dummyRefresh);
 
-    LoginTokenIssueCommand cmd =
-        LoginTokenIssueCommand.builder().memberId(memberId).role(role).build();
+    LoginTokenIssueParam cmd = LoginTokenIssueParam.builder().memberId(memberId).role(role).build();
 
     // when
     TokenPair result = service.issueLoginToken(cmd);
@@ -119,7 +119,7 @@ class TokenDomainServiceTest {
             .build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummy);
 
-    VerifyTokenIssueCommand cmd = new VerifyTokenIssueCommand(purpose, subject, ttl);
+    VerifyTokenIssueParam cmd = new VerifyTokenIssueParam(purpose, subject, ttl);
 
     // when
     Token result = service.issueVerifyToken(cmd);
@@ -149,7 +149,7 @@ class TokenDomainServiceTest {
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
     when(blacklistRepository.exists("oldId")).thenReturn(false);
     doNothing().when(blacklistRepository).save("oldId", oldClaims.expiredAt());
-    when(uuidRepository.getMemberId("uuid")).thenReturn(99L);
+    when(uuidRepository.getMemberId("uuid")).thenReturn(Optional.of(99L));
     when(idGenerator.newTokenId()).thenReturn("newAccessId", "newRefreshId");
     when(ttlPolicy.accessTtlFor(Role.ADMIN)).thenReturn(Duration.ofMinutes(5));
     when(ttlPolicy.refreshTtlFor(Role.ADMIN)).thenReturn(Duration.ofDays(15));
@@ -169,8 +169,8 @@ class TokenDomainServiceTest {
             .build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummyA, dummyR);
 
-    RefreshTokenRotationCommand cmd =
-        RefreshTokenRotationCommand.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when
     TokenPair result = service.rotateRefreshToken(cmd);
@@ -198,8 +198,8 @@ class TokenDomainServiceTest {
     when(clockManager.now()).thenReturn(now);
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
 
-    RefreshTokenRotationCommand cmd =
-        RefreshTokenRotationCommand.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))
@@ -223,8 +223,8 @@ class TokenDomainServiceTest {
     when(clockManager.now()).thenReturn(now);
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
 
-    RefreshTokenRotationCommand cmd =
-        RefreshTokenRotationCommand.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))
@@ -249,8 +249,8 @@ class TokenDomainServiceTest {
     when(tokenProvider.verifyAndParseToken(oldRaw)).thenReturn(oldClaims);
     when(blacklistRepository.exists("id")).thenReturn(true);
 
-    RefreshTokenRotationCommand cmd =
-        RefreshTokenRotationCommand.builder().oldRefreshRaw(oldRaw).build();
+    RefreshTokenRotationParam cmd =
+        RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))

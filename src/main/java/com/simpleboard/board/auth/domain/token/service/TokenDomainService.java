@@ -1,8 +1,9 @@
 package com.simpleboard.board.auth.domain.token.service;
 
-import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueCommand;
-import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationCommand;
-import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueCommand;
+import com.simpleboard.board.auth.domain.common.vo.Role;
+import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueParam;
+import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationParam;
+import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueParam;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenEnrollBlacklistException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenExpiredException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenInvalidException;
@@ -11,6 +12,7 @@ import com.simpleboard.board.auth.domain.token.repository.TokenBlacklistReposito
 import com.simpleboard.board.auth.domain.token.util.*;
 import com.simpleboard.board.auth.domain.token.vo.*;
 import java.time.Instant;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -72,12 +74,13 @@ public class TokenDomainService {
    * @return Access/Refresh TokenPair
    * @since 1.0
    */
-  public TokenPair issueLoginToken(LoginTokenIssueCommand command) {
+  public TokenPair issueLoginToken(LoginTokenIssueParam command) {
 
     Instant now = clockManager.now();
+    String uuid = uuidRepository.createOrGetUUID(command.memberId());
 
     // Create new token pair
-    return createLoginTokenPair(command.memberId(), command.role(), now, now);
+    return createLoginTokenPair(uuid, command.role(), now, now);
   }
 
   /**
@@ -89,10 +92,18 @@ public class TokenDomainService {
    * @return Verify 토큰
    * @since 1.0
    */
-  public Token issueVerifyToken(VerifyTokenIssueCommand command) {
+  public Token issueVerifyToken(VerifyTokenIssueParam command) {
     Instant now = clockManager.now();
     TokenClaims claims = createVerifyClaims(command.subject(), command.purpose(), now);
     return tokenProvider.issueToken(claims);
+  }
+
+  public TokenClaims parseToken(String token) {
+    return tokenProvider.verifyAndParseToken(token);
+  }
+
+  public void validateToken(String tokenRaw) {
+    tokenProvider.validateToken(tokenRaw, Date.from(clockManager.now()));
   }
 
   /**
@@ -106,7 +117,7 @@ public class TokenDomainService {
    * @throws RefreshTokenInvalidException 블랙리스트 존재 등 무효
    * @since 1.0
    */
-  public TokenPair rotateRefreshToken(RefreshTokenRotationCommand command) {
+  public TokenPair rotateRefreshToken(RefreshTokenRotationParam command) {
     Instant now = clockManager.now();
 
     TokenClaims oldClaims = tokenProvider.verifyAndParseToken(command.oldRefreshRaw());
@@ -115,14 +126,15 @@ public class TokenDomainService {
     // Validate refresh token
     if (oldClaims.isExpired(now)) throw new RefreshTokenExpiredException();
     if (blacklistRepository.exists(oldClaims.tokenId()))
-      throw new RefreshTokenInvalidException(); // TODO: 이벤트 생성
+      throw new RefreshTokenInvalidException(); // TODO: 토큰 탈취 이벤트 생성
+    uuidRepository.getMemberId(oldClaims.subject()).orElseThrow(RefreshTokenInvalidException::new);
 
     // Enroll old token to blacklist
     blacklistRepository.save(oldClaims.tokenId(), oldClaims.expiredAt());
 
     // Create new token pair
     return createLoginTokenPair(
-        uuidRepository.getMemberId(oldClaims.subject()),
+        oldClaims.subject(), // memberUUID
         oldClaims.role(),
         now,
         oldClaims.issueAt());
@@ -147,11 +159,11 @@ public class TokenDomainService {
     blacklistRepository.save(claims.tokenId(), claims.expiredAt());
   }
 
-  private TokenClaims createAccessClaims(Long memberId, Role role, Instant now) {
+  private TokenClaims createAccessClaims(String memberUUID, Role role, Instant now) {
     return TokenClaims.builder()
         .tokenId(idGenerator.newTokenId())
         .tokenPurpose(TokenPurpose.ACCESS)
-        .subject(uuidRepository.createOrGetUUID(memberId))
+        .subject(memberUUID)
         .role(role)
         .audience(accessAudience)
         .issuer(issuer)
@@ -160,11 +172,11 @@ public class TokenDomainService {
         .build();
   }
 
-  private TokenClaims createRefreshClaims(Long memberId, Role role, Instant now) {
+  private TokenClaims createRefreshClaims(String memberUUID, Role role, Instant now) {
     return TokenClaims.builder()
         .tokenId(idGenerator.newTokenId())
         .tokenPurpose(TokenPurpose.REFRESH)
-        .subject(uuidRepository.createOrGetUUID(memberId))
+        .subject(memberUUID)
         .role(role)
         .audience(refreshAudience)
         .issuer(issuer)
@@ -187,11 +199,11 @@ public class TokenDomainService {
   }
 
   private TokenPair createLoginTokenPair(
-      Long memberId, Role role, Instant accessTokenIssueTime, Instant refreshTokenIssueTime) {
+      String memberUUID, Role role, Instant accessTokenIssueTime, Instant refreshTokenIssueTime) {
     Token accessToken =
-        tokenProvider.issueToken(createAccessClaims(memberId, role, accessTokenIssueTime));
+        tokenProvider.issueToken(createAccessClaims(memberUUID, role, accessTokenIssueTime));
     Token newRefreshToken =
-        tokenProvider.issueToken(createRefreshClaims(memberId, role, refreshTokenIssueTime));
+        tokenProvider.issueToken(createRefreshClaims(memberUUID, role, refreshTokenIssueTime));
 
     return TokenPair.builder().access(accessToken).refresh(newRefreshToken).build();
   }
