@@ -11,4 +11,4 @@ import lombok.Builder;
  * @since 1.0
  */
 @Builder
-public record RefreshTokenRotationCommand(String oldRefreshRaw) {}
+public record RefreshTokenRotationParam(String oldRefreshRaw) {}

@@ -2,6 +2,7 @@ package com.simpleboard.board.auth.domain.token.util;
 
 import com.simpleboard.board.auth.domain.token.vo.Token;
 import com.simpleboard.board.auth.domain.token.vo.TokenClaims;
+import java.util.Date;
 
 /**
  * <b>TokenProvider</b> Port.
@@ -29,4 +30,6 @@ public interface TokenProvider {
    * @since 1.0
    */
   TokenClaims verifyAndParseToken(String token);
+
+  void validateToken(String token, Date now);
 }

@@ -1,4 +1,4 @@
-package com.simpleboard.board.auth.domain.token.vo;
+package com.simpleboard.board.auth.domain.common.vo;
 
 /**
  * <b>Role</b> Enum.

@@ -11,4 +11,4 @@ import java.time.Duration;
  * @domain request-dto
  * @since 1.0
  */
-public record VerifyTokenIssueCommand(VerifyPurpose purpose, String subject, Duration ttl) {}
+public record VerifyTokenIssueParam(VerifyPurpose purpose, String subject, Duration ttl) {}
