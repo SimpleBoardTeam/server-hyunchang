@@ -5,21 +5,34 @@ import static org.assertj.core.api.Assertions.*;
 import com.simpleboard.board.permission.domain.entity.ManagerAssignment;
 import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
+import com.simpleboard.board.permission.domain.repository.RoleCatalog;
 import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
 import com.simpleboard.board.permission.domain.vo.RoleName;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class PermissionPolicyTest {
 
   private Long defaultUserId;
   private Long defaultBoardId;
+  Role adminRole;
 
   @BeforeEach
   void setUp() {
     defaultUserId = 1L;
     defaultBoardId = 1L;
+    adminRole = Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
   }
 
   @Test
@@ -29,7 +42,7 @@ class PermissionPolicyTest {
     Long userId = 1L;
 
     // when
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(boardId, userId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(boardId, userId, adminRole);
 
     // then
     // 1. boardId 검증
@@ -43,7 +56,7 @@ class PermissionPolicyTest {
   @Test
   void can_성공() {
     // given
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId, adminRole);
 
     // then
     assertThat(permissionPolicy.can(defaultUserId, Permission.CREATE_BOARD)).isTrue();
@@ -53,7 +66,7 @@ class PermissionPolicyTest {
   @Test
   void can_실패_권한이_없는_유저가_실행() {
     // given
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId, adminRole);
     Long notOwnPermissionUserId = 2L;
 
     // then
@@ -64,11 +77,11 @@ class PermissionPolicyTest {
   @Test
   void assignRole_성공() {
     // given
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId, adminRole);
     Long otherUserId = 2L;
 
     // when
-    permissionPolicy.assignRole(otherUserId, RoleName.BOARD_ADMIN);
+    permissionPolicy.assignRole(otherUserId, adminRole);
 
     // then
     assertThat(permissionPolicy.can(otherUserId, Permission.CREATE_BOARD)).isTrue();
@@ -78,9 +91,9 @@ class PermissionPolicyTest {
   @Test
   void deleteAssignment_성공() {
     // given
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId, adminRole);
     Long otherUserId = 2L;
-    permissionPolicy.assignRole(otherUserId, RoleName.BOARD_ADMIN);
+    permissionPolicy.assignRole(otherUserId, adminRole);
 
     // when
     permissionPolicy.deleteAssignment(otherUserId);
@@ -93,13 +106,13 @@ class PermissionPolicyTest {
   @Test
   void delegateRole_성공() {
     // given
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId, adminRole);
     Long fromUser = 2L;
     Long toUser = 3L;
-    permissionPolicy.assignRole(fromUser, RoleName.BOARD_ADMIN);
+    permissionPolicy.assignRole(fromUser, adminRole);
 
     // when
-    permissionPolicy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN);
+    permissionPolicy.delegateRole(fromUser, toUser, adminRole);
 
     // then
     assertThat(permissionPolicy.can(fromUser, Permission.CREATE_BOARD)).isFalse();
@@ -112,14 +125,14 @@ class PermissionPolicyTest {
   @Test
   void delegateRole_실패_권한이_없는_유저가_권한_위임() {
     // given
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId);
+    PermissionPolicy permissionPolicy = PermissionPolicy.create(defaultBoardId, defaultUserId, adminRole);
     Long fromUser = 2L;
     Long toUser = 3L;
-    permissionPolicy.assignRole(fromUser, RoleName.BOARD_ADMIN);
+    permissionPolicy.assignRole(fromUser, adminRole);
     permissionPolicy.deleteAssignment(fromUser);
 
     // when & then
-    assertThatThrownBy(() -> permissionPolicy.delegateRole(fromUser, toUser, RoleName.BOARD_ADMIN))
+    assertThatThrownBy(() -> permissionPolicy.delegateRole(fromUser, toUser, adminRole))
         .isInstanceOf(AssignmentNotFoundException.class);
   }
 }
