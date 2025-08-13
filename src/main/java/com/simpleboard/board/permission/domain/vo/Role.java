@@ -1,32 +1,36 @@
 package com.simpleboard.board.permission.domain.vo;
 
-import java.util.*;
+import java.util.Set;
 import lombok.Getter;
 
+/**
+ * <b>Role</b> Value Object.
+ *
+ * <p>역할명과 권한셋을 가지는 불변 VO
+ *
+ * @domain value-object
+ * @since 1.0
+ */
 @Getter
-public class Role {
-  private static final Map<RoleName, Role> ROLE_CACHE =
-      Map.of(
-          RoleName.BOARD_ADMIN,
-          new Role(RoleName.BOARD_ADMIN, Set.of(Permission.DELETE_BOARD, Permission.CREATE_BOARD)));
+public final class Role {
 
   private final RoleName roleName;
   private final Set<Permission> permissions;
 
   private Role(RoleName roleName, Set<Permission> permissions) {
     this.roleName = roleName;
-    this.permissions = permissions;
+    this.permissions = Set.copyOf(permissions);
   }
 
-  public static Role getPredefined(RoleName roleName) {
-    return ROLE_CACHE.get(roleName);
+  public static Role of(RoleName roleName, Set<Permission> permissions) {
+    return new Role(roleName, permissions);
   }
 
   public boolean hasPermission(Permission permission) {
-    return permissions.contains(permission);
+    return permission != null && permissions.contains(permission);
   }
 
-  public boolean hasSameRole(RoleName roleName) {
-    return Objects.equals(this.roleName, roleName);
+  public boolean isSameRole(Role other) {
+    return this.roleName == other.getRoleName();
   }
 }
