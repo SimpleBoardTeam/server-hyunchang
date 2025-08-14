@@ -98,6 +98,17 @@ public class TokenDomainService {
     return tokenProvider.issueToken(claims);
   }
 
+  /**
+   * <b>로그인 토큰 파싱 메서드</b>
+   *
+   * <p>raw 토큰을 받아 Validation & Parsing을 진행
+   *
+   * @throws TokenTypeException - 로그인 토큰이 아님
+   * @throws TokenUserBlockedException - 유저가 비활성화 상태
+   * @param token: raw 토큰
+   * @return 로그인 토큰 DTO
+   * @since 1.0
+   */
   public LoginTokenInfo validateAndParseLoginToken(String token) {
 
     TokenClaims tokenClaims =
@@ -111,6 +122,14 @@ public class TokenDomainService {
     return createLoginTokenInfo(tokenClaims, memberId);
   }
 
+  /**
+   * <b>Verify 토큰 파싱 메서드</b>
+   *
+   * <p>raw 토큰을 받아 Validation & Parsing을 진행
+   *
+   * @throws TokenTypeException - Verify 토큰이 아님
+   * @since 1.0
+   */
   public VerifyTokenInfo validateAndParseVerifyToken(String token) {
 
     TokenClaims tokenClaims =
