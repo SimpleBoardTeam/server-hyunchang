@@ -28,18 +28,7 @@ public class PermissionPolicyEntity {
   private Long boardId;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "board_id", insertable = false, updatable = false)
+  @JoinColumn(name = "board_id")
   private List<ManagerAssignmentEntity> managerAssignments = new ArrayList<>();
 
-  public static PermissionPolicyEntity from(PermissionPolicy domain) {
-    List<ManagerAssignmentEntity> managerAssignmentEntityList =
-        domain.getManagerAssignments().stream().map(ManagerAssignmentEntity::new).toList();
-    return new PermissionPolicyEntity(domain.getBoardId(), managerAssignmentEntityList);
-  }
-
-  public PermissionPolicy toDomain() {
-    List<ManagerAssignment> domainAssignments =
-        managerAssignments.stream().map(ManagerAssignmentEntity::toDomain).toList();
-    return PermissionPolicy.of(boardId, domainAssignments);
-  }
 }
