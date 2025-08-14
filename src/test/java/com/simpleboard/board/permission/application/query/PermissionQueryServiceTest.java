@@ -32,7 +32,8 @@ class PermissionQueryServiceTest {
   void setUp() {
     boardId = 1L;
     creatorId = 1L;
-    adminRole = Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
+    adminRole =
+        Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
     permissionPolicy = PermissionPolicy.create(boardId, creatorId, adminRole);
   }
 

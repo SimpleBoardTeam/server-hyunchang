@@ -4,7 +4,6 @@ import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundExcep
 import com.simpleboard.board.permission.domain.exception.RoleDelegationException;
 import com.simpleboard.board.permission.domain.vo.Permission;
 import com.simpleboard.board.permission.domain.vo.Role;
-import com.simpleboard.board.permission.domain.vo.RoleName;
 import java.util.*;
 import lombok.Builder;
 import lombok.Getter;

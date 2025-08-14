@@ -21,8 +21,7 @@ public class AsyncConfig implements AsyncConfigurer {
           Arrays.toString(params),
           ex.getClass().getSimpleName(),
           ex.getMessage(),
-          ex
-      );
+          ex);
     };
   }
 }

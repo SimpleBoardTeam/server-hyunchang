@@ -12,7 +12,6 @@ import com.simpleboard.board.permission.infrastructure.mapper.PermissionPolicyMa
 import com.simpleboard.board.permission.infrastructure.repository.InMemoryRoleCatalog;
 import java.util.List;
 import java.util.Set;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,8 @@ class PermissionPolicyEntityTest {
 
   @BeforeEach
   void setUp() {
-    ManagerAssignmentMapper managerAssignmentMapper = new ManagerAssignmentMapper(new InMemoryRoleCatalog());
+    ManagerAssignmentMapper managerAssignmentMapper =
+        new ManagerAssignmentMapper(new InMemoryRoleCatalog());
     permissionPolicyMapper = new PermissionPolicyMapper(managerAssignmentMapper);
   }
 
@@ -31,8 +31,12 @@ class PermissionPolicyEntityTest {
   @Test
   void fromDomainToEntity() {
     // given
-    PermissionPolicy domain = PermissionPolicy.create(1L, 100L, Role.of(RoleName.BOARD_ADMIN, Set.of(
-        Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
+    PermissionPolicy domain =
+        PermissionPolicy.create(
+            1L,
+            100L,
+            Role.of(
+                RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
 
     // when
     PermissionPolicyEntity entity = permissionPolicyMapper.toEntity(domain);

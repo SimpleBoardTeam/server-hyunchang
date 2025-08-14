@@ -1,8 +1,5 @@
 package com.simpleboard.board.permission.infrastructure.entity;
 
-import com.simpleboard.board.permission.domain.entity.ManagerAssignment;
-import com.simpleboard.board.permission.domain.vo.Permission;
-import com.simpleboard.board.permission.domain.vo.Role;
 import com.simpleboard.board.permission.domain.vo.RoleName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

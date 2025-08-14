@@ -27,8 +27,7 @@ public class PermissionCommandService {
     PermissionPolicy permissionPolicy = permissionRepository.getByBoardId(boardId);
     Long toMemberId = userFetchService.getUserIdByNickname(delegateRoleCommand.toUserNickname());
     Role role = roleCatalog.get(delegateRoleCommand.roleName());
-    permissionPolicy.delegateRole(
-        delegateRoleCommand.fromUserId(), toMemberId, role);
+    permissionPolicy.delegateRole(delegateRoleCommand.fromUserId(), toMemberId, role);
     permissionRepository.save(permissionPolicy);
   }
 
@@ -38,8 +37,8 @@ public class PermissionCommandService {
   }
 
   public void createPermissionPolicy(Long boardId, Long userID) {
-    PermissionPolicy permissionPolicy = PermissionPolicy.create(boardId, userID, roleCatalog.get(
-        RoleName.BOARD_ADMIN));
+    PermissionPolicy permissionPolicy =
+        PermissionPolicy.create(boardId, userID, roleCatalog.get(RoleName.BOARD_ADMIN));
     permissionRepository.save(permissionPolicy);
   }
 }

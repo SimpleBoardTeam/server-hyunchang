@@ -16,10 +16,13 @@ public class PermissionQueryRepositoryImpl implements PermissionQueryRepository 
 
   @Override
   public PermissionPolicy getByBoardId(Long boardId) {
-    PermissionPolicyEntity entity = jpaRepository
-        .findById(boardId)
-        .orElseThrow(() ->
-            new IllegalArgumentException("해당 boardId의 Permission Policy가 존재하지 않습니다: " + boardId));
+    PermissionPolicyEntity entity =
+        jpaRepository
+            .findById(boardId)
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "해당 boardId의 Permission Policy가 존재하지 않습니다: " + boardId));
     return permissionPolicyMapper.toDomain(entity);
   }
 }

@@ -7,9 +7,7 @@ import lombok.EqualsAndHashCode;
 /**
  * <b>BirthYear</b> Value Object.
  *
- * <p>회원의 출생 연도를 캡슐화한 VO로,
- * 4자리 숫자 형식과 허용 범위(1900년~현재 연도)를 검증하여
- * 유효한 출생 연도만 생성되도록 보장한다.</p>
+ * <p>회원의 출생 연도를 캡슐화한 VO로, 4자리 숫자 형식과 허용 범위(1900년~현재 연도)를 검증하여 유효한 출생 연도만 생성되도록 보장한다.
  *
  * @domain value-object
  * @since 1.0

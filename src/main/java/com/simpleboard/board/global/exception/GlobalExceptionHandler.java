@@ -94,14 +94,16 @@ public class GlobalExceptionHandler {
 
   /** 7. WebClient – 4xx 예외 처리 */
   @ExceptionHandler(WebClient4xxException.class)
-  public ResponseEntity<ErrorResponse> handleClientError(WebClient4xxException ex, HttpServletRequest req) {
+  public ResponseEntity<ErrorResponse> handleClientError(
+      WebClient4xxException ex, HttpServletRequest req) {
     logException(req, ex);
     return buildResponse(ErrorCode.WEBCLIENT_4XX_ERROR);
   }
 
   /** 8. WebClient – 5xx 예외 처리 */
   @ExceptionHandler(WebClient5xxException.class)
-  public ResponseEntity<ErrorResponse> handleServerError(WebClient5xxException ex, HttpServletRequest req) {
+  public ResponseEntity<ErrorResponse> handleServerError(
+      WebClient5xxException ex, HttpServletRequest req) {
     logException(req, ex);
     return buildResponse(ErrorCode.WEBCLIENT_5XX_ERROR);
   }

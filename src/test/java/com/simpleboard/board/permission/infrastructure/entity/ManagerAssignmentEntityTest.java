@@ -7,7 +7,6 @@ import com.simpleboard.board.permission.domain.vo.Permission;
 import com.simpleboard.board.permission.domain.vo.Role;
 import com.simpleboard.board.permission.domain.vo.RoleName;
 import com.simpleboard.board.permission.infrastructure.mapper.ManagerAssignmentMapper;
-import com.simpleboard.board.permission.infrastructure.mapper.PermissionPolicyMapper;
 import com.simpleboard.board.permission.infrastructure.repository.InMemoryRoleCatalog;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +26,12 @@ class ManagerAssignmentEntityTest {
   @Test
   void fromDomainToEntity() {
     // given
-    ManagerAssignment domain = ManagerAssignment.create(1L, 100L, Role.of(RoleName.BOARD_ADMIN, Set.of(
-        Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
+    ManagerAssignment domain =
+        ManagerAssignment.create(
+            1L,
+            100L,
+            Role.of(
+                RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
 
     // when
     ManagerAssignmentEntity entity = managerAssignmentMapper.toEntity(domain);

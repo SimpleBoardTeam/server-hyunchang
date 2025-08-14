@@ -30,7 +30,8 @@ class RoleTest {
   @Test
   void hasSameRole_역할이_같으면_true를_반환한다() {
     // given
-    Role newRole = Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
+    Role newRole =
+        Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
 
     // when & then
     assertThat(role.isSameRole(newRole)).isTrue();

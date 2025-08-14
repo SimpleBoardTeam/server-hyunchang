@@ -6,12 +6,12 @@ import static org.mockito.Mockito.*;
 
 import com.simpleboard.board.permission.application.command.dto.DelegateRoleCommand;
 import com.simpleboard.board.permission.application.common.UserFetchService;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
+import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
 import com.simpleboard.board.permission.domain.repository.RoleCatalog;
 import com.simpleboard.board.permission.domain.vo.Permission;
-import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import com.simpleboard.board.permission.domain.vo.Role;
 import com.simpleboard.board.permission.domain.vo.RoleName;
-import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
 import com.simpleboard.board.permission.infrastructure.entity.PermissionPolicyEntity;
 import com.simpleboard.board.permission.infrastructure.mapper.ManagerAssignmentMapper;
 import com.simpleboard.board.permission.infrastructure.mapper.PermissionPolicyMapper;
@@ -36,11 +36,10 @@ class PermissionCommandServiceTest {
 
   @Mock UserFetchService userFetchService;
 
-  @Mock
-  RoleCatalog roleCatalog;
+  @Mock RoleCatalog roleCatalog;
 
   PermissionPolicy permissionPolicy;
-  PermissionPolicyMapper  permissionPolicyMapper;
+  PermissionPolicyMapper permissionPolicyMapper;
   Role adminRole;
   Long boardId;
   Long creatorId;
@@ -49,13 +48,17 @@ class PermissionCommandServiceTest {
   void setUp() {
     boardId = 1L;
     creatorId = 1L;
-    adminRole = Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
+    adminRole =
+        Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
     permissionPolicy = PermissionPolicy.create(boardId, creatorId, adminRole);
-    permissionPolicyMapper = new PermissionPolicyMapper(new ManagerAssignmentMapper(new InMemoryRoleCatalog()));
+    permissionPolicyMapper =
+        new PermissionPolicyMapper(new ManagerAssignmentMapper(new InMemoryRoleCatalog()));
 
     permissionCommandService =
         new PermissionCommandService(
-            new PermissionRepositoryImpl(permissionCommandJpaRepository, permissionPolicyMapper), userFetchService, roleCatalog);
+            new PermissionRepositoryImpl(permissionCommandJpaRepository, permissionPolicyMapper),
+            userFetchService,
+            roleCatalog);
   }
 
   @Test
@@ -71,7 +74,10 @@ class PermissionCommandServiceTest {
         .thenReturn(Optional.of(permissionPolicyMapper.toEntity(permissionPolicy)));
     when(permissionCommandJpaRepository.save(any()))
         .thenAnswer(invocation -> invocation.getArgument(0));
-    when(roleCatalog.get(roleName)).thenReturn(Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
+    when(roleCatalog.get(roleName))
+        .thenReturn(
+            Role.of(
+                RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
 
     // when
     permissionCommandService.delegateRole(boardId, command);
