@@ -7,6 +7,11 @@ import com.simpleboard.board.permission.infrastructure.entity.ManagerAssignmentE
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+/**
+ * <b>Post: Domain Entity <-> JPA Entity Mapping 클래스</b>
+ *
+ * <p> MangerAssginment 도메인과 엔티티 간 맵핑
+ */
 @Component
 @RequiredArgsConstructor
 public class ManagerAssignmentMapper {
@@ -19,10 +24,6 @@ public class ManagerAssignmentMapper {
   }
 
   public ManagerAssignmentEntity toEntity(ManagerAssignment d) {
-    return new ManagerAssignmentEntity(
-        d.getBoardId(),
-        d.getUserId(),
-        d.getRoleName()
-    );
+    return new ManagerAssignmentEntity(d.getBoardId(), d.getUserId(), d.getRoleName());
   }
 }

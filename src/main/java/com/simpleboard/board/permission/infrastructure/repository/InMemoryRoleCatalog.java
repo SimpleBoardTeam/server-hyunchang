@@ -7,6 +7,13 @@ import java.util.Map;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 
+/**
+ * In-memory 구현체의 RoleCatalog.
+ *
+ * <p> Role 정보를 메모리에 고정 등록해 제공합니다.
+ *
+ * @domain repository-port
+ */
 @Component
 public class InMemoryRoleCatalog implements RoleCatalog {
 
@@ -15,10 +22,9 @@ public class InMemoryRoleCatalog implements RoleCatalog {
   public InMemoryRoleCatalog() {
     EnumMap<RoleName, Role> map = new EnumMap<>(RoleName.class);
 
-    map.put(RoleName.BOARD_ADMIN,
-        Role.of(RoleName.BOARD_ADMIN, Set.of(
-            Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
-
+    map.put(
+        RoleName.BOARD_ADMIN,
+        Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
 
     this.cache = Map.copyOf(map);
   }
