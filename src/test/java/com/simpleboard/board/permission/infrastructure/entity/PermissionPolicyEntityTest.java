@@ -4,21 +4,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.simpleboard.board.permission.domain.entity.ManagerAssignment;
 import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
 import com.simpleboard.board.permission.domain.vo.RoleName;
+import com.simpleboard.board.permission.infrastructure.mapper.ManagerAssignmentMapper;
+import com.simpleboard.board.permission.infrastructure.mapper.PermissionPolicyMapper;
+import com.simpleboard.board.permission.infrastructure.repository.InMemoryRoleCatalog;
 import java.util.List;
+import java.util.Set;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class PermissionPolicyEntityTest {
 
+  PermissionPolicyMapper permissionPolicyMapper;
+
+  @BeforeEach
+  void setUp() {
+    ManagerAssignmentMapper managerAssignmentMapper = new ManagerAssignmentMapper(new InMemoryRoleCatalog());
+    permissionPolicyMapper = new PermissionPolicyMapper(managerAssignmentMapper);
+  }
+
   @DisplayName("도메인 → 엔티티 변환 테스트")
   @Test
   void fromDomainToEntity() {
     // given
-    PermissionPolicy domain = PermissionPolicy.create(1L, 100L);
+    PermissionPolicy domain = PermissionPolicy.create(1L, 100L, Role.of(RoleName.BOARD_ADMIN, Set.of(
+        Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
 
     // when
-    PermissionPolicyEntity entity = PermissionPolicyEntity.from(domain);
+    PermissionPolicyEntity entity = permissionPolicyMapper.toEntity(domain);
 
     // then
     assertThat(entity.getBoardId()).isEqualTo(1L);
@@ -38,7 +55,7 @@ class PermissionPolicyEntityTest {
     PermissionPolicyEntity entity = new PermissionPolicyEntity(1L, List.of(assignmentEntity));
 
     // when
-    PermissionPolicy domain = entity.toDomain();
+    PermissionPolicy domain = permissionPolicyMapper.toDomain(entity);
 
     // then
     assertThat(domain.getBoardId()).isEqualTo(1L);
