@@ -3,7 +3,6 @@ package com.simpleboard.board.permission.infrastructure.repository.command;
 import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import com.simpleboard.board.permission.domain.repository.PermissionRepository;
 import com.simpleboard.board.permission.infrastructure.entity.PermissionPolicyEntity;
-import com.simpleboard.board.permission.infrastructure.mapper.ManagerAssignmentMapper;
 import com.simpleboard.board.permission.infrastructure.mapper.PermissionPolicyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,7 +17,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
   @Override
   public PermissionPolicy getByBoardId(Long boardId) {
     PermissionPolicyEntity entity = jpaRepository
-        .findById(boardId)
+        .findByBoardId(boardId)
         .orElseThrow(() ->
             new IllegalArgumentException("해당 boardId의 Permission Policy가 존재하지 않습니다: " + boardId));
     return permissionPolicyMapper.toDomain(entity);
