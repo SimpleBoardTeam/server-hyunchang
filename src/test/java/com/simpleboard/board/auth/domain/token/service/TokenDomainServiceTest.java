@@ -10,8 +10,8 @@ import com.simpleboard.board.auth.domain.token.dto.request.LoginTokenIssueParam;
 import com.simpleboard.board.auth.domain.token.dto.request.RefreshTokenRotationParam;
 import com.simpleboard.board.auth.domain.token.dto.request.VerifyTokenIssueParam;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenEnrollBlacklistException;
-import com.simpleboard.board.auth.domain.token.exception.RefreshTokenExpiredException;
 import com.simpleboard.board.auth.domain.token.exception.RefreshTokenInvalidException;
+import com.simpleboard.board.auth.domain.token.exception.TokenUserBlockedException;
 import com.simpleboard.board.auth.domain.token.repository.MemberUUIDRepository;
 import com.simpleboard.board.auth.domain.token.repository.TokenBlacklistRepository;
 import com.simpleboard.board.auth.domain.token.util.ClockManager;
@@ -74,19 +74,8 @@ class TokenDomainServiceTest {
     when(ttlPolicy.accessTtlFor(role)).thenReturn(Duration.ofMinutes(10));
     when(ttlPolicy.refreshTtlFor(role)).thenReturn(Duration.ofDays(30));
     Token dummyAccess =
-        Token.builder()
-            .raw("a")
-            .tokenId("accessId")
-            .subject("uuid")
-            .expiredAt(now.plus(Duration.ofMinutes(10)))
-            .build();
-    Token dummyRefresh =
-        Token.builder()
-            .raw("r")
-            .tokenId("refreshId")
-            .subject("uuid")
-            .expiredAt(now.plus(Duration.ofDays(30)))
-            .build();
+        Token.builder().raw("a").expiredAt(now.plus(Duration.ofMinutes(10))).build();
+    Token dummyRefresh = Token.builder().raw("r").expiredAt(now.plus(Duration.ofDays(30))).build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummyAccess, dummyRefresh);
 
     LoginTokenIssueParam cmd = LoginTokenIssueParam.builder().memberId(memberId).role(role).build();
@@ -111,13 +100,7 @@ class TokenDomainServiceTest {
     when(clockManager.now()).thenReturn(now);
     when(idGenerator.newTokenId()).thenReturn("verifyId");
     when(ttlPolicy.verifyTtlFor(purpose)).thenReturn(ttl);
-    Token dummy =
-        Token.builder()
-            .raw("v")
-            .tokenId("verifyId")
-            .subject(subject)
-            .expiredAt(now.plus(ttl))
-            .build();
+    Token dummy = Token.builder().raw("v").expiredAt(now.plus(ttl)).build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummy);
 
     VerifyTokenIssueParam cmd = new VerifyTokenIssueParam(purpose, subject, ttl);
@@ -154,18 +137,10 @@ class TokenDomainServiceTest {
     when(idGenerator.newTokenId()).thenReturn("newAccessId", "newRefreshId");
     when(ttlPolicy.accessTtlFor(Role.ADMIN)).thenReturn(Duration.ofMinutes(5));
     when(ttlPolicy.refreshTtlFor(Role.ADMIN)).thenReturn(Duration.ofDays(15));
-    Token dummyA =
-        Token.builder()
-            .raw("na")
-            .tokenId("newAccessId")
-            .subject("uuid")
-            .expiredAt(now.plus(Duration.ofMinutes(5)))
-            .build();
+    Token dummyA = Token.builder().raw("na").expiredAt(now.plus(Duration.ofMinutes(5))).build();
     Token dummyR =
         Token.builder()
             .raw("nr")
-            .tokenId("newRefreshId")
-            .subject("uuid")
             .expiredAt(oldClaims.expiredAt().plus(Duration.ofDays(15)))
             .build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummyA, dummyR);
@@ -208,7 +183,7 @@ class TokenDomainServiceTest {
   }
 
   @Test
-  @DisplayName("리프레시 로테이션 - 토큰 만료 실패 테스트")
+  @DisplayName("리프레시 로테이션 - 유저 블락 실패 테스트")
   void rotateRefreshToken_Expired_Fail_Test() {
     // given
     String oldRaw = "oldRaw";
@@ -223,13 +198,14 @@ class TokenDomainServiceTest {
             .build();
     when(clockManager.now()).thenReturn(now);
     when(tokenProvider.verifyAndParseToken(oldRaw, Date.from(now))).thenReturn(oldClaims);
+    when(uuidRepository.getMemberId("sub")).thenReturn(Optional.empty());
 
     RefreshTokenRotationParam cmd =
         RefreshTokenRotationParam.builder().oldRefreshRaw(oldRaw).build();
 
     // when & then
     assertThatThrownBy(() -> service.rotateRefreshToken(cmd))
-        .isInstanceOf(RefreshTokenExpiredException.class);
+        .isInstanceOf(TokenUserBlockedException.class);
   }
 
   @Test
@@ -321,6 +297,7 @@ class TokenDomainServiceTest {
             .build();
     when(clockManager.now()).thenReturn(now);
     when(tokenProvider.verifyAndParseToken(raw, Date.from(now))).thenReturn(claims);
+    when(uuidRepository.getMemberId("sub")).thenReturn(Optional.of(1L));
 
     // when & then
     assertThatThrownBy(() -> service.enrollBlacklist(raw))
