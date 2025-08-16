@@ -1,0 +1,14 @@
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+app:
+  auth:
+    issuer: "SimpleBoard"
+    audience-access: "auth-access"
+    audience-refresh: "auth-refresh"
+    ttl:
+      access-minutes: 10
+      refresh-days: 30
+      nickname-minutes: 15
+      email-minutes: 5
+      password-minutes: 5

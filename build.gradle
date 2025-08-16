@@ -51,6 +51,9 @@ dependencies {
 
 	// WebClient(webFlux)
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// Jasypt
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 }
 
 spotless {
