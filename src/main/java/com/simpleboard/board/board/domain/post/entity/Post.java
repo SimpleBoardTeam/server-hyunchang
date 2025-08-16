@@ -50,7 +50,7 @@ public abstract class Post {
     this.content = params.content();
     viewCount = 0L;
     isDeleted = false;
-    board = BoardVO.of(params.boardId(), params.boardName());
+    board = BoardVO.of(params.boardId());
     tags = TagsVO.createTags(params.hashTags());
     likes = LikesVO.create();
   }

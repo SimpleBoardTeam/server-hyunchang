@@ -117,11 +117,11 @@ public class PostConverter {
   }
 
   private BoardEmbed toJpaEntity(BoardVO board) {
-    return BoardEmbed.builder().boardId(board.boardId()).boardName(board.boardName()).build();
+    return BoardEmbed.builder().boardId(board.boardId()).build();
   }
 
   private BoardVO toDomainEntity(BoardEmbed embed) {
-    return BoardVO.of(embed.boardId(), embed.boardName());
+    return BoardVO.of(embed.boardId());
   }
 
   private TagsVO toDomainEntity(TagsEmbed embed) {

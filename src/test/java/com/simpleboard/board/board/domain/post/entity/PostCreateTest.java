@@ -36,7 +36,6 @@ class PostCreateTest {
     assertThat(post).isInstanceOf(GuestPost.class);
 
     assertThat(post.getBoard().boardId()).isEqualTo(params.boardId());
-    assertThat(post.getBoard().boardName()).isEqualTo(params.boardName());
     assertThat(post.getTitle()).isEqualTo(params.title());
     assertThat(post.getContent()).isEqualTo(params.content());
     assertThat(post.getIsDeleted()).isFalse();
@@ -61,7 +60,6 @@ class PostCreateTest {
     assertThat(post).isInstanceOf(MemberPost.class);
 
     assertThat(post.getBoard().boardId()).isEqualTo(params.boardId());
-    assertThat(post.getBoard().boardName()).isEqualTo(params.boardName());
     assertThat(post.getTitle()).isEqualTo(params.title());
     assertThat(post.getContent()).isEqualTo(params.content());
     assertThat(post.getIsDeleted()).isFalse();

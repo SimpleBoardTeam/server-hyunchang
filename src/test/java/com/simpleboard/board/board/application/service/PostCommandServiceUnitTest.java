@@ -18,8 +18,8 @@ import com.simpleboard.board.board.domain.post.entity.MemberPost;
 import com.simpleboard.board.board.domain.post.entity.Post;
 import com.simpleboard.board.board.domain.post.exception.PostPasswordNotMatchException;
 import com.simpleboard.board.board.domain.post.repository.PostCommandRepository;
-import com.simpleboard.board.board.domain.testUtil.VisitorUtil;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
+import com.simpleboard.board.board.domain.testUtil.VisitorUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -212,7 +212,6 @@ class PostCommandServiceUnitTest {
     PostCreateCommand.PostCreateCommandBuilder builder =
         PostCreateCommand.builder()
             .boardId(1L)
-            .boardName("first board")
             .title("title")
             .content("content")
             .hashTags("t1 t2 t3");

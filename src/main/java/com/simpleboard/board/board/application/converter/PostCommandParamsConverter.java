@@ -22,7 +22,6 @@ public class PostCommandParamsConverter {
     if (command.postType().equals(PostTypeEnum.GUEST)) {
       return PostCreateParams.builder()
           .boardId(command.boardId())
-          .boardName(command.boardName())
           .title(command.title())
           .content(command.content())
           .type(command.postType())
@@ -33,7 +32,6 @@ public class PostCommandParamsConverter {
     } else if (command.postType().equals(PostTypeEnum.MEMBER)) {
       return PostCreateParams.builder()
           .boardId(command.boardId())
-          .boardName(command.boardName())
           .title(command.title())
           .content(command.content())
           .type(command.postType())
