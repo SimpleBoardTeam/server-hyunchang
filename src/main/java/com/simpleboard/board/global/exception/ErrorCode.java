@@ -41,6 +41,12 @@ public enum ErrorCode {
   // Auth
   USER_DEACTIVATED(HttpStatus.BAD_REQUEST, "400_USER_DEACTIVATED", "유저의 계정이 비활성화 상태입니다."),
   TOKEN_BLOCKED(HttpStatus.UNAUTHORIZED, "401_TOKEN_BLOCKED", "비활성화된 토큰입니다."),
+  TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "401_TOKEN_EXPIRED", "만료된 토큰입니다."),
+  TOKEN_PARSE_FAIL(HttpStatus.BAD_REQUEST, "400_TOKEN_ERROR", "유효하지 않은 토큰입니다."),
+  EMAIL_CONFLICT(HttpStatus.CONFLICT, "409_EMAIL_CONFLICT", "이미 가입된 email입니다."),
+  NICKNAME_CONFLICT(HttpStatus.CONFLICT, "409_NICKNAME_CONFLICT", "이미 사용중인 nickname입니다."),
+  EMAIL_CODE_MISMATCH(HttpStatus.BAD_REQUEST, "400_EMAIL_CODE_MISMATCH", "email 코드가 일치하지 않습니다."),
+  USER_NOT_FOUND(HttpStatus.NOT_FOUND, "404_USER_NOT_FOUND", "일치하는 유저가 존재하지 않습니다."),
 
   /* Internal Error */
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_INTERNAL", "서버 내부 오류가 발생했습니다."),
