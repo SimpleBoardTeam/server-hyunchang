@@ -28,11 +28,12 @@ public enum ErrorCode {
   COMMENT_PASSWORD_NOT_MATCH(
       HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
 
+  // Board
+  BOARD_NAME_DUPLICATED(HttpStatus.CONFLICT, "409_BOARD_NAME_DUPLICATED", "이미 존재하는 보드명입니다."),
+
   // Member
-  INVALID_BIRTH_YEAR(
-      HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
-  DUPLICATED_NICKNAME(
-      HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
+  INVALID_BIRTH_YEAR(HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
+  DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
 
   // Permission
   ASSIGNMENT_NOT_FOUND(
@@ -55,7 +56,6 @@ public enum ErrorCode {
 
   METHOD_NOT_ALLOWED(
       HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다."),
-
 
   /* WebClient Error */
   WEBCLIENT_4XX_ERROR(
