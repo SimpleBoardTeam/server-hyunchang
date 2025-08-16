@@ -1,12 +1,12 @@
 package com.simpleboard.board.auth.domain.token.service;
 
 import com.simpleboard.board.auth.domain.common.vo.Role;
-import com.simpleboard.board.auth.domain.token.dto.LoginTokenIssueParam;
-import com.simpleboard.board.auth.domain.token.dto.RefreshTokenRotationParam;
-import com.simpleboard.board.auth.domain.token.dto.VerifyTokenIssueParam;
-import com.simpleboard.board.auth.domain.token.exception.RefreshTokenEnrollBlacklistException;
-import com.simpleboard.board.auth.domain.token.exception.RefreshTokenExpiredException;
-import com.simpleboard.board.auth.domain.token.exception.RefreshTokenInvalidException;
+import com.simpleboard.board.auth.domain.token.dto.request.LoginTokenIssueParam;
+import com.simpleboard.board.auth.domain.token.dto.request.RefreshTokenRotationParam;
+import com.simpleboard.board.auth.domain.token.dto.request.VerifyTokenIssueParam;
+import com.simpleboard.board.auth.domain.token.dto.response.LoginTokenInfo;
+import com.simpleboard.board.auth.domain.token.dto.response.VerifyTokenInfo;
+import com.simpleboard.board.auth.domain.token.exception.*;
 import com.simpleboard.board.auth.domain.token.repository.MemberUUIDRepository;
 import com.simpleboard.board.auth.domain.token.repository.TokenBlacklistRepository;
 import com.simpleboard.board.auth.domain.token.util.*;
@@ -98,12 +98,45 @@ public class TokenDomainService {
     return tokenProvider.issueToken(claims);
   }
 
-  public TokenClaims parseToken(String token) {
-    return tokenProvider.verifyAndParseToken(token);
+  /**
+   * <b>로그인 토큰 파싱 메서드</b>
+   *
+   * <p>raw 토큰을 받아 Validation & Parsing을 진행
+   *
+   * @throws TokenTypeException - 로그인 토큰이 아님
+   * @throws TokenUserBlockedException - 유저가 비활성화 상태
+   * @param token: raw 토큰
+   * @return 로그인 토큰 DTO
+   * @since 1.0
+   */
+  public LoginTokenInfo validateAndParseLoginToken(String token) {
+
+    TokenClaims tokenClaims =
+        tokenProvider.verifyAndParseToken(token, Date.from(clockManager.now()));
+    if (!(tokenClaims.tokenPurpose().equals(TokenPurpose.ACCESS)
+        || tokenClaims.tokenPurpose().equals(TokenPurpose.REFRESH))) throw new TokenTypeException();
+    Long memberId =
+        uuidRepository
+            .getMemberId(tokenClaims.subject())
+            .orElseThrow(TokenUserBlockedException::new);
+    return createLoginTokenInfo(tokenClaims, memberId);
   }
 
-  public void validateToken(String tokenRaw) {
-    tokenProvider.validateToken(tokenRaw, Date.from(clockManager.now()));
+  /**
+   * <b>Verify 토큰 파싱 메서드</b>
+   *
+   * <p>raw 토큰을 받아 Validation & Parsing을 진행
+   *
+   * @throws TokenTypeException - Verify 토큰이 아님
+   * @since 1.0
+   */
+  public VerifyTokenInfo validateAndParseVerifyToken(String token) {
+
+    TokenClaims tokenClaims =
+        tokenProvider.verifyAndParseToken(token, Date.from(clockManager.now()));
+    if (tokenClaims.tokenPurpose().equals(TokenPurpose.ACCESS)
+        || tokenClaims.tokenPurpose().equals(TokenPurpose.REFRESH)) throw new TokenTypeException();
+    return createVerifyTokenInfo(tokenClaims);
   }
 
   /**
@@ -120,14 +153,14 @@ public class TokenDomainService {
   public TokenPair rotateRefreshToken(RefreshTokenRotationParam command) {
     Instant now = clockManager.now();
 
-    TokenClaims oldClaims = tokenProvider.verifyAndParseToken(command.oldRefreshRaw());
+    TokenClaims oldClaims =
+        tokenProvider.verifyAndParseToken(command.oldRefreshRaw(), Date.from(clockManager.now()));
     if (oldClaims.tokenPurpose() != TokenPurpose.REFRESH) throw new RefreshTokenInvalidException();
 
     // Validate refresh token
-    if (oldClaims.isExpired(now)) throw new RefreshTokenExpiredException();
     if (blacklistRepository.exists(oldClaims.tokenId()))
       throw new RefreshTokenInvalidException(); // TODO: 토큰 탈취 이벤트 생성
-    uuidRepository.getMemberId(oldClaims.subject()).orElseThrow(RefreshTokenInvalidException::new);
+    uuidRepository.getMemberId(oldClaims.subject()).orElseThrow(TokenUserBlockedException::new);
 
     // Enroll old token to blacklist
     blacklistRepository.save(oldClaims.tokenId(), oldClaims.expiredAt());
@@ -151,7 +184,8 @@ public class TokenDomainService {
    * @since 1.0
    */
   public void enrollBlacklist(String refreshTokenRaw) {
-    TokenClaims claims = tokenProvider.verifyAndParseToken(refreshTokenRaw);
+    TokenClaims claims =
+        tokenProvider.verifyAndParseToken(refreshTokenRaw, Date.from(clockManager.now()));
 
     if (!claims.tokenPurpose().equals(TokenPurpose.REFRESH))
       throw new RefreshTokenEnrollBlacklistException();
@@ -206,5 +240,28 @@ public class TokenDomainService {
         tokenProvider.issueToken(createRefreshClaims(memberUUID, role, refreshTokenIssueTime));
 
     return TokenPair.builder().access(accessToken).refresh(newRefreshToken).build();
+  }
+
+  private static LoginTokenInfo createLoginTokenInfo(TokenClaims tokenClaims, Long memberId) {
+    return LoginTokenInfo.builder()
+        .tokenPurpose(tokenClaims.tokenPurpose())
+        .memberId(memberId)
+        .role(tokenClaims.role())
+        .audience(tokenClaims.audience())
+        .issuer(tokenClaims.issuer())
+        .issueAt(tokenClaims.issueAt())
+        .expiredAt(tokenClaims.expiredAt())
+        .build();
+  }
+
+  private static VerifyTokenInfo createVerifyTokenInfo(TokenClaims tokenClaims) {
+    return VerifyTokenInfo.builder()
+        .verifyPurpose(tokenClaims.verifyPurpose())
+        .subject(tokenClaims.subject())
+        .audience(tokenClaims.audience())
+        .issuer(tokenClaims.issuer())
+        .issueAt(tokenClaims.issueAt())
+        .expiredAt(tokenClaims.expiredAt())
+        .build();
   }
 }
