@@ -1,12 +1,11 @@
 package com.simpleboard.board.member.domain;
 
+import static org.assertj.core.api.Assertions.*;
+
 import com.simpleboard.board.member.domain.exception.InvalidBirthYearException;
+import java.time.Year;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.Year;
-
-import static org.assertj.core.api.Assertions.*;
 
 class BirthYearTest {
 

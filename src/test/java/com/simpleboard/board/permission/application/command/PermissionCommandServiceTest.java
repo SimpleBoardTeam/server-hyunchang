@@ -6,14 +6,20 @@ import static org.mockito.Mockito.*;
 
 import com.simpleboard.board.permission.application.command.dto.DelegateRoleCommand;
 import com.simpleboard.board.permission.application.common.UserFetchService;
-import com.simpleboard.board.permission.domain.Permission;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
-import com.simpleboard.board.permission.domain.RoleName;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
 import com.simpleboard.board.permission.domain.exception.AssignmentNotFoundException;
+import com.simpleboard.board.permission.domain.repository.RoleCatalog;
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import com.simpleboard.board.permission.infrastructure.entity.PermissionPolicyEntity;
+import com.simpleboard.board.permission.infrastructure.mapper.ManagerAssignmentMapper;
+import com.simpleboard.board.permission.infrastructure.mapper.PermissionPolicyMapper;
+import com.simpleboard.board.permission.infrastructure.repository.InMemoryRoleCatalog;
 import com.simpleboard.board.permission.infrastructure.repository.command.PermissionCommandJpaRepository;
 import com.simpleboard.board.permission.infrastructure.repository.command.PermissionRepositoryImpl;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +36,11 @@ class PermissionCommandServiceTest {
 
   @Mock UserFetchService userFetchService;
 
+  @Mock RoleCatalog roleCatalog;
+
   PermissionPolicy permissionPolicy;
+  PermissionPolicyMapper permissionPolicyMapper;
+  Role adminRole;
   Long boardId;
   Long creatorId;
 
@@ -38,11 +48,17 @@ class PermissionCommandServiceTest {
   void setUp() {
     boardId = 1L;
     creatorId = 1L;
-    permissionPolicy = PermissionPolicy.create(boardId, creatorId);
+    adminRole =
+        Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
+    permissionPolicy = PermissionPolicy.create(boardId, creatorId, adminRole);
+    permissionPolicyMapper =
+        new PermissionPolicyMapper(new ManagerAssignmentMapper(new InMemoryRoleCatalog()));
 
     permissionCommandService =
         new PermissionCommandService(
-            new PermissionRepositoryImpl(permissionCommandJpaRepository), userFetchService);
+            new PermissionRepositoryImpl(permissionCommandJpaRepository, permissionPolicyMapper),
+            userFetchService,
+            roleCatalog);
   }
 
   @Test
@@ -55,9 +71,13 @@ class PermissionCommandServiceTest {
 
     when(userFetchService.getUserIdByNickname(toNickname)).thenReturn(toUserId);
     when(permissionCommandJpaRepository.findByBoardId(boardId))
-        .thenReturn(Optional.of(PermissionPolicyEntity.from(permissionPolicy)));
+        .thenReturn(Optional.of(permissionPolicyMapper.toEntity(permissionPolicy)));
     when(permissionCommandJpaRepository.save(any()))
         .thenAnswer(invocation -> invocation.getArgument(0));
+    when(roleCatalog.get(roleName))
+        .thenReturn(
+            Role.of(
+                RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD)));
 
     // when
     permissionCommandService.delegateRole(boardId, command);
@@ -66,7 +86,7 @@ class PermissionCommandServiceTest {
     ArgumentCaptor<PermissionPolicyEntity> captor =
         ArgumentCaptor.forClass(PermissionPolicyEntity.class);
     verify(permissionCommandJpaRepository).save(captor.capture());
-    PermissionPolicy updatedPolicy = captor.getValue().toDomain();
+    PermissionPolicy updatedPolicy = permissionPolicyMapper.toDomain(captor.getValue());
 
     assertThat(updatedPolicy.can(toUserId, Permission.CREATE_BOARD)).isTrue();
     assertThat(updatedPolicy.can(toUserId, Permission.DELETE_BOARD)).isTrue();
@@ -85,11 +105,11 @@ class PermissionCommandServiceTest {
 
     // Board에 fromUserId만 존재하고, 해당 역할이 없도록 구성된 PermissionPolicy
     PermissionPolicy onlyCreatorPolicy =
-        PermissionPolicy.create(boardId, creatorId); // creatorId만 있음
+        PermissionPolicy.create(boardId, creatorId, adminRole); // creatorId만 있음
 
     when(userFetchService.getUserIdByNickname(toNickname)).thenReturn(toUserId);
     when(permissionCommandJpaRepository.findByBoardId(boardId))
-        .thenReturn(Optional.of(PermissionPolicyEntity.from(onlyCreatorPolicy)));
+        .thenReturn(Optional.of(permissionPolicyMapper.toEntity(onlyCreatorPolicy)));
 
     // when & then
     assertThatThrownBy(() -> permissionCommandService.delegateRole(boardId, command))

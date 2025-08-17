@@ -1,4 +1,4 @@
-package com.simpleboard.board.permission.domain;
+package com.simpleboard.board.permission.domain.vo;
 
 /**
  * <b>RoleName</b> 열거형.

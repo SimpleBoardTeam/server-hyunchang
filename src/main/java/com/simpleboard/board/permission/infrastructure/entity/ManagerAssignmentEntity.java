@@ -1,7 +1,6 @@
 package com.simpleboard.board.permission.infrastructure.entity;
 
-import com.simpleboard.board.permission.domain.ManagerAssignment;
-import com.simpleboard.board.permission.domain.RoleName;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,14 +29,4 @@ public class ManagerAssignmentEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "role_name")
   private RoleName roleName;
-
-  public ManagerAssignmentEntity(ManagerAssignment managerAssignment) {
-    this.boardId = managerAssignment.getBoardId();
-    this.userId = managerAssignment.getUserId();
-    this.roleName = managerAssignment.getRoleName();
-  }
-
-  public ManagerAssignment toDomain() {
-    return ManagerAssignment.create(boardId, userId, roleName);
-  }
 }

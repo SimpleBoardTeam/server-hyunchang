@@ -5,6 +5,8 @@ import java.util.Optional;
 
 public interface MemberRepository {
   Boolean existsByNickname(String nickname);
+
   Optional<Member> findById(Long memberId);
+
   void save(Member member);
 }
