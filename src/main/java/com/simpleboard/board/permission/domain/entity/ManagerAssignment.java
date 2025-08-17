@@ -1,5 +1,8 @@
-package com.simpleboard.board.permission.domain;
+package com.simpleboard.board.permission.domain.entity;
 
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
+import com.simpleboard.board.permission.domain.vo.RoleName;
 import lombok.Getter;
 
 /**
@@ -23,16 +26,16 @@ public class ManagerAssignment {
     this.role = role;
   }
 
-  public static ManagerAssignment create(Long boardId, Long userId, RoleName roleName) {
-    return new ManagerAssignment(boardId, userId, Role.getPredefined(roleName));
+  public static ManagerAssignment create(Long boardId, Long userId, Role role) {
+    return new ManagerAssignment(boardId, userId, role);
   }
 
   public boolean hasPermission(Permission permission) {
     return role.hasPermission(permission);
   }
 
-  public boolean hasRole(RoleName roleName) {
-    return role.hasSameRole(roleName);
+  public boolean isSameRole(Role role) {
+    return role.isSameRole(role);
   }
 
   public boolean isOwnedBy(Long userId) {

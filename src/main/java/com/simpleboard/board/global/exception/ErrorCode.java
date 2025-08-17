@@ -29,16 +29,18 @@ public enum ErrorCode {
       HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
 
   // Member
-  INVALID_BIRTH_YEAR(
-      HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
-  DUPLICATED_NICKNAME(
-      HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
+  INVALID_BIRTH_YEAR(HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
+  DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
 
   // Permission
   ASSIGNMENT_NOT_FOUND(
       HttpStatus.NOT_FOUND, "404_PERMISSION_ASSIGNMENT_NOT_FOUND", "권한 할당 정보를 찾을 수 없습니다."),
   ROLE_NOT_ASSIGNED(
       HttpStatus.FORBIDDEN, "403_PERMISSION_ROLE_NOT_ASSIGNED", "해당 사용자는 해당 역할이 부여되어 있지 않습니다."),
+
+  // Auth
+  USER_DEACTIVATED(HttpStatus.BAD_REQUEST, "400_USER_DEACTIVATED", "유저의 계정이 비활성화 상태입니다."),
+  TOKEN_BLOCKED(HttpStatus.UNAUTHORIZED, "401_TOKEN_BLOCKED", "비활성화된 토큰입니다."),
 
   /* Internal Error */
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_INTERNAL", "서버 내부 오류가 발생했습니다."),
@@ -55,7 +57,6 @@ public enum ErrorCode {
 
   METHOD_NOT_ALLOWED(
       HttpStatus.METHOD_NOT_ALLOWED, "405_METHOD_NOT_ALLOWED", "허용되지 않은 HTTP 메서드입니다."),
-
 
   /* WebClient Error */
   WEBCLIENT_4XX_ERROR(

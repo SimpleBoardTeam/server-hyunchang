@@ -4,7 +4,11 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.simpleboard.board.permission.application.query.repository.PermissionQueryRepository;
-import com.simpleboard.board.permission.domain.PermissionPolicy;
+import com.simpleboard.board.permission.domain.entity.PermissionPolicy;
+import com.simpleboard.board.permission.domain.vo.Permission;
+import com.simpleboard.board.permission.domain.vo.Role;
+import com.simpleboard.board.permission.domain.vo.RoleName;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +24,7 @@ class PermissionQueryServiceTest {
   @InjectMocks PermissionQueryService permissionQueryService;
 
   PermissionPolicy permissionPolicy;
+  Role adminRole;
   Long boardId;
   Long creatorId;
 
@@ -27,7 +32,9 @@ class PermissionQueryServiceTest {
   void setUp() {
     boardId = 1L;
     creatorId = 1L;
-    permissionPolicy = PermissionPolicy.create(boardId, creatorId);
+    adminRole =
+        Role.of(RoleName.BOARD_ADMIN, Set.of(Permission.CREATE_BOARD, Permission.DELETE_BOARD));
+    permissionPolicy = PermissionPolicy.create(boardId, creatorId, adminRole);
   }
 
   @Test

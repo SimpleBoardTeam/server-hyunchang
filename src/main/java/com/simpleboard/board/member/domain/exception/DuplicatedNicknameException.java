@@ -9,5 +9,4 @@ public class DuplicatedNicknameException extends ServiceException {
   public DuplicatedNicknameException() {
     super(ERROR_CODE);
   }
-
 }

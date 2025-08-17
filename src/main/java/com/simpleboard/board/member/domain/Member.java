@@ -6,21 +6,17 @@ import lombok.Getter;
 /**
  * <b>Member</b> Aggregate Root.
  *
- * <p>회원의 핵심 정보를 관리하는 Aggregate Root로,
- * 닉네임, 성별, 출생 연도, 가입 일시 및 탈퇴 여부를 포함하여
- * 회원 도메인의 주요 상태와 행위를 책임진다.</p>
+ * <p>회원의 핵심 정보를 관리하는 Aggregate Root로, 닉네임, 성별, 출생 연도, 가입 일시 및 탈퇴 여부를 포함하여 회원 도메인의 주요 상태와 행위를 책임진다.
  *
- * <p>
- * 포함 엔티티 및 값 객체:
+ * <p>포함 엔티티 및 값 객체:
+ *
  * <ul>
- *   <li>{@link Nickname}</li>
- *   <li>{@link Gender}</li>
- *   <li>{@link BirthYear}</li>
+ *   <li>{@link Nickname}
+ *   <li>{@link Gender}
+ *   <li>{@link BirthYear}
  * </ul>
- * </p>
  *
- * @domain aggregate-root
- * @See 연관 Service 이름
+ * @domain aggregate-root @See 연관 Service 이름
  * @since 1.0
  */
 @Getter
@@ -37,7 +33,8 @@ public class Member {
     this(memberId, nickname, gender, birthYear, LocalDateTime.now());
   }
 
-  public Member(Long memberId, Nickname nickname, String gender, String birthYear, LocalDateTime signUpDate) {
+  public Member(
+      Long memberId, Nickname nickname, String gender, String birthYear, LocalDateTime signUpDate) {
     this.memberId = memberId;
     this.nickname = nickname;
     this.gender = Gender.valueOf(gender);

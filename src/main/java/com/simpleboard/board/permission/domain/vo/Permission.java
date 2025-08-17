@@ -1,4 +1,4 @@
-package com.simpleboard.board.permission.domain;
+package com.simpleboard.board.permission.domain.vo;
 
 /**
  * <b>Permission</b> 열거형.

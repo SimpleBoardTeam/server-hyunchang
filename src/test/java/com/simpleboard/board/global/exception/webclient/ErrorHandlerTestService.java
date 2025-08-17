@@ -15,7 +15,8 @@ public class ErrorHandlerTestService {
   }
 
   public Mono<String> callExternal() {
-    return webClient.get()
+    return webClient
+        .get()
         .uri("/error-test")
         .retrieve()
         .onStatus(HttpStatusCode::is4xxClientError, WebClientErrorHandler::handle4xx)
