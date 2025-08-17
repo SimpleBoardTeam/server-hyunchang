@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class VisitorProvider {
 
-  private final String FINGERPRINT = "fingerprint";
-  private final String ROLE_GUEST = "ROLE_GUEST";
+  private static final String FINGERPRINT = "fingerprint";
+  private static final String ROLE_GUEST = "ROLE_GUEST";
 
   /**
    * <b>Visitor 생성 메서드</b>
@@ -31,7 +31,7 @@ public class VisitorProvider {
    * <p>Security context holder에서 Authentication 정보를 추출
    *
    * <ul>
-   *   <li>Fingerprint를 추춣하여 vid 주입
+   *   <li>Fingerprint를 추출하여 vid 주입
    *   <li>Member와 Guest를 구별해 Visitor 구성
    * </ul>
    *
@@ -79,7 +79,7 @@ public class VisitorProvider {
     if (onlyGuest) return false;
 
     // 그 외는 로그인 사용자로 간주
-    return false;
+    return true;
   }
 
   private Long tryParseLong(String s) {
