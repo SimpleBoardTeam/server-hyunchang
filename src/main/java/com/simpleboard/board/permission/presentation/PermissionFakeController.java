@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/test/permissions")
-@Profile("dev")
+@Profile("!prod")
 public class PermissionFakeController {
   private final PermissionCommandService permissionCommandService;
 
