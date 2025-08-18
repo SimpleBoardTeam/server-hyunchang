@@ -11,9 +11,18 @@ import com.simpleboard.board.board.domain.board.vo.BoardName;
  * @domain domain-service
  * @since 1.0
  */
-public interface BoardNameUniquenessChecker {
+public interface BoardNameUniquenessService {
   boolean isUnique(BoardName name);
 
+  /**
+   * 보드명의 유일성을 보장합니다.
+   *
+   * <p>보드명이 이미 존재할 경우 {@link DuplicateBoardNameException}을 발생시켜 도메인 규칙(보드명은 유일해야 함)을 강제합니다.
+   *
+   * @param name 유일성 검사를 수행할 보드명
+   * @throws DuplicateBoardNameException 보드명이 이미 존재하는 경우
+   * @since 1.0
+   */
   default void ensureUnique(BoardName name) {
     if (!isUnique(name)) {
       throw new DuplicateBoardNameException("이미 존재하는 보드명: " + name);
