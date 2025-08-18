@@ -9,6 +9,18 @@ import com.simpleboard.board.member.domain.repository.MemberRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+/**
+ * <p>회원 도메인에 대한 Command 유스케이스를 처리하는 Application Service.</p>
+ *
+ * <ul>
+ *   <li>회원 탈퇴 처리</li>
+ *   <li>회원 닉네임 변경 처리</li>
+ *   <li>처리 후 관련 도메인 이벤트 발행</li>
+ * </ul>
+ *
+ * @domain application-service
+ * @transactional
+ */
 @Service
 public class MemberCommandService {
 
