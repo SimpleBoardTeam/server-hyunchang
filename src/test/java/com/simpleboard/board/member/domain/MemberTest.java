@@ -31,7 +31,7 @@ class MemberTest {
     Long memberId = 1L;
     Nickname nickname = Nickname.of("nickname");
     Gender gender = Gender.MALE;
-    BirthYear birthYear = BirthYear.of("1998");
+    BirthYear birthYear = BirthYear.of(1998);
     LocalDateTime now = LocalDateTime.now();
 
     // when
@@ -62,7 +62,7 @@ class MemberTest {
             1L,
             Nickname.of("nickname"),
             Gender.FEMALE,
-            BirthYear.of("1998"),
+            BirthYear.of(1998),
             LocalDateTime.now(fixedClock),
             nicknamePolicy);
 
@@ -81,7 +81,7 @@ class MemberTest {
             1L,
             Nickname.of("nickname"),
             Gender.MALE,
-            BirthYear.of("1998"),
+            BirthYear.of(1998),
             LocalDateTime.now(),
             nicknamePolicy);
 
@@ -103,7 +103,7 @@ class MemberTest {
             1L,
             Nickname.of("nickname"),
             Gender.MALE,
-            BirthYear.of("1995"),
+            BirthYear.of(1995),
             LocalDateTime.now(),
             nicknamePolicy);
 
@@ -128,7 +128,7 @@ class MemberTest {
             1L,
             Nickname.of("nickname"),
             Gender.MALE,
-            BirthYear.of("1998"),
+            BirthYear.of(1998),
             LocalDateTime.now(),
             nicknamePolicy);
 

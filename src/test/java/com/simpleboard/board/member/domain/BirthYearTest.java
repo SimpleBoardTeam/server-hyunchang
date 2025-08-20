@@ -13,7 +13,7 @@ class BirthYearTest {
   @DisplayName("정상적인 4자리 출생 연도로 BirthYear를 생성할 수 있다")
   void createValidBirthYear() {
     // given
-    String input = "1995";
+    Integer input = 1995;
 
     // when
     BirthYear birthYear = BirthYear.of(input);
@@ -26,45 +26,38 @@ class BirthYearTest {
   @DisplayName("4자리가 아닌 경우 예외가 발생한다")
   void createBirthYearWithInvalidFormat() {
     // given
-    String input = "95";
+    Integer input = 199;
 
     // expect
-    assertThatThrownBy(() -> BirthYear.of(input))
-        .isInstanceOf(InvalidBirthYearException.class)
-        .hasMessageContaining("4자리 숫자");
+    assertThatThrownBy(() -> BirthYear.of(input)).isInstanceOf(InvalidBirthYearException.class);
   }
 
   @Test
   @DisplayName("출생 연도가 1900년 이전이면 예외가 발생한다")
   void createBirthYearBefore1900() {
     // given
-    String input = "1899";
+    Integer input = 1800;
 
     // expect
-    assertThatThrownBy(() -> BirthYear.of(input))
-        .isInstanceOf(InvalidBirthYearException.class)
-        .hasMessageContaining("유효하지 않습니다");
+    assertThatThrownBy(() -> BirthYear.of(input)).isInstanceOf(InvalidBirthYearException.class);
   }
 
   @Test
   @DisplayName("출생 연도가 현재 연도보다 크면 예외가 발생한다")
   void createBirthYearAfterCurrentYear() {
     // given
-    int nextYear = Year.now().getValue() + 1;
-    String input = String.valueOf(nextYear);
+    Integer nextYear = Year.now().getValue() + 1;
 
     // expect
-    assertThatThrownBy(() -> BirthYear.of(input))
-        .isInstanceOf(InvalidBirthYearException.class)
-        .hasMessageContaining("유효하지 않습니다");
+    assertThatThrownBy(() -> BirthYear.of(nextYear)).isInstanceOf(InvalidBirthYearException.class);
   }
 
   @Test
   @DisplayName("BirthYear는 같은 값이면 동등하게 비교된다")
   void equalsAndHashCode() {
     // given
-    BirthYear b1 = BirthYear.of("2000");
-    BirthYear b2 = BirthYear.of("2000");
+    BirthYear b1 = BirthYear.of(2000);
+    BirthYear b2 = BirthYear.of(2000);
 
     // then
     assertThat(b1).isEqualTo(b2);

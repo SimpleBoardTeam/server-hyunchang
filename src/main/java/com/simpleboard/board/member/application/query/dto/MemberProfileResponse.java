@@ -4,7 +4,7 @@ import com.simpleboard.board.member.domain.Gender;
 import java.time.LocalDateTime;
 
 public record MemberProfileResponse(
-    Long memberId, String nickname, Gender gender, String birthYear, LocalDateTime signUpDate) {
+    Long memberId, String nickname, Gender gender, Integer birthYear, LocalDateTime signUpDate) {
 
   public static MemberProfileResponse from(MemberFullView memberFullView) {
     return new MemberProfileResponse(
