@@ -1,14 +1,16 @@
 package com.simpleboard.board.member.application.query;
 
 import com.simpleboard.board.member.application.exception.MemberNotFoundException;
+import com.simpleboard.board.member.application.query.dto.MemberFullView;
 import com.simpleboard.board.member.application.query.dto.MemberProfileResponse;
 import com.simpleboard.board.member.application.query.repository.MemberQueryRepository;
-import com.simpleboard.board.member.domain.Member;
 
 /**
+ *
+ *
  * <h2>MemberQueryService</h2>
  *
- * <p>회원 도메인에 대한 조회 유스케이스를 처리하는 Application Service.</p>
+ * <p>회원 도메인에 대한 조회 유스케이스를 처리하는 Application Service.
  *
  * @domain application-service
  * @transactional
@@ -26,11 +28,9 @@ public class MemberQueryService {
   }
 
   public MemberProfileResponse getProfileById(Long memberId) {
-    Member member =
-        memberQueryRepository
-            .findById(memberId)
-            .orElseThrow(MemberNotFoundException::new);
+    MemberFullView memberFullView =
+        memberQueryRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-    return MemberProfileResponse.from(member);
+    return MemberProfileResponse.from(memberFullView);
   }
 }
