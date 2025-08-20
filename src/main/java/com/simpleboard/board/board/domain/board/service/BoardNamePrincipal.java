@@ -11,7 +11,7 @@ import com.simpleboard.board.board.domain.board.vo.BoardName;
  * @domain domain-service
  * @since 1.0
  */
-public interface BoardNameUniquenessService {
+public interface BoardNamePrincipal {
   boolean isUnique(BoardName name);
 
   /**

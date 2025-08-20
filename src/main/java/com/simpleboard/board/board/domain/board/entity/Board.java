@@ -1,6 +1,6 @@
 package com.simpleboard.board.board.domain.board.entity;
 
-import com.simpleboard.board.board.domain.board.service.BoardNameUniquenessService;
+import com.simpleboard.board.board.domain.board.service.BoardNamePrincipal;
 import com.simpleboard.board.board.domain.board.vo.BoardName;
 import com.simpleboard.board.board.domain.board.vo.Manager;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
@@ -38,7 +38,7 @@ public class Board {
   }
 
   public static Board create(
-      BoardName boardName, Visitor visitor, BoardNameUniquenessService checker) {
+      BoardName boardName, Visitor visitor, BoardNamePrincipal checker) {
     checker.ensureUnique(boardName);
     return new Board(null, boardName, Manager.of(visitor.memberId()), LocalDateTime.now());
   }
