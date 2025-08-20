@@ -1,6 +1,6 @@
 package com.simpleboard.board.member.domain;
 
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
 import lombok.Getter;
 
 /**
@@ -12,21 +12,35 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
-@EqualsAndHashCode
 public class Nickname {
 
-  private final String nickname;
+  private final String value;
 
-  private Nickname(String nickname) {
-    this.nickname = nickname;
+  private Nickname(String value) {
+    if (value == null || value.isBlank()) {
+      throw new IllegalArgumentException("닉네임은 비어있을 수 없습니다.");
+    }
+    this.value = value.trim();
   }
 
-  public static Nickname of(String rawNickname) {
-    return new Nickname(rawNickname);
+  public static Nickname of(String raw) {
+    return new Nickname(raw);
   }
 
   @Override
   public String toString() {
-    return nickname;
+    return value;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Nickname nickname)) return false;
+    return Objects.equals(value, nickname.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }
