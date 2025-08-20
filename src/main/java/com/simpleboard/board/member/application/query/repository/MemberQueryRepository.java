@@ -15,5 +15,5 @@ import java.util.Optional;
 public interface MemberQueryRepository {
   boolean existsByNickname(String nickname);
 
-  Optional<MemberFullView> findById(Long memberId);
+  Optional<MemberFullView> findFullById(Long memberId);
 }

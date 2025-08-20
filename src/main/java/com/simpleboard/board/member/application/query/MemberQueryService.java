@@ -4,6 +4,8 @@ import com.simpleboard.board.member.application.exception.MemberNotFoundExceptio
 import com.simpleboard.board.member.application.query.dto.MemberFullView;
 import com.simpleboard.board.member.application.query.dto.MemberProfileResponse;
 import com.simpleboard.board.member.application.query.repository.MemberQueryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -15,13 +17,11 @@ import com.simpleboard.board.member.application.query.repository.MemberQueryRepo
  * @domain application-service
  * @transactional
  */
+@Service
+@RequiredArgsConstructor
 public class MemberQueryService {
 
   private final MemberQueryRepository memberQueryRepository;
-
-  public MemberQueryService(MemberQueryRepository memberQueryRepository) {
-    this.memberQueryRepository = memberQueryRepository;
-  }
 
   public Boolean existsByNickname(String nickname) {
     return memberQueryRepository.existsByNickname(nickname);
@@ -29,7 +29,7 @@ public class MemberQueryService {
 
   public MemberProfileResponse getProfileById(Long memberId) {
     MemberFullView memberFullView =
-        memberQueryRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        memberQueryRepository.findFullById(memberId).orElseThrow(MemberNotFoundException::new);
 
     return MemberProfileResponse.from(memberFullView);
   }
