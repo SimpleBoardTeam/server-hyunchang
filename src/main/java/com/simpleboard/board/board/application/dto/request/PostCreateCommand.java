@@ -13,7 +13,6 @@ import lombok.Builder;
 @Builder
 public record PostCreateCommand(
     Long boardId,
-    String boardName,
     String title,
     String content,
     String hashTags,

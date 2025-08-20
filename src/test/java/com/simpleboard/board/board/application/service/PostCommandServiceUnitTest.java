@@ -212,7 +212,6 @@ class PostCommandServiceUnitTest {
     PostCreateCommand.PostCreateCommandBuilder builder =
         PostCreateCommand.builder()
             .boardId(1L)
-            .boardName("first board")
             .title("title")
             .content("content")
             .hashTags("t1 t2 t3");

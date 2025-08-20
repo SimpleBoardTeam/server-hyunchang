@@ -8,8 +8,8 @@ package com.simpleboard.board.board.domain.post.vo;
  * @domain value-object
  * @since 1.0
  */
-public record BoardVO(Long boardId, String boardName) {
-  public static BoardVO of(Long boardId, String boardName) {
-    return new BoardVO(boardId, boardName);
+public record BoardVO(Long boardId) {
+  public static BoardVO of(Long boardId) {
+    return new BoardVO(boardId);
   }
 }

@@ -5,4 +5,4 @@ import lombok.Builder;
 
 @Embeddable
 @Builder
-public record BoardEmbed(Long boardId, String boardName) {}
+public record BoardEmbed(Long boardId) {}

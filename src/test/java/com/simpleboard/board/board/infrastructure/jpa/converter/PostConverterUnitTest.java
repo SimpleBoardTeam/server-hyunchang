@@ -107,7 +107,6 @@ class PostConverterUnitTest {
 
   private void checkCommonFields(PostEntity jpaPost, Post domainPost) {
     assertThat(jpaPost.getBoard().boardId()).isEqualTo(domainPost.getBoard().boardId());
-    assertThat(jpaPost.getBoard().boardName()).isEqualTo(domainPost.getBoard().boardName());
     assertThat(jpaPost.getTitle()).isEqualTo(domainPost.getTitle());
     assertThat(jpaPost.getContent()).isEqualTo(domainPost.getContent());
     assertThat(jpaPost.getViewCount()).isEqualTo(domainPost.getViewCount());
