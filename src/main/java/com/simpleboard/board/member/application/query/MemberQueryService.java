@@ -23,7 +23,7 @@ public class MemberQueryService {
 
   private final MemberQueryRepository memberQueryRepository;
 
-  public Boolean existsByNickname(String nickname) {
+  public boolean isUserExistsByNickname(String nickname) {
     return memberQueryRepository.existsByNickname(nickname);
   }
 
