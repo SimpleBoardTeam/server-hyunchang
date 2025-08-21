@@ -42,4 +42,9 @@ public class Board {
     checker.ensureUnique(boardName);
     return new Board(null, boardName, Manager.of(visitor.memberId()), LocalDateTime.now());
   }
+
+  public static Board reconstruct(
+      Long boardId, BoardName boardName, Manager manager, LocalDateTime createdAt) {
+    return new Board(boardId, boardName, manager, createdAt);
+  }
 }
