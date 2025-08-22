@@ -12,3 +12,8 @@ app:
       nickname-minutes: 15
       email-minutes: 5
       password-minutes: 5
+
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
