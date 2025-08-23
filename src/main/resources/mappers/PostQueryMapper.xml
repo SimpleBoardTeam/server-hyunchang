@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simpleboard.board.board.infrastructure.mybatis.mapper.PostQueryMapper">
+
+    <select id="getPostDetails"
+            parameterType="com.simpleboard.board.board.infrastructure.mybatis.mapper.PostDetailsCondition"
+            resultType="com.simpleboard.board.board.infrastructure.mybatis.mapper.PostDetailsData">
+        SELECT  p.POST_ID        AS postId,
+                p.POST_TYPE      AS postType,
+                p.TITLE          AS title,
+                p.CONTENT        AS content,
+                p.CREATED_AT     AS createdAt,
+                p.UPDATED_AT     AS updatedAt,
+                p.VIEW_COUNT     AS viewCount,
+               COUNT(DISTINCT pl.POSTLIKE_ID) as likeCount,
+               EXISTS(SELECT 1
+                      FROM POST_LIKE pl2
+                      WHERE pl2.POST_ID = #{postId}
+                      <choose>
+                          <when test="visitorType.name() == 'GUEST'">
+                          AND pl2.vid = #{vid}
+                          </when>
+                          <when test="visitorType.name() == 'MEMBER'">
+                              AND pl2.likedMemberId = #{memberId}
+                          </when>
+                          <otherwise>
+                              AND 0
+                          </otherwise>
+                      </choose>
+                      ) as isLiked
+        FROM POST p
+        LEFT JOIN POST_LIKE pl ON p.POST_ID = pl.POST_ID
+        WHERE p.POST_ID = #{postId}
+        GROUP BY p.POST_ID, p.POST_TYPE, p.TITLE, p.CONTENT, p.CREATED_AT, p.UPDATED_AT, p.VIEW_COUNT
+    </select>
+
+    <select id="getPostHashTags"
+            parameterType="Long"
+            resultType="String">
+        SELECT HASHTAG.tag
+        FROM POST_HASHTAG
+        LEFT JOIN HASHTAG ON HASHTAG.HASHTAG_ID = POST_HASHTAG.HASHTAG_ID
+        WHERE POST_HASHTAG.POST_ID = #{postId}
+    </select>
+</mapper>
