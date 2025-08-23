@@ -184,10 +184,20 @@ public class TokenDomainService {
     TokenClaims claims =
         tokenProvider.verifyAndParseToken(refreshTokenRaw, Date.from(clockManager.now()));
 
-    if (!claims.tokenPurpose().equals(TokenPurpose.REFRESH))
-      throw new RefreshTokenEnrollBlacklistException();
-    if (claims.isExpired(clockManager.now())) throw new RefreshTokenInvalidException();
-    blacklistRepository.save(claims.tokenId(), claims.expiredAt());
+    blacklist(claims);
+  }
+
+  public void blockTokenUser(String refreshTokenRaw){
+    TokenClaims claims =
+            tokenProvider.verifyAndParseToken(refreshTokenRaw, Date.from(clockManager.now()));
+
+    // enroll token on blacklist
+    blacklist(claims);
+
+    // update member's uuid
+    String uuid = claims.subject();
+    Long memberId = uuidRepository.getMemberId(uuid).orElseThrow(TokenUserBlockedException::new);
+    uuidRepository.updateUUID(memberId);
   }
 
   private TokenClaims createAccessClaims(String memberUUID, Role role, Instant now) {
@@ -234,6 +244,13 @@ public class TokenDomainService {
         tokenProvider.issueToken(createRefreshClaims(memberUUID, role, refreshTokenIssueTime));
 
     return TokenPair.builder().access(accessToken).refresh(newRefreshToken).build();
+  }
+
+  private void blacklist(TokenClaims claims) {
+    if (!claims.tokenPurpose().equals(TokenPurpose.REFRESH))
+      throw new RefreshTokenEnrollBlacklistException();
+    if (claims.isExpired(clockManager.now())) throw new RefreshTokenInvalidException();
+    blacklistRepository.save(claims.tokenId(), claims.expiredAt());
   }
 
   private static LoginTokenInfo createLoginTokenInfo(TokenClaims tokenClaims, Long memberId) {
