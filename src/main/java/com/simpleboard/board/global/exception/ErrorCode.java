@@ -44,6 +44,8 @@ public enum ErrorCode {
 
   // Auth
   USER_DEACTIVATED(HttpStatus.BAD_REQUEST, "400_USER_DEACTIVATED", "유저의 계정이 비활성화 상태입니다."),
+  LOGIN_FAIL(HttpStatus.UNAUTHORIZED, "401_LOGIN_FAIIL", "로그인에 실패하였습니다."),
+  ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "401_ACCESS_TOKEN_EXPIRED", "Access 토큰이 만료되었습니다."),
   TOKEN_BLOCKED(HttpStatus.UNAUTHORIZED, "401_TOKEN_BLOCKED", "비활성화된 토큰입니다."),
   TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "401_TOKEN_EXPIRED", "만료된 토큰입니다."),
   TOKEN_PARSE_FAIL(HttpStatus.BAD_REQUEST, "400_TOKEN_ERROR", "유효하지 않은 토큰입니다."),
@@ -61,6 +63,8 @@ public enum ErrorCode {
   INVALID_INPUT(HttpStatus.BAD_REQUEST, "400_INVALID_INPUT", "입력 값이 올바르지 않습니다."),
   MISSING_PARAMETER(HttpStatus.BAD_REQUEST, "400_MISSING_PARAM", "필수 파라미터가 누락되었습니다."),
   VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "400_VALIDATION_FAIL", "유효성 검증에 실패했습니다."),
+
+  FORBIDDEN(HttpStatus.FORBIDDEN, "403_FORBIDDEN", "권한이 없습니다."),
 
   API_NOT_FOUND(HttpStatus.NOT_FOUND, "404_API_NOT_FOUND", "요청한 API를 찾을 수 없습니다."),
   NO_SUCH_RESOURCE(HttpStatus.NOT_FOUND, "404_API_NOT_FOUND", "요청한 리소스를 찾을 수 없습니다."),

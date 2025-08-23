@@ -1,5 +1,7 @@
-package com.simpleboard.board.global.config;
+package com.simpleboard.board.auth.config;
 
+import com.simpleboard.board.auth.presentation.exception.handler.SecurityAccessDeniedHandler;
+import com.simpleboard.board.auth.presentation.exception.handler.SecurityFilterEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +23,11 @@ public class SecurityConfig {
                     .permitAll())
         .formLogin(form -> form.disable())
         .httpBasic(basic -> basic.disable());
+
+    http.exceptionHandling(
+        ex ->
+            ex.authenticationEntryPoint(new SecurityFilterEntryPoint())
+                .accessDeniedHandler(new SecurityAccessDeniedHandler()));
 
     return http.build();
   }
