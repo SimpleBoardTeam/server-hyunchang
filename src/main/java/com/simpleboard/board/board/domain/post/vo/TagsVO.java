@@ -4,6 +4,7 @@ import com.simpleboard.board.board.domain.post.entity.HashTag;
 import com.simpleboard.board.board.domain.post.exception.HashTagsSizeException;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Builder;
 
 /**
  * <b>Tags</b> Value Object.
@@ -13,6 +14,7 @@ import java.util.List;
  * @domain value-object
  * @since 1.0
  */
+@Builder
 public record TagsVO(List<HashTag> tags) {
 
   /**

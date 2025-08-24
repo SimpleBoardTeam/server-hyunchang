@@ -2,7 +2,7 @@ package com.simpleboard.board.board.domain.testUtil;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.common.vo.VisitorType;
-import com.simpleboard.board.board.domain.post.dto.CreateParams;
+import com.simpleboard.board.board.domain.post.dto.PostCreateParams;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
 
 /**
@@ -105,8 +105,8 @@ public class PostCreateParamsBuilder {
     return this;
   }
 
-  public CreateParams build() {
-    return new CreateParams(
+  public PostCreateParams build() {
+    return new PostCreateParams(
         boardId, boardName, title, content, hashTags, type, authorId, nickname, password);
   }
 }

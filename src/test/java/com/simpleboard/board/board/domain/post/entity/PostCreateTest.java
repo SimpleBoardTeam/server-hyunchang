@@ -3,7 +3,7 @@ package com.simpleboard.board.board.domain.post.entity;
 import static org.assertj.core.api.Assertions.*;
 
 import com.simpleboard.board.board.domain.common.vo.Visitor;
-import com.simpleboard.board.board.domain.post.dto.CreateParams;
+import com.simpleboard.board.board.domain.post.dto.PostCreateParams;
 import com.simpleboard.board.board.domain.testUtil.PostCreateParamsBuilder;
 import com.simpleboard.board.board.domain.testUtil.VisitorUtil;
 import java.util.List;
@@ -25,7 +25,7 @@ class PostCreateTest {
   void guestPost_Type_Test() {
     // given
     Visitor guestVisitor = VisitorUtil.guest("vid");
-    CreateParams params = PostCreateParamsBuilder.builder(guestVisitor).build();
+    PostCreateParams params = PostCreateParamsBuilder.builder(guestVisitor).build();
 
     // when
     Post post = Post.write(params);
@@ -36,7 +36,6 @@ class PostCreateTest {
     assertThat(post).isInstanceOf(GuestPost.class);
 
     assertThat(post.getBoard().boardId()).isEqualTo(params.boardId());
-    assertThat(post.getBoard().boardName()).isEqualTo(params.boardName());
     assertThat(post.getTitle()).isEqualTo(params.title());
     assertThat(post.getContent()).isEqualTo(params.content());
     assertThat(post.getIsDeleted()).isFalse();
@@ -50,7 +49,7 @@ class PostCreateTest {
   void memberPost_Type_Test() {
     // given
     Visitor memberVisitor = VisitorUtil.member("vid", memberId);
-    CreateParams params = PostCreateParamsBuilder.builder(memberVisitor).build();
+    PostCreateParams params = PostCreateParamsBuilder.builder(memberVisitor).build();
 
     // when
     Post post = Post.write(params);
@@ -61,7 +60,6 @@ class PostCreateTest {
     assertThat(post).isInstanceOf(MemberPost.class);
 
     assertThat(post.getBoard().boardId()).isEqualTo(params.boardId());
-    assertThat(post.getBoard().boardName()).isEqualTo(params.boardName());
     assertThat(post.getTitle()).isEqualTo(params.title());
     assertThat(post.getContent()).isEqualTo(params.content());
     assertThat(post.getIsDeleted()).isFalse();
@@ -74,7 +72,7 @@ class PostCreateTest {
   void hashTag_Create_Test() {
     List<String> tagList = List.of("tag1", "tag2", "tag3", "tag4", "tag5");
     Visitor visitor = VisitorUtil.guest("vid");
-    CreateParams params =
+    PostCreateParams params =
         PostCreateParamsBuilder.builder(visitor).hashTags("tag1 tag2,tag3#tag4 # # tag5").build();
 
     List<HashTag> tags = Post.write(params).getTags().tags();
