@@ -3,7 +3,7 @@ package com.simpleboard.board.auth.application.service;
 import com.simpleboard.board.auth.application.exception.UserDisabledException;
 import com.simpleboard.board.auth.application.exception.UserNotFoundException;
 import com.simpleboard.board.auth.domain.auth.entity.UserAuth;
-import com.simpleboard.board.auth.domain.auth.repository.AuthCommandRepository;
+import com.simpleboard.board.auth.domain.auth.repository.UserAuthCommandRepository;
 import com.simpleboard.board.auth.domain.auth.vo.UserState;
 import com.simpleboard.board.auth.domain.common.vo.Role;
 import com.simpleboard.board.auth.domain.token.dto.request.LoginTokenIssueParam;
@@ -20,13 +20,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthPrincipalServiceImpl implements AuthPrincipalService {
   private final TokenDomainService tokenDomainService;
-  private final AuthCommandRepository authCommandRepository;
+  private final UserAuthCommandRepository userAuthCommandRepository;
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
     UserAuth userAuth =
-        authCommandRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        userAuthCommandRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     validateUserAuth(userAuth);
     return new AuthPrincipal(userAuth);
@@ -35,7 +35,7 @@ public class AuthPrincipalServiceImpl implements AuthPrincipalService {
   @Override
   public UserDetails loadUserByOAuthId(String oAuthId) {
     UserAuth userAuth =
-        authCommandRepository.findByOAuthId(oAuthId).orElseThrow(UserNotFoundException::new);
+        userAuthCommandRepository.findByOAuthId(oAuthId).orElseThrow(UserNotFoundException::new);
 
     validateUserAuth(userAuth);
     return new AuthPrincipal(userAuth);
@@ -48,7 +48,7 @@ public class AuthPrincipalServiceImpl implements AuthPrincipalService {
       throw new IllegalArgumentException("Invalid token");
 
     UserAuth userAuth =
-        authCommandRepository
+        userAuthCommandRepository
             .findById(tokenInfo.memberId())
             .orElseThrow(UserNotFoundException::new);
 
