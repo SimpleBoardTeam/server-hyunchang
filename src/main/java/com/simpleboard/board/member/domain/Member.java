@@ -16,7 +16,7 @@ import lombok.Getter;
  *   <li>{@link BirthYear}
  * </ul>
  *
- * @domain aggregate-root @See 연관 Service 이름
+ * @domain aggregate-root
  * @since 1.0
  */
 @Getter
@@ -29,25 +29,50 @@ public class Member {
   private final LocalDateTime signUpDate;
   private boolean isWithdrawn;
 
-  public Member(Long memberId, Nickname nickname, String gender, String birthYear) {
-    this(memberId, nickname, gender, birthYear, LocalDateTime.now());
-  }
-
-  public Member(
-      Long memberId, Nickname nickname, String gender, String birthYear, LocalDateTime signUpDate) {
+  private Member(
+      Long memberId,
+      Nickname nickname,
+      Gender gender,
+      BirthYear birthYear,
+      LocalDateTime signUpDate) {
     this.memberId = memberId;
     this.nickname = nickname;
-    this.gender = Gender.valueOf(gender);
-    this.birthYear = BirthYear.of(birthYear);
+    this.gender = gender;
+    this.birthYear = birthYear;
     this.signUpDate = signUpDate;
     this.isWithdrawn = false;
+  }
+
+  /** signUpDate를 명시적으로 넣는 경우 */
+  public static Member create(
+      Long memberId,
+      Nickname nickname,
+      Gender gender,
+      BirthYear birthYear,
+      LocalDateTime signUpDate,
+      NicknamePolicy nicknamePolicy) {
+
+    nicknamePolicy.ensureUnique(nickname);
+    return new Member(memberId, nickname, gender, birthYear, signUpDate);
+  }
+
+  /** signUpDate를 지정하지 않으면 now()를 기본으로 설정 */
+  public static Member create(
+      Long memberId,
+      Nickname nickname,
+      Gender gender,
+      BirthYear birthYear,
+      NicknamePolicy nicknamePolicy) {
+
+    return create(memberId, nickname, gender, birthYear, LocalDateTime.now(), nicknamePolicy);
   }
 
   public void withdraw() {
     this.isWithdrawn = true;
   }
 
-  public void updateNickname(String rawNickname) {
-    this.nickname = Nickname.of(rawNickname);
+  public void updateNickname(Nickname newNickname, NicknamePolicy nicknamePolicy) {
+    nicknamePolicy.ensureUnique(newNickname);
+    this.nickname = newNickname;
   }
 }
