@@ -3,6 +3,7 @@ package com.simpleboard.board.auth.infrastructure.jpa.entity;
 import com.simpleboard.board.auth.domain.auth.vo.RegisterType;
 import com.simpleboard.board.auth.domain.auth.vo.UserState;
 import com.simpleboard.board.auth.domain.common.vo.Role;
+import com.simpleboard.board.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class UserAuthEntity {
+public abstract class UserAuthEntity extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
