@@ -43,4 +43,75 @@
         LEFT JOIN HASHTAG ON HASHTAG.HASHTAG_ID = POST_HASHTAG.HASHTAG_ID
         WHERE POST_HASHTAG.POST_ID = #{postId}
     </select>
+
+    <select id="getPostList"
+            parameterType="com.simpleboard.board.board.infrastructure.mybatis.mapper.PostListCondition"
+            resultType="com.simpleboard.board.board.infrastructure.mybatis.mapper.PostSummaryData">
+
+        SELECT p.POST_ID        AS postId,
+               p.POST_TYPE      AS postType,
+               p.TITLE          AS title,
+               p.MEMBER_ID      AS authorId,
+               p.NICKNAME       AS nickname,
+               p.VIEW_COUNT     AS views,
+               COALESCE(cc.cnt, 0)  AS commentCount,
+               COALESCE(lc.cnt, 0)  AS likeCount,
+               p.CREATED_AT     AS createdAt
+        FROM POST p
+
+        <!-- comment count 사전 집계 -->
+        LEFT JOIN (SELECT POST_ID, COUNT(*) AS cnt
+                   FROM COMMENT
+                   WHERE COMMENT_STATE = 'ACTIVE'
+                   GROUP BY POST_ID) cc
+            ON cc.POST_ID = p.POST_ID
+
+        <!-- like count 사전 집계 -->
+        LEFT JOIN (SELECT POST_ID, COUNT(*) AS cnt
+                   FROM POST_LIKE
+                   GROUP BY POST_ID) lc
+            ON lc.POST_ID = p.POST_ID
+
+        <!-- HashTag 검색 -->
+        <if test="searchType == 'HASHTAG'">
+            INNER JOIN POST_HASHTAG ph ON ph.POST_ID = p.POST_ID
+            INNER JOIN HASHTAG h ON h.HASHTAG_ID = ph.HASHTAG_ID AND h.TAG = #{keyword}
+        </if>
+
+        WHERE p.IS_DELETED = false
+        <choose>
+            <when test="searchType == 'TITLE'">
+                AND p.TITLE LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="searchType == 'NICKNAME'">
+                AND p.NICKNAME LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="searchType == 'CONTENT'">
+                AND p.CONTENT LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+        </choose>
+
+        ORDER BY p.CREATED_AT DESC
+        LIMIT #{limit}
+        OFFSET #{offset}
+
+    </select>
+
+    <select id="countPosts"
+            parameterType="com.simpleboard.board.board.infrastructure.mybatis.mapper.PostListCondition"
+            resultType="Long">
+        SELECT COUNT(*)
+        FROM POST p
+        WHERE p.BOARD_ID = #{boardId} AND p.IS_DELETED = false
+    </select>
+
+    <select id="countCommentsOfBoard"
+            parameterType="Long"
+            resultType="Long">
+        SELECT COUNT(*)
+        FROM POST p
+                 JOIN COMMENT c ON c.POST_ID = p.POST_ID
+        WHERE p.BOARD_ID = #{boardId}
+          AND c.COMMENT_STATE = 'ACTIVE';
+    </select>
 </mapper>
