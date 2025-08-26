@@ -10,7 +10,7 @@ import java.util.Optional;
  *
  * @domain repository-port
  */
-public interface AuthCommandRepository {
+public interface UserAuthCommandRepository {
   UserAuth save(UserAuth userAuth);
 
   Optional<UserAuth> findById(Long id);
