@@ -13,9 +13,10 @@ import lombok.Builder;
  */
 @Builder
 public record CommentDetailResult(
+    Boolean isDeleted,
     Long commentId,
     Long parentId,
-    CommentType commentType, // soft deleted 시  null
+    CommentType commentType,
     String content,
     String nickname,
     LocalDateTime createdAt,

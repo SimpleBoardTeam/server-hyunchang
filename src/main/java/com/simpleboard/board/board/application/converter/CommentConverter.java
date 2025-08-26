@@ -35,7 +35,7 @@ public class CommentConverter {
           .commentId(comment.getId())
           .parentId(comment.getParentId())
           .createdAt(comment.getCreatedAt())
-          .commentType(null)
+          .isDeleted(true)
           .build();
     }
     // COMMENT_ACTIVATE_POST_DELETED, COMMENT_DELETED_POST_DELETED 상태시 외부 조회 불가
@@ -47,7 +47,8 @@ public class CommentConverter {
             .parentId(comment.getParentId())
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())
-            .updatedAt(comment.getUpdatedAt());
+            .updatedAt(comment.getUpdatedAt())
+            .isDeleted(false);
     if (comment instanceof MemberComment) {
       builder.commentType(CommentType.MEMBER).nickname(nickname);
     } else if (comment instanceof GuestComment) {
