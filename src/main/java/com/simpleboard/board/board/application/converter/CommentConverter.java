@@ -54,7 +54,7 @@ public class CommentConverter {
     } else if (comment instanceof GuestComment) {
       builder.commentType(CommentType.GUEST).nickname(((GuestComment) comment).getNickname());
     } else {
-      return null;
+      throw new IllegalArgumentException();
     }
     return builder.build();
   }
