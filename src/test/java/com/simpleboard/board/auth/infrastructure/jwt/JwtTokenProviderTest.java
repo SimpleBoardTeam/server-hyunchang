@@ -177,31 +177,6 @@ class JwtTokenProviderTest {
     }
 
     @Test
-    @DisplayName("발급자(issuer) 불일치 시 TokenParseException 발생")
-    void verifyWrongIssuer_ThrowsTokenParseException_Test() {
-        Instant now = Instant.now();
-        Instant expiry = now.plus(Duration.ofMinutes(5));
-
-        TokenClaims claimsOtherIssuer =
-                TokenClaims.builder()
-                        .tokenId("iss-id")
-                        .tokenPurpose(TokenPurpose.ACCESS)
-                        .role(Role.MEMBER)
-                        .subject("sub-iss")
-                        .audience("aud-iss")
-                        .issuer("other-issuer") // 토큰은 other-issuer로 발급
-                        .issueAt(now)
-                        .expiredAt(expiry)
-                        .build();
-
-        String raw = provider.issueToken(claimsOtherIssuer).raw();
-
-        // parser는 requireIssuer(issuer)를 강제 → 파싱 실패는 TokenParseException
-        assertThatThrownBy(() -> provider.verifyAndParseToken(raw, Date.from(now)))
-                .isInstanceOf(TokenParseException.class);
-    }
-
-    @Test
     @DisplayName("다른 secret으로 서명된 토큰 → TokenParseException")
     void verifyWrongSecret_ThrowsTokenParseException_Test() {
         Instant now = Instant.now();

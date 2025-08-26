@@ -51,7 +51,7 @@ public class JwtTokenProvider implements TokenProvider {
             .header()
             .type(Header.JWT_TYPE)
             .and()
-            .issuer(claims.issuer())
+            .issuer(issuer)
             .subject(claims.subject())
             .audience()
             .add(claims.audience())
