@@ -38,6 +38,7 @@ public class CommentConverter {
           .commentType(null)
           .build();
     }
+    // COMMENT_ACTIVATE_POST_DELETED, COMMENT_DELETED_POST_DELETED 상태시 외부 조회 불가
     if (comment.getCommentState() != CommentState.ACTIVATE) throw new CommentNotFoundException();
 
     CommentDetailResultBuilder builder =
