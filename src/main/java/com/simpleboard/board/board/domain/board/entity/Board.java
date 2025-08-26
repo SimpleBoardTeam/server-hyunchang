@@ -37,8 +37,7 @@ public class Board {
     this.createdAt = createdAt;
   }
 
-  public static Board create(
-      BoardName boardName, Visitor visitor, BoardNamePrincipal checker) {
+  public static Board create(BoardName boardName, Visitor visitor, BoardNamePrincipal checker) {
     checker.ensureUnique(boardName);
     return new Board(null, boardName, Manager.of(visitor.memberId()), LocalDateTime.now());
   }
