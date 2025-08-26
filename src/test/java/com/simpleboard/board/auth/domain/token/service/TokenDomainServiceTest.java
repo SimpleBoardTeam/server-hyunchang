@@ -56,7 +56,6 @@ class TokenDomainServiceTest {
             idGenerator,
             blacklistRepository,
             uuidRepository,
-            "issuer",
             "accessAudience",
             "refreshAudience");
   }

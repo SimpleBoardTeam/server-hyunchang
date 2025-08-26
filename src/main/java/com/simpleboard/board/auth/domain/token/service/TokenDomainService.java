@@ -40,7 +40,6 @@ public class TokenDomainService {
   private final TokenBlacklistRepository blacklistRepository;
   private final MemberUUIDRepository uuidRepository;
 
-  private final String issuer;
   private final String accessAudience;
   private final String refreshAudience;
 
@@ -51,7 +50,6 @@ public class TokenDomainService {
       IdGenerator idGenerator,
       TokenBlacklistRepository blacklistRepository,
       MemberUUIDRepository uuidRepository,
-      @Value("${app.auth.issuer}") String issuer,
       @Value("${app.auth.audience-access}") String accessAudience,
       @Value("${app.auth.audience-refresh}") String refreshAudience) {
     this.tokenProvider = tokenProvider;
@@ -60,7 +58,6 @@ public class TokenDomainService {
     this.idGenerator = idGenerator;
     this.blacklistRepository = blacklistRepository;
     this.uuidRepository = uuidRepository;
-    this.issuer = issuer;
     this.accessAudience = accessAudience;
     this.refreshAudience = refreshAudience;
   }
@@ -200,7 +197,6 @@ public class TokenDomainService {
         .subject(memberUUID)
         .role(role)
         .audience(accessAudience)
-        .issuer(issuer)
         .issueAt(now)
         .expiredAt(now.plus(ttlPolicy.accessTtlFor(role)))
         .build();
@@ -213,7 +209,6 @@ public class TokenDomainService {
         .subject(memberUUID)
         .role(role)
         .audience(refreshAudience)
-        .issuer(issuer)
         .issueAt(now)
         .expiredAt(now.plus(ttlPolicy.refreshTtlFor(role)))
         .build();
@@ -226,7 +221,6 @@ public class TokenDomainService {
         .verifyPurpose(purpose)
         .subject(subject)
         .audience(accessAudience)
-        .issuer(issuer)
         .issueAt(now)
         .expiredAt(now.plus(ttlPolicy.verifyTtlFor(purpose)))
         .build();
