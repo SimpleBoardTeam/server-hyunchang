@@ -21,6 +21,7 @@ public enum ErrorCode {
   POST_HASHTAG_SIZE_EXCEED(
       HttpStatus.BAD_REQUEST, "400_HASHTAG_SIZE_TOO_LARGE", "Hashtag의 개수가 너무 많습니다."),
   POST_NOT_FOUNT(HttpStatus.NOT_FOUND, "404_POST_NOT_FOUND", "Post를 찾을 수 없습니다."),
+  BOARDNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "404_BOARDNAME_NOT_FOUND", "존재하지 않는 board name입니다."),
 
   // Comment
   COMMENT_MEMBER_NO_PERMISSION(
