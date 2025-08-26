@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * <p>domain 로직의 결과를 result로 변환
  */
 @Component
-public class CommentConverter {
+public class CommentResultConverter {
 
   /**
    * <b>단일 Comment 상세조회 DTO 변환 메서드</b>

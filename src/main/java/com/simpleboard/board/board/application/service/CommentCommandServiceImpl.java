@@ -1,7 +1,7 @@
 package com.simpleboard.board.board.application.service;
 
 import com.simpleboard.board.board.application.converter.CommentCommandParamsConverter;
-import com.simpleboard.board.board.application.converter.CommentConverter;
+import com.simpleboard.board.board.application.converter.CommentResultConverter;
 import com.simpleboard.board.board.application.dto.request.CommentCreateCommand;
 import com.simpleboard.board.board.application.dto.request.CommentDeleteCommand;
 import com.simpleboard.board.board.application.dto.response.CommentDetailResult;
@@ -28,7 +28,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
   private final PostCommandRepository postCommandRepository;
   private final CommentCommandParamsConverter commandParamsConverter;
-  private final CommentConverter commentConverter;
+  private final CommentResultConverter commentResultConverter;
   private final CommentCommandRepository commentCommandRepository;
   private final MemberFetchService memberFetchService;
 
@@ -42,9 +42,9 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     if (save instanceof MemberComment) {
       String nickname = memberFetchService.fetchNickname(((MemberComment) save).getWriterId());
-      return commentConverter.toCommentDetailResult(save, nickname);
+      return commentResultConverter.toCommentDetailResult(save, nickname);
     } else if (save instanceof GuestComment) {
-      return commentConverter.toCommentDetailResult(save, null);
+      return commentResultConverter.toCommentDetailResult(save, null);
     }
 
     return null;
@@ -61,6 +61,6 @@ public class CommentCommandServiceImpl implements CommentCommandService {
     // 삭제 이벤트 발행
     // TODO: CommentDeletedEvent
     // 삭제 결과 반환
-    return commentConverter.toCommentDetailResult(saved, null);
+    return commentResultConverter.toCommentDetailResult(saved, null);
   }
 }

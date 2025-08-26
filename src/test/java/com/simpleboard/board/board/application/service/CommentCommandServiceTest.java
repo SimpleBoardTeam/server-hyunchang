@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
 import com.simpleboard.board.board.application.converter.CommentCommandParamsConverter;
-import com.simpleboard.board.board.application.converter.CommentConverter;
+import com.simpleboard.board.board.application.converter.CommentResultConverter;
 import com.simpleboard.board.board.application.dto.request.CommentCreateCommand;
 import com.simpleboard.board.board.application.dto.request.CommentDeleteCommand;
 import com.simpleboard.board.board.application.dto.response.CommentDetailResult;
@@ -21,7 +21,6 @@ import com.simpleboard.board.board.domain.comment.vo.CommentState;
 import com.simpleboard.board.board.domain.comment.vo.CommentType;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.post.entity.GuestPost;
-import com.simpleboard.board.board.domain.post.entity.Post;
 import com.simpleboard.board.board.domain.post.repository.PostCommandRepository;
 import com.simpleboard.board.board.domain.testUtil.VisitorUtil;
 import java.time.LocalDateTime;
@@ -54,13 +53,13 @@ class CommentCommandServiceTest {
 
   /* ========= 실제 구현체 ========= */
   private final CommentCommandParamsConverter paramsConverter = new CommentCommandParamsConverter();
-  private final CommentConverter commentConverter = new CommentConverter();
+  private final CommentResultConverter commentResultConverter = new CommentResultConverter();
 
   private CommentCommandService service =
       new CommentCommandServiceImpl(
               postCommandRepository,
           paramsConverter,
-          commentConverter,
+              commentResultConverter,
           commentRepository,
           memberFetchService);
 

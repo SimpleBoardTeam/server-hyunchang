@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class CommentConverterTest {
 
-  private final CommentConverter converter = new CommentConverter();
+  private final CommentResultConverter converter = new CommentResultConverter();
 
   @Test
   @DisplayName("ACTIVATE MemberComment → CommentDetailResult 매핑")
