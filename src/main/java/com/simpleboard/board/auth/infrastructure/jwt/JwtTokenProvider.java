@@ -82,6 +82,7 @@ public class JwtTokenProvider implements TokenProvider {
     try {
       JwtParser parser =
           Jwts.parser()
+              .clock(()-> now)
               .clockSkewSeconds(skewSeconds)
               .requireIssuer(issuer)
               .verifyWith(secret)
@@ -106,9 +107,6 @@ public class JwtTokenProvider implements TokenProvider {
               : null;
 
       String audience = claims.getAudience().stream().findAny().orElse(null);
-
-      Date expiration = claims.getExpiration();
-      if (expiration.before(now)) throw new TokenExpiredException();
 
       return TokenClaims.builder()
           .issuer(claims.getIssuer())

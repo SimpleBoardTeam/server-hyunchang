@@ -132,7 +132,7 @@ class JwtTokenProviderTest {
     }
 
     @Test
-    @DisplayName("만료시각이 now와 정확히 같은 경우: TokenExpiredException 발생")
+    @DisplayName("만료시각이 now+skewSecond와 정확히 같은 경우: TokenExpiredException 발생")
     void expirationEqualsNow_AllowsParsing_CurrentImplementation() {
         Instant now = Instant.now();
         // verifyAndParseToken 내부 만료 체크는 expiration.before(now)만 검사 → equals(now)는 허용
@@ -149,7 +149,7 @@ class JwtTokenProviderTest {
                         .build();
 
         String raw = provider.issueToken(claims).raw();
-        assertThatThrownBy(() -> provider.verifyAndParseToken(raw, Date.from(now))).isInstanceOf(TokenExpiredException.class);
+        assertThatThrownBy(() -> provider.verifyAndParseToken(raw, Date.from(now.plusSeconds(skewSeconds)))).isInstanceOf(TokenExpiredException.class);
     }
 
     @Test
