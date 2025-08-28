@@ -41,7 +41,8 @@ public class CommentCommandServiceImpl implements CommentCommandService {
     // TODO: CommentCreatedEvent
 
     if (save instanceof MemberComment) {
-      String nickname = memberFetchService.fetchNickname(((MemberComment) save).getWriterId());
+      String nickname = memberFetchService.getAuthorSummary(((MemberComment) save).getWriterId())
+              .nickname();
       return commentResultConverter.toCommentDetailResult(save, nickname);
     } else if (save instanceof GuestComment) {
       return commentResultConverter.toCommentDetailResult(save, null);

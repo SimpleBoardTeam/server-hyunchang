@@ -9,6 +9,7 @@ import com.simpleboard.board.board.application.converter.CommentCommandParamsCon
 import com.simpleboard.board.board.application.converter.CommentResultConverter;
 import com.simpleboard.board.board.application.dto.request.CommentCreateCommand;
 import com.simpleboard.board.board.application.dto.request.CommentDeleteCommand;
+import com.simpleboard.board.board.application.dto.response.AuthorSummary;
 import com.simpleboard.board.board.application.dto.response.CommentDetailResult;
 import com.simpleboard.board.board.application.exception.CommentNotFoundException;
 import com.simpleboard.board.board.application.exception.PostNotExistsException;
@@ -89,7 +90,9 @@ class CommentCommandServiceTest {
   void createComment_member_success() {
     // given
     given(postCommandRepository.findPostById(POST_ID)).willReturn(Optional.of(GuestPost.builder().build()));
-    given(memberFetchService.fetchNickname(MEMBER_ID)).willReturn(MEMBER_NICKNAME);
+    given(memberFetchService.getAuthorSummary(MEMBER_ID)).willReturn(AuthorSummary.builder()
+            .authorId(MEMBER_ID)
+            .nickname(MEMBER_NICKNAME).build());
 
     Visitor visitor = VisitorUtil.member(MEMBER_VID, MEMBER_ID);
 
