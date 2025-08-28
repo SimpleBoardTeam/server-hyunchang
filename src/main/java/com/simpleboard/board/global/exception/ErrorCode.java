@@ -27,6 +27,7 @@ public enum ErrorCode {
       HttpStatus.FORBIDDEN, "403_COMMENT_MEMBER_NO_PERMISSION", "댓글에 대한 권한이 없는 유저입니다."),
   COMMENT_PASSWORD_NOT_MATCH(
       HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
+  COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "404_COMMENT_NOT_EXISTS", "댓글을 찾을 수 없습니다."),
 
   // Board
   BOARD_NAME_DUPLICATED(HttpStatus.CONFLICT, "409_BOARD_NAME_DUPLICATED", "이미 존재하는 보드명입니다."),
