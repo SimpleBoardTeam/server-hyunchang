@@ -90,7 +90,7 @@ class CommentCommandServiceTest {
   void createComment_member_success() {
     // given
     given(postCommandRepository.findPostById(POST_ID)).willReturn(Optional.of(GuestPost.builder().build()));
-    given(memberFetchService.getAuthorSummary(MEMBER_ID)).willReturn(AuthorSummary.builder()
+    given(memberFetchService.fetchAuthorSummary(MEMBER_ID)).willReturn(AuthorSummary.builder()
             .authorId(MEMBER_ID)
             .nickname(MEMBER_NICKNAME).build());
 
