@@ -67,6 +67,18 @@ public class Member {
     return create(memberId, nickname, gender, birthYear, LocalDateTime.now(), nicknamePolicy);
   }
 
+  public static Member reconstruct(
+      Long memberId,
+      Nickname nickname,
+      Gender gender,
+      BirthYear birthYear,
+      LocalDateTime signUpDate,
+      boolean withdrawn) {
+    Member m = new Member(memberId, nickname, gender, birthYear, signUpDate);
+    if (withdrawn) m.withdraw();
+    return m;
+  }
+
   public void withdraw() {
     this.isWithdrawn = true;
   }
