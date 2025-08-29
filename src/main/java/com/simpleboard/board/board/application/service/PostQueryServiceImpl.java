@@ -34,7 +34,7 @@ public class PostQueryServiceImpl implements PostQueryService {
         postQueryRepository.getPostDetails(converter.getCriteria(query));
     if (readModel == null) throw new PostNotFoundException();
     if (readModel.postType().equals(PostTypeEnum.MEMBER)) {
-      AuthorSummary summary = memberFetchService.getAuthorSummary(readModel.authorId());
+      AuthorSummary summary = memberFetchService.fetchAuthorSummary(readModel.authorId());
       return converter.getQueryResult(readModel, summary);
     }
     return converter.getQueryResult(readModel);

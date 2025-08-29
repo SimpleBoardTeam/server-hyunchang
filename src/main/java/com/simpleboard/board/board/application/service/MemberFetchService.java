@@ -14,7 +14,7 @@ public interface MemberFetchService {
    *
    * @since 1.0
    */
-  AuthorSummary getAuthorSummary(Long authorId);
+  AuthorSummary fetchAuthorSummary(Long authorId);
 
   /**
    * <b>Author summary 다중 조회 메서드</b>

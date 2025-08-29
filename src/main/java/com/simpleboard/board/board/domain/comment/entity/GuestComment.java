@@ -5,6 +5,7 @@ import com.simpleboard.board.board.domain.comment.dto.CommentDeleteParams;
 import com.simpleboard.board.board.domain.comment.exception.CommentPasswordException;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <b>Comment 구현체</b> Aggregate Root.
@@ -16,6 +17,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@SuperBuilder
 public class GuestComment extends Comment {
   private String nickname;
   private String password;
