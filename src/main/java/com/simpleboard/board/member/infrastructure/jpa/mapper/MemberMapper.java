@@ -9,13 +9,13 @@ public class MemberMapper {
 
   public MemberEntity toEntity(Member member) {
     return new MemberEntity(
-        member.getMemberId(),            // id
-        member.getNickname(),            // Nickname (VO)
-        member.getGender(),              // Gender (Enum)
-        member.getBirthYear(),           // BirthYear (VO)
-        member.getSignUpDate(),          // LocalDateTime
-        member.isWithdrawn()             // boolean
-    );
+        member.getMemberId(), // id
+        member.getNickname(), // Nickname (VO)
+        member.getGender(), // Gender (Enum)
+        member.getBirthYear(), // BirthYear (VO)
+        member.getSignUpDate(), // LocalDateTime
+        member.isWithdrawn() // boolean
+        );
   }
 
   public Member toDomain(MemberEntity entity) {
@@ -25,7 +25,6 @@ public class MemberMapper {
         entity.getGender(),
         entity.getBirthYear(),
         entity.getSignUpDate(),
-        entity.isWithdrawn()
-    );
+        entity.isWithdrawn());
   }
 }

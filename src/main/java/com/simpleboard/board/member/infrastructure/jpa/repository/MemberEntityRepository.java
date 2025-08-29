@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberEntityRepository extends JpaRepository<MemberEntity,Long> {
-  @Query(value = "select exists (select 1 from members where nickname = :nickname)", nativeQuery = true)
+public interface MemberEntityRepository extends JpaRepository<MemberEntity, Long> {
+  @Query(
+      value = "select exists (select 1 from members where nickname = :nickname)",
+      nativeQuery = true)
   boolean existsByNicknameValue(@Param("nickname") String nickname);
 }

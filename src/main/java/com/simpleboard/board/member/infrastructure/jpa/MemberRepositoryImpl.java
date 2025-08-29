@@ -23,8 +23,8 @@ public class MemberRepositoryImpl implements MemberRepository {
 
   @Override
   public Optional<Member> findById(Long memberId) {
-    return memberEntityRepository.findById(memberId)
-        .map(memberMapper::toDomain);  }
+    return memberEntityRepository.findById(memberId).map(memberMapper::toDomain);
+  }
 
   @Override
   public void save(Member member) {

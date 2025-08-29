@@ -13,7 +13,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-
 class MemberMapperTest {
 
   private MemberMapper memberMapper;
@@ -58,14 +57,14 @@ class MemberMapperTest {
   @DisplayName("toDomain: MemberEntity -> Member")
   void toDomain() {
     // given
-    MemberEntity entity = new MemberEntity(
-        10L,
-        Nickname.of("winter"),
-        Gender.FEMALE,
-        BirthYear.of(2001),
-        LocalDateTime.of(2024, 12, 31, 23, 59, 59),
-        true
-    );
+    MemberEntity entity =
+        new MemberEntity(
+            10L,
+            Nickname.of("winter"),
+            Gender.FEMALE,
+            BirthYear.of(2001),
+            LocalDateTime.of(2024, 12, 31, 23, 59, 59),
+            true);
 
     // when
     Member domain = memberMapper.toDomain(entity);
