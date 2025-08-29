@@ -10,4 +10,6 @@ package com.simpleboard.board.board.application.query;
 public interface PostQueryRepository {
 
   PostDetailsReadModel getPostDetails(PostDetailsCriteria criteria);
+
+  PostListReadModel getPostList(PostListCriteria criteria);
 }

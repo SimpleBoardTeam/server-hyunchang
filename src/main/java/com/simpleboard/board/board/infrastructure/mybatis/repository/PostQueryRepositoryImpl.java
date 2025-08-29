@@ -1,12 +1,12 @@
 package com.simpleboard.board.board.infrastructure.mybatis.repository;
 
-import com.simpleboard.board.board.application.query.PostDetailsCriteria;
-import com.simpleboard.board.board.application.query.PostDetailsReadModel;
-import com.simpleboard.board.board.application.query.PostQueryRepository;
+import com.simpleboard.board.board.application.query.*;
 import com.simpleboard.board.board.domain.post.exception.PostNotFoundException;
 import com.simpleboard.board.board.infrastructure.mybatis.converter.PostQueryConverter;
 import com.simpleboard.board.board.infrastructure.mybatis.mapper.PostDetailsData;
+import com.simpleboard.board.board.infrastructure.mybatis.mapper.PostListCondition;
 import com.simpleboard.board.board.infrastructure.mybatis.mapper.PostQueryMapper;
+import com.simpleboard.board.board.infrastructure.mybatis.mapper.PostSummaryData;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,14 +27,14 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     return PostQueryConverter.getPostDetailsReadModel(postDetails, postHashTags);
   }
 
-  //    @Override
-  //    public PostListQueryResult getPostList(PostListQuery query) {
-  //        PostListCondition condition = QueryConverter.postListCondition(query);
-  //        List<PostListRow> rows = postQueryMapper.getPostList(condition);
-  //
-  //        long totalPosts = postQueryMapper.countPosts(condition);
-  //        long totalComments = postQueryMapper.countCommentsOfBoard(query.boardId());
-  //
-  //
-  //    }
+  @Override
+  public PostListReadModel getPostList(PostListCriteria criteria) {
+    PostListCondition condition = PostQueryConverter.postListCondition(criteria);
+    List<PostSummaryData> rows = postQueryMapper.getPostList(condition);
+
+    long totalPosts = postQueryMapper.countPosts(condition);
+    long totalComments = postQueryMapper.countCommentsOfBoard(criteria.boardId());
+
+    return PostQueryConverter.getPostListReadModel(criteria, rows, totalPosts, totalComments);
+  }
 }
