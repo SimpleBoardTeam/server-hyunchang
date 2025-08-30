@@ -1,7 +1,9 @@
 package com.simpleboard.board.board.presentation.converter;
 
 import com.simpleboard.board.board.application.dto.response.PostDetailsQueryResult;
+import com.simpleboard.board.board.application.dto.response.PostListQueryResult;
 import com.simpleboard.board.board.presentation.dto.response.PostDetailsResponse;
+import com.simpleboard.board.board.presentation.dto.response.PostListResponse;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,30 @@ public class PostResultResponseConverter {
         .isLiked(result.isLiked())
         .authorId(result.authorId())
         .authorNickname(result.authorNickname())
+        .build();
+  }
+
+  public PostListResponse toResponse(PostListQueryResult result) {
+    return PostListResponse.builder()
+        .boardId(result.boardId())
+        .boardName(result.boardName())
+        .totalPosts(result.totalPosts())
+        .totalComments(result.totalComments())
+        .page(result.page())
+        .size(result.size())
+        .posts(result.posts().stream().map(this::toResponse).toList())
+        .build();
+  }
+
+  public PostListResponse.PostSummary toResponse(PostListQueryResult.PostSummary summary) {
+    return PostListResponse.PostSummary.builder()
+        .postId(summary.postId())
+        .title(summary.title())
+        .nickname(summary.nickname())
+        .createdAt(summary.createdAt())
+        .views(summary.views())
+        .commentCount(summary.commentCount())
+        .likeCount(summary.likeCount())
         .build();
   }
 }
