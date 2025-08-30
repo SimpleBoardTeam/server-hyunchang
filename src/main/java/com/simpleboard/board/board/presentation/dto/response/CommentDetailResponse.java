@@ -7,7 +7,7 @@ import lombok.Builder;
 /**
  * Comment 정보 응답 모델.
  *
- * <p>Res: Presentation <- Client</p>
+ * <p>Res: Presentation <- Client
  *
  * @domain response-dto
  */

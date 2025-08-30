@@ -15,7 +15,7 @@ import lombok.Builder;
 public record RegisterParams(
     Role role,
     RegisterType registerType,
-    String email,       // OAuth 가입시 null
-    String password,    // OAuth 가입시 null
-    String OAuthId      // email 가입시 null
+    String email, // OAuth 가입시 null
+    String password, // OAuth 가입시 null
+    String OAuthId // email 가입시 null
     ) {}

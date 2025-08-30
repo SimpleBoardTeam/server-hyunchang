@@ -1,19 +1,18 @@
 package com.simpleboard.board.auth.infrastructure.jwt;
 
+import static com.simpleboard.board.auth.presentation.util.AuthStringProvider.Token.*;
+
 import com.simpleboard.board.auth.domain.common.vo.Role;
 import com.simpleboard.board.auth.domain.token.util.TokenProvider;
 import com.simpleboard.board.auth.domain.token.vo.*;
 import com.simpleboard.board.auth.infrastructure.jwt.exception.TokenExpiredException;
 import com.simpleboard.board.auth.infrastructure.jwt.exception.TokenParseException;
-import com.simpleboard.board.auth.presentation.util.AuthStringProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import static com.simpleboard.board.auth.presentation.util.AuthStringProvider.Token.*;
 
 /**
  * <b>JwtTokenProvider</b> Adapter.
@@ -82,7 +81,7 @@ public class JwtTokenProvider implements TokenProvider {
     try {
       JwtParser parser =
           Jwts.parser()
-              .clock(()-> now)
+              .clock(() -> now)
               .clockSkewSeconds(skewSeconds)
               .requireIssuer(issuer)
               .verifyWith(secret)

@@ -1,6 +1,5 @@
 package com.simpleboard.board.board.infrastructure.jpa.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public class GuestCommentEntity extends CommentEntity {
 
-    private String nickname;
+  private String nickname;
 
-    private String password;
+  private String password;
 }

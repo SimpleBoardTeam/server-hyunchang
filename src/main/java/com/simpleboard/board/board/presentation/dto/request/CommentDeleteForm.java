@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 /**
  * Comment 삭제 요청 모델.
  *
- * <p>Req: Client -> Presentation</p>
+ * <p>Req: Client -> Presentation
  *
  * @domain request-dto
  */

@@ -3,8 +3,6 @@ package com.simpleboard.board.auth.domain.token.dto.request;
 import com.simpleboard.board.auth.domain.token.vo.VerifyPurpose;
 import lombok.Builder;
 
-import java.time.Duration;
-
 /**
  * <b>VerifyTokenIssueCommand</b> Request DTO.
  *

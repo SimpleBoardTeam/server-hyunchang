@@ -1,13 +1,12 @@
 package com.simpleboard.board.permission.presentation;
 
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.simpleboard.board.permission.application.query.PermissionQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,11 +18,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @AutoConfigureMockMvc(addFilters = false)
 class PermissionInternalControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @MockBean
-  private PermissionQueryService permissionQueryService;
+  @MockBean private PermissionQueryService permissionQueryService;
 
   @Test
   @DisplayName("삭제 권한이 있는 경우 true 반환")
@@ -33,9 +30,10 @@ class PermissionInternalControllerTest {
         .thenReturn(true);
 
     // when & then
-    mockMvc.perform(MockMvcRequestBuilders
-            .get("/internal/permissions/boards/1/delete")
-            .param("userId", "100"))
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/internal/permissions/boards/1/delete")
+                .param("userId", "100"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.canDelete").value(true));
   }
@@ -48,9 +46,10 @@ class PermissionInternalControllerTest {
         .thenReturn(false);
 
     // when & then
-    mockMvc.perform(MockMvcRequestBuilders
-            .get("/internal/permissions/boards/1/delete")
-            .param("userId", "100"))
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/internal/permissions/boards/1/delete")
+                .param("userId", "100"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.canDelete").value(false));
   }
