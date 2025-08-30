@@ -1,6 +1,8 @@
 package com.simpleboard.board.auth.domain.token.dto.request;
 
 import com.simpleboard.board.auth.domain.token.vo.VerifyPurpose;
+import lombok.Builder;
+
 import java.time.Duration;
 
 /**
@@ -11,4 +13,5 @@ import java.time.Duration;
  * @domain request-dto
  * @since 1.0
  */
-public record VerifyTokenIssueParam(VerifyPurpose purpose, String subject, Duration ttl) {}
+@Builder
+public record VerifyTokenIssueParam(VerifyPurpose purpose, String subject) {}

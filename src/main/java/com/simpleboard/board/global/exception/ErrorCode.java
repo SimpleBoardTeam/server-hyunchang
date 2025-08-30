@@ -59,6 +59,8 @@ public enum ErrorCode {
   NICKNAME_CONFLICT(HttpStatus.CONFLICT, "409_NICKNAME_CONFLICT", "이미 사용중인 nickname입니다."),
   EMAIL_CODE_MISMATCH(HttpStatus.BAD_REQUEST, "400_EMAIL_CODE_MISMATCH", "email 코드가 일치하지 않습니다."),
   USER_NOT_FOUND(HttpStatus.NOT_FOUND, "404_USER_NOT_FOUND", "일치하는 유저가 존재하지 않습니다."),
+  MISSING_REGISTER_TOKEN(
+      HttpStatus.BAD_REQUEST, "400_MISSING_REGISTER_TOKEN", "회원가입에 필요한 토큰이 누락되었습니다."),
 
   /* Internal Error */
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_INTERNAL", "서버 내부 오류가 발생했습니다."),

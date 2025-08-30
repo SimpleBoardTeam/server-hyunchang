@@ -11,6 +11,8 @@ public class AuthStringProvider {
 
   public static class Cookie {
     public static final String REFRESH_COOKIE = "Authorization-Refresh";
+    public static final String REGISTER_EMAIL_COOKIE = "Register-Email";
+    public static final String REGISTER_NICKNAME_COOKIE = "Register-Nickname";
   }
 
   public static class Token{
