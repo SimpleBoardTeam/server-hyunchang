@@ -1,7 +1,6 @@
 package com.simpleboard.board.board.infrastructure.mybatis.mapper;
 
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
-
 import java.time.LocalDateTime;
 
 /**

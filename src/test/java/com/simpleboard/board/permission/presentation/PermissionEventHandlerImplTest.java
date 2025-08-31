@@ -1,5 +1,7 @@
 package com.simpleboard.board.permission.presentation;
 
+import static org.mockito.Mockito.*;
+
 import com.simpleboard.board.permission.application.command.PermissionCommandService;
 import com.simpleboard.board.permission.presentation.tmp.BoardCreatedEvent;
 import com.simpleboard.board.permission.presentation.tmp.BoardDeletedEvent;
@@ -13,17 +15,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.mockito.Mockito.*;
-
 @SpringJUnitConfig
 @ContextConfiguration(classes = PermissionEventHandlerImplTest.TestConfig.class)
 class PermissionEventHandlerImplTest {
 
-  @Autowired
-  private ApplicationEventPublisher eventPublisher;
+  @Autowired private ApplicationEventPublisher eventPublisher;
 
-  @Autowired
-  private PermissionCommandService permissionCommandService;
+  @Autowired private PermissionCommandService permissionCommandService;
 
   @Test
   @DisplayName("BoardCreatedEvent 발생 시 createPermissionPolicy가 호출된다")

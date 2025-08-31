@@ -35,12 +35,9 @@ public enum ErrorCode {
   BOARD_NAME_INVALID(HttpStatus.BAD_REQUEST, "400_BOARD_NAME_INVALID", "보드명이 유효하지 않습니다."),
 
   // Member
-  INVALID_BIRTH_YEAR(
-      HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
-  DUPLICATED_NICKNAME(
-      HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
-  MEMBER_NOT_FOUND(
-      HttpStatus.NOT_FOUND, "404_MEMBER_NOT_FOUND", "회원 정보를 찾을 수 없습니다."),
+  INVALID_BIRTH_YEAR(HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
+  DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "409_DUPLICATED_NICKNAME", "이미 사용 중인 닉네임입니다."),
+  MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "404_MEMBER_NOT_FOUND", "회원 정보를 찾을 수 없습니다."),
 
   // Permission
   ASSIGNMENT_NOT_FOUND(

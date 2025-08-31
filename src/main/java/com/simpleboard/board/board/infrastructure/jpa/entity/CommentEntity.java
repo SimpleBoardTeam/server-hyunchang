@@ -18,19 +18,19 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public abstract class CommentEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMENT_ID")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "COMMENT_ID")
+  private Long id;
 
-    private Long parentId;
+  private Long parentId;
 
-    @Column(nullable = false)
-    private Long postId;
+  @Column(nullable = false)
+  private Long postId;
 
-    @Column(nullable = false)
-    private String content;
+  @Column(nullable = false)
+  private String content;
 
-    @Column(nullable = false)
-    private CommentState commentState;
+  @Column(nullable = false)
+  private CommentState commentState;
 }

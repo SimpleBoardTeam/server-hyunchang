@@ -10,10 +10,6 @@ public class DelegateRoleConverter {
   }
 
   public static DelegateRoleCommand toCommand(DelegateRoleForm form) {
-    return new DelegateRoleCommand(
-        form.fromUserId(),
-        form.toUserNickname(),
-        form.roleType()
-    );
+    return new DelegateRoleCommand(form.fromUserId(), form.toUserNickname(), form.roleType());
   }
 }

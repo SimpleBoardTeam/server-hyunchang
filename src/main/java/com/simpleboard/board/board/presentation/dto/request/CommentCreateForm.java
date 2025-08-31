@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 /**
  * Comment 생성 요청 모델.
  *
- * <p>Req: Client -> Presentation</p>
+ * <p>Req: Client -> Presentation
  *
  * @domain request-dto
  */

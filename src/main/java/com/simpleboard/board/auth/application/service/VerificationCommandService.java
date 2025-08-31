@@ -5,9 +5,7 @@ import com.simpleboard.board.auth.application.exception.EmailConflictException;
 import com.simpleboard.board.auth.application.exception.NicknameConflictException;
 import com.simpleboard.board.auth.domain.token.vo.Token;
 
-/**
- * <b>여러 Verification을 처리하는 메서드</b>
- */
+/** <b>여러 Verification을 처리하는 메서드</b> */
 public interface VerificationCommandService {
 
   /**

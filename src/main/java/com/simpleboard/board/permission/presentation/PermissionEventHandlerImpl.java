@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PermissionEventHandlerImpl implements PermissionEventHandler{
+public class PermissionEventHandlerImpl implements PermissionEventHandler {
 
   private final PermissionCommandService permissionCommandService;
 
