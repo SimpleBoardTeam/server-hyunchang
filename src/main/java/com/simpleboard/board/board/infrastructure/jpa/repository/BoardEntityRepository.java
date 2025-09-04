@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardEntityRepository extends JpaRepository<BoardEntity, Long> {
   Optional<BoardEntity> findByBoardName(String boardName);
+
   boolean existsByNormalizedName(String normalizedName);
 }
