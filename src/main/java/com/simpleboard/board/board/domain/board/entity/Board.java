@@ -38,7 +38,7 @@ public class Board {
   }
 
   public static Board create(BoardName boardName, Visitor visitor, BoardNamePrincipal checker) {
-    checker.ensureUnique(boardName);
+    checker.ensureUnique(boardName.normalized());
     return new Board(null, boardName, Manager.of(visitor.memberId()), LocalDateTime.now());
   }
 
