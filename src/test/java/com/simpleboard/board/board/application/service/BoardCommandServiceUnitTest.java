@@ -47,7 +47,7 @@ class BoardCommandServiceUnitTest {
     BoardCreateCommand command = BoardCreateCommand.builder().boardName(boardName).build();
 
     // ensureUnique는 외부 의존성이라 호출만 검증
-    doNothing().when(boardNamePrincipal).ensureUnique(BoardName.of(boardName));
+    doNothing().when(boardNamePrincipal).ensureUnique(boardName);
     doNothing().when(permissionCheckService).checkBoardCreatePermission(memberId);
 
     // when
@@ -73,7 +73,7 @@ class BoardCommandServiceUnitTest {
     BoardDeleteCommand command = BoardDeleteCommand.builder().boardName(boardName).build();
 
     // 미리 하나 저장 (실제 메모리 저장소 사용)
-    doNothing().when(boardNamePrincipal).ensureUnique(BoardName.of(boardName));
+    doNothing().when(boardNamePrincipal).ensureUnique(boardName);
     doNothing().when(permissionCheckService).checkBoardCreatePermission(memberId);
     BoardCreateCommand createCmd = BoardCreateCommand.builder().boardName(boardName).build();
     BoardCreateResult created = boardCommandService.createBoard(visitor, createCmd);
