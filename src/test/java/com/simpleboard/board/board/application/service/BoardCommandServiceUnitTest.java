@@ -10,7 +10,6 @@ import com.simpleboard.board.board.application.testutil.BoardCommandMockReposito
 import com.simpleboard.board.board.domain.board.entity.Board;
 import com.simpleboard.board.board.domain.board.repository.BoardRepository;
 import com.simpleboard.board.board.domain.board.service.BoardNamePrincipal;
-import com.simpleboard.board.board.domain.board.vo.BoardName;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.common.vo.VisitorType;
 import java.util.Optional;

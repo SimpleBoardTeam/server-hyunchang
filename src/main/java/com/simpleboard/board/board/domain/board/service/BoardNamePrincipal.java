@@ -2,7 +2,6 @@ package com.simpleboard.board.board.domain.board.service;
 
 import com.simpleboard.board.board.domain.board.exception.DuplicateBoardNameException;
 import com.simpleboard.board.board.domain.board.repository.BoardRepository;
-import com.simpleboard.board.board.domain.board.vo.BoardName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
