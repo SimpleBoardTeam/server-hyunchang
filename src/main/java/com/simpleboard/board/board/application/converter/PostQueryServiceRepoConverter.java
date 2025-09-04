@@ -1,11 +1,16 @@
 package com.simpleboard.board.board.application.converter;
 
 import com.simpleboard.board.board.application.dto.request.PostDetailsQuery;
+import com.simpleboard.board.board.application.dto.request.PostListQuery;
 import com.simpleboard.board.board.application.dto.response.AuthorSummary;
 import com.simpleboard.board.board.application.dto.response.PostDetailsQueryResult;
+import com.simpleboard.board.board.application.dto.response.PostListQueryResult;
 import com.simpleboard.board.board.application.query.PostDetailsCriteria;
 import com.simpleboard.board.board.application.query.PostDetailsReadModel;
+import com.simpleboard.board.board.application.query.PostListCriteria;
+import com.simpleboard.board.board.application.query.PostListReadModel;
 import com.simpleboard.board.board.domain.post.vo.PostTypeEnum;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /** <b>Post query service <-> repository 컨버터</b> */
@@ -23,6 +28,16 @@ public class PostQueryServiceRepoConverter {
         .vId(query.visitor().vId())
         .memberId(query.visitor().memberId())
         .postId(query.postId())
+        .build();
+  }
+
+  public PostListCriteria getCriteria(PostListQuery query) {
+    return PostListCriteria.builder()
+        .boardId(query.boardId())
+        .page(query.page())
+        .size(query.size())
+        .searchType(query.searchType())
+        .keyword(query.keyword())
         .build();
   }
 
@@ -64,6 +79,39 @@ public class PostQueryServiceRepoConverter {
         .hashTags(readModel.hashTags())
         .authorId(authorSummary.authorId())
         .authorNickname(authorSummary.nickname())
+        .build();
+  }
+
+  public PostListQueryResult getQueryResult(
+      Long boardId, String boardName, PostListReadModel readModel, Map<Long, String> nicknameMap) {
+    return PostListQueryResult.builder()
+        .boardId(boardId)
+        .boardName(boardName)
+        .totalPosts(readModel.totalPosts())
+        .totalComments(readModel.totalComments())
+        .page(readModel.page())
+        .size(readModel.size())
+        .posts(
+            readModel.posts().stream()
+                .map(
+                    modelSummary -> {
+                      PostListQueryResult.PostSummary.PostSummaryBuilder builder =
+                          PostListQueryResult.PostSummary.builder()
+                              .postId(modelSummary.postId())
+                              .title(modelSummary.title())
+                              .createdAt(modelSummary.createdAt())
+                              .views(modelSummary.views())
+                              .commentCount(modelSummary.commentCount())
+                              .likeCount(modelSummary.likeCount());
+                      if (modelSummary.postType().equals(PostTypeEnum.MEMBER))
+                        builder.nickname(nicknameMap.get(modelSummary.authorId()));
+                      else if (modelSummary.postType().equals(PostTypeEnum.GUEST))
+                        builder.nickname(modelSummary.nickname());
+                      else throw new IllegalArgumentException();
+
+                      return builder.build();
+                    })
+                .toList())
         .build();
   }
 }

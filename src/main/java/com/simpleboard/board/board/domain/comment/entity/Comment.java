@@ -5,7 +5,9 @@ import com.simpleboard.board.board.domain.comment.dto.CommentDeleteParams;
 import com.simpleboard.board.board.domain.comment.vo.CommentState;
 import com.simpleboard.board.board.domain.comment.vo.CommentType;
 import com.simpleboard.board.board.domain.common.vo.Visitor;
+import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <b>Comment</b> Aggregate Root.
@@ -25,6 +27,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@SuperBuilder
 public abstract class Comment {
 
   private Long id;
@@ -32,6 +35,8 @@ public abstract class Comment {
   private Long postId;
   private String content;
   private CommentState commentState;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
   protected Comment(CommentCreateParams params) {
     this.parentId = params.parentCommentId();

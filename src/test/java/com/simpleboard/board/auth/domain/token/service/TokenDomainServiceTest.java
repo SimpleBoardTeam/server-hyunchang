@@ -56,7 +56,6 @@ class TokenDomainServiceTest {
             idGenerator,
             blacklistRepository,
             uuidRepository,
-            "issuer",
             "accessAudience",
             "refreshAudience");
   }
@@ -103,7 +102,7 @@ class TokenDomainServiceTest {
     Token dummy = Token.builder().raw("v").expiredAt(now.plus(ttl)).build();
     when(tokenProvider.issueToken(any(TokenClaims.class))).thenReturn(dummy);
 
-    VerifyTokenIssueParam cmd = new VerifyTokenIssueParam(purpose, subject, ttl);
+    VerifyTokenIssueParam cmd = new VerifyTokenIssueParam(purpose, subject);
 
     // when
     Token result = service.issueVerifyToken(cmd);

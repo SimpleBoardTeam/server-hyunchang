@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ *
+ *
  * <h2>PermissionController</h2>
  *
- * <p>게시판 권한 위임 관련 API를 제공합니다.</p>
+ * <p>게시판 권한 위임 관련 API를 제공합니다.
  *
  * <table>
  *   <caption>API 목록</caption>
@@ -28,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  *   </tr>
  * </table>
  *
- * <p><b>권한</b> : 권한 위임</p>
+ * <p><b>권한</b> : 권한 위임
  *
  * @domain adapter-in
  */
@@ -40,23 +42,16 @@ public class PermissionController {
 
   private final PermissionCommandService permissionCommandService;
 
-  @Operation(
-      summary = "게시판 권한 위임",
-      description = "특정 게시판의 권한을 다른 사용자에게 위임합니다."
-  )
+  @Operation(summary = "게시판 권한 위임", description = "특정 게시판의 권한을 다른 사용자에게 위임합니다.")
   @PostMapping("/boards/{boardId}/delegate")
   public ResponseEntity<Void> delegateRole(
       @Parameter(description = "게시판 ID", required = true) @PathVariable Long boardId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
-          description = "권한 위임 정보",
-          required = true
-      )
-      @RequestBody DelegateRoleForm form
-  ) {
-    permissionCommandService.delegateRole(
-        boardId,
-        DelegateRoleConverter.toCommand(form)
-    );
+              description = "권한 위임 정보",
+              required = true)
+          @RequestBody
+          DelegateRoleForm form) {
+    permissionCommandService.delegateRole(boardId, DelegateRoleConverter.toCommand(form));
     return ResponseEntity.ok().build();
   }
 }

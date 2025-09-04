@@ -35,6 +35,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	// Test
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2'
+
 	// mockWebserver
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
 	testImplementation 'io.projectreactor:reactor-test'
@@ -45,6 +48,7 @@ dependencies {
 	// DB
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3"
+	testImplementation "com.h2database:h2"
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// AOP
@@ -55,6 +59,11 @@ dependencies {
 
 	// Jasypt
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
+
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 }
 
 spotless {

@@ -1,5 +1,6 @@
 package com.simpleboard.board.auth.domain.auth.entity;
 
+import com.simpleboard.board.auth.application.exception.UserDisabledException;
 import com.simpleboard.board.auth.domain.auth.dto.request.RegisterParams;
 import com.simpleboard.board.auth.domain.auth.vo.RegisterType;
 import com.simpleboard.board.auth.domain.auth.vo.UserState;
@@ -29,6 +30,19 @@ public abstract class UserAuth {
     userState = UserState.ACTIVE;
     registerType = params.registerType();
     role = params.role();
+  }
+
+  /**
+   * <b>회원 탈퇴 메서드</b>
+   *
+   * <p>ACTIVE 상태의 유저를 DELETED 상태로 변환(soft deletion)
+   *
+   * @throws UserDisabledException - 유저가 ACTIVE 상태가 아님
+   * @since 1.0
+   */
+  public void delete() {
+    if (userState != UserState.ACTIVE) throw new UserDisabledException();
+    userState = UserState.DELETED;
   }
 
   /**

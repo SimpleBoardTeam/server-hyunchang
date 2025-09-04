@@ -21,12 +21,14 @@ public enum ErrorCode {
   POST_HASHTAG_SIZE_EXCEED(
       HttpStatus.BAD_REQUEST, "400_HASHTAG_SIZE_TOO_LARGE", "Hashtag의 개수가 너무 많습니다."),
   POST_NOT_FOUNT(HttpStatus.NOT_FOUND, "404_POST_NOT_FOUND", "Post를 찾을 수 없습니다."),
+  BOARDNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "404_BOARDNAME_NOT_FOUND", "존재하지 않는 board name입니다."),
 
   // Comment
   COMMENT_MEMBER_NO_PERMISSION(
       HttpStatus.FORBIDDEN, "403_COMMENT_MEMBER_NO_PERMISSION", "댓글에 대한 권한이 없는 유저입니다."),
   COMMENT_PASSWORD_NOT_MATCH(
       HttpStatus.BAD_REQUEST, "400_COMMENT_PASSWORD_NOT_MATCH", "댓글의 비밀번호가 일치하지 않습니다."),
+  COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "404_COMMENT_NOT_EXISTS", "댓글을 찾을 수 없습니다."),
 
   // Board
   BOARD_NAME_DUPLICATED(HttpStatus.CONFLICT, "409_BOARD_NAME_DUPLICATED", "이미 존재하는 보드명입니다."),
@@ -57,6 +59,8 @@ public enum ErrorCode {
   NICKNAME_CONFLICT(HttpStatus.CONFLICT, "409_NICKNAME_CONFLICT", "이미 사용중인 nickname입니다."),
   EMAIL_CODE_MISMATCH(HttpStatus.BAD_REQUEST, "400_EMAIL_CODE_MISMATCH", "email 코드가 일치하지 않습니다."),
   USER_NOT_FOUND(HttpStatus.NOT_FOUND, "404_USER_NOT_FOUND", "일치하는 유저가 존재하지 않습니다."),
+  MISSING_REGISTER_TOKEN(
+      HttpStatus.BAD_REQUEST, "400_MISSING_REGISTER_TOKEN", "회원가입에 필요한 토큰이 누락되었습니다."),
 
   /* Internal Error */
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_INTERNAL", "서버 내부 오류가 발생했습니다."),

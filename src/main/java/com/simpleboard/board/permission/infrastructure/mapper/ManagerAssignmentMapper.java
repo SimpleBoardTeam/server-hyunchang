@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * <b>Post: Domain Entity <-> JPA Entity Mapping 클래스</b>
  *
- * <p> MangerAssginment 도메인과 엔티티 간 맵핑
+ * <p>MangerAssginment 도메인과 엔티티 간 맵핑
  */
 @Component
 @RequiredArgsConstructor

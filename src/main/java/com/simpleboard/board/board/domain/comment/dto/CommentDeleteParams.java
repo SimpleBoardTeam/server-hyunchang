@@ -1,5 +1,7 @@
 package com.simpleboard.board.board.domain.comment.dto;
 
+import lombok.Builder;
+
 /**
  * Comment 삭제 요청 모델.
  *
@@ -7,4 +9,5 @@ package com.simpleboard.board.board.domain.comment.dto;
  *
  * @domain request-dto
  */
+@Builder
 public record CommentDeleteParams(String password) {}
