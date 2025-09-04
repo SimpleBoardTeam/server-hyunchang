@@ -35,11 +35,7 @@ public class BoardRepositoryImpl implements BoardRepository {
 
   @Override
   public boolean existsByNameNormalized(String normalizedName) {
-    return boardEntityRepository.findAll().stream()
-        .map(BoardEntity::getBoardName)
-        .map(BoardName::of)
-        .map(BoardName::normalized)
-        .anyMatch(normalizedName::equals);
+    return boardEntityRepository.existsByNormalizedName(normalizedName);
   }
 
   @Override

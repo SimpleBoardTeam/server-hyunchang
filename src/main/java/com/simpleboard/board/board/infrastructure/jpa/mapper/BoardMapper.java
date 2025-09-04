@@ -16,6 +16,7 @@ public class BoardMapper {
     return new BoardEntity(
         domain.getBoardId(),
         domain.getBoardName().toString(), // BoardName → String
+        domain.getBoardName().normalized(), // BoardName -> String(Normalized)
         domain.getManager().memberId() // Manager → Long
         );
   }

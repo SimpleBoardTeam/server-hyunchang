@@ -16,9 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardEntity extends BaseEntity {
 
-  public BoardEntity(Long boardId, String boardName, Long managerId) {
+  public BoardEntity(Long boardId, String boardName, String normalizedName, Long managerId) {
     this.boardId = boardId;
     this.boardName = boardName;
+    this.normalizedName = normalizedName;
     this.managerId = managerId;
   }
 
@@ -29,6 +30,9 @@ public class BoardEntity extends BaseEntity {
 
   @Column(name = "board_name", nullable = false, unique = true, length = 100)
   private String boardName;
+
+  @Column(name = "normalized_name", nullable = false, unique = true, length = 100)
+  private String normalizedName;
 
   @Column(name = "manager_id", nullable = false)
   private Long managerId;
