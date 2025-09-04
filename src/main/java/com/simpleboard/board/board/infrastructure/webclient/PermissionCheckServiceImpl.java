@@ -1,10 +1,10 @@
-package com.simpleboard.board.board.infrastructure;
+package com.simpleboard.board.board.infrastructure.webclient;
 
 import com.simpleboard.board.board.application.service.PermissionCheckService;
-import com.simpleboard.board.global.exception.webclient.WebClientErrorHandler;
+import com.simpleboard.board.board.infrastructure.webclient.dto.CanDeleteResponse;
+import com.simpleboard.board.board.infrastructure.webclient.exception.BoardDeleteNotAllowedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,16 +23,15 @@ public class PermissionCheckServiceImpl implements PermissionCheckService {
 
   @Override
   public void checkBoardDeletePermission(Long memberId, Long boardId) {
-    webClient
-        .get()
-        .uri(
-            internalBaseUrl + "/internal/permissions/boards/{boardId}/delete?userId={userId}",
-            boardId,
-            memberId)
+    CanDeleteResponse response = webClient.get()
+        .uri(internalBaseUrl + "/internal/permissions/boards/{boardId}/delete?userId={userId}",
+            boardId, memberId)
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, WebClientErrorHandler::handle4xx)
-        .onStatus(HttpStatusCode::is5xxServerError, WebClientErrorHandler::handle5xx)
-        .toBodilessEntity()
+        .bodyToMono(CanDeleteResponse.class)
         .block();
+
+    if (response == null || !response.canDelete()) {
+      throw new BoardDeleteNotAllowedException();
+    }
   }
 }
