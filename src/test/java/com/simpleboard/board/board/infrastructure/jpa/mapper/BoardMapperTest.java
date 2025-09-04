@@ -53,7 +53,8 @@ class BoardMapperTest {
     BoardName boardName = BoardName.of("free");
     Long managerId = 2002L;
 
-    BoardEntity entity = new BoardEntity(boardId, boardName.toString(), boardName.normalized(), managerId);
+    BoardEntity entity =
+        new BoardEntity(boardId, boardName.toString(), boardName.normalized(), managerId);
 
     // when
     Board domain = mapper.toDomain(entity);

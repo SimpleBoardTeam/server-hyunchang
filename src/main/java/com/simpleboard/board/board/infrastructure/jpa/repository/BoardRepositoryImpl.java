@@ -2,7 +2,6 @@ package com.simpleboard.board.board.infrastructure.jpa.repository;
 
 import com.simpleboard.board.board.domain.board.entity.Board;
 import com.simpleboard.board.board.domain.board.repository.BoardRepository;
-import com.simpleboard.board.board.domain.board.vo.BoardName;
 import com.simpleboard.board.board.infrastructure.jpa.entity.BoardEntity;
 import com.simpleboard.board.board.infrastructure.jpa.mapper.BoardMapper;
 import java.util.Optional;
