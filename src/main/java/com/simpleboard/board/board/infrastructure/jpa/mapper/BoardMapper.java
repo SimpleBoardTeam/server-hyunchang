@@ -13,6 +13,7 @@ public class BoardMapper {
 
   /** Domain -> JPA Entity */
   public BoardEntity toEntity(Board domain) {
+    if (domain == null) return null;
     return new BoardEntity(
         domain.getBoardId(),
         domain.getBoardName().toString(), // BoardName → String
@@ -23,6 +24,8 @@ public class BoardMapper {
 
   /** JPA Entity -> Domain */
   public Board toDomain(BoardEntity entity) {
+    if (entity == null) return null;
+
     return Board.reconstruct(
         entity.getBoardId(),
         BoardName.of(entity.getBoardName()), // String → BoardName
