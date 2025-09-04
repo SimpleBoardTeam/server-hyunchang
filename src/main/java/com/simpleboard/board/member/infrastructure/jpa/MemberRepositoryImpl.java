@@ -1,6 +1,7 @@
 package com.simpleboard.board.member.infrastructure.jpa;
 
 import com.simpleboard.board.member.domain.Member;
+import com.simpleboard.board.member.domain.Nickname;
 import com.simpleboard.board.member.domain.repository.MemberRepository;
 import com.simpleboard.board.member.infrastructure.jpa.entity.MemberEntity;
 import com.simpleboard.board.member.infrastructure.jpa.mapper.MemberMapper;
@@ -17,8 +18,9 @@ public class MemberRepositoryImpl implements MemberRepository {
   private final MemberMapper memberMapper;
 
   @Override
-  public Boolean existsByNickname(String nickname) {
-    return memberEntityRepository.existsByNicknameValue(nickname);
+  public Boolean existsByNickname(Nickname nickname) {
+    String nicknameValue = nickname.getValue();
+    return memberEntityRepository.existsByNickname_Value(nicknameValue);
   }
 
   @Override
