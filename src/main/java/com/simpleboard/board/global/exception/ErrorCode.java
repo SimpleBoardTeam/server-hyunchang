@@ -34,6 +34,7 @@ public enum ErrorCode {
   BOARD_NAME_DUPLICATED(HttpStatus.CONFLICT, "409_BOARD_NAME_DUPLICATED", "이미 존재하는 보드명입니다."),
   BOARD_NAME_INVALID(HttpStatus.BAD_REQUEST, "400_BOARD_NAME_INVALID", "보드명이 유효하지 않습니다."),
   BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "404_BOARD_NOT_FOUND", "해당 Board를 찾을 수 없습니다."),
+  BOARD_NO_DELETE_PERMISSION(HttpStatus.BAD_REQUEST, "400_BOARD_NO_DELETE_PERMISSION", "Board에 대한 삭제 권한이 없습니다."),
 
   // Member
   INVALID_BIRTH_YEAR(HttpStatus.BAD_REQUEST, "400_INVALID_BIRTH_YEAR", "출생 연도가 유효하지 않습니다."),
