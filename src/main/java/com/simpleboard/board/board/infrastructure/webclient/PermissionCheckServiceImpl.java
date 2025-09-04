@@ -18,17 +18,20 @@ public class PermissionCheckServiceImpl implements PermissionCheckService {
   private String internalBaseUrl;
 
   @Override
-  public void checkBoardCreatePermission(Long memberId) {
-  }
+  public void checkBoardCreatePermission(Long memberId) {}
 
   @Override
   public void checkBoardDeletePermission(Long memberId, Long boardId) {
-    CanDeleteResponse response = webClient.get()
-        .uri(internalBaseUrl + "/internal/permissions/boards/{boardId}/delete?userId={userId}",
-            boardId, memberId)
-        .retrieve()
-        .bodyToMono(CanDeleteResponse.class)
-        .block();
+    CanDeleteResponse response =
+        webClient
+            .get()
+            .uri(
+                internalBaseUrl + "/internal/permissions/boards/{boardId}/delete?userId={userId}",
+                boardId,
+                memberId)
+            .retrieve()
+            .bodyToMono(CanDeleteResponse.class)
+            .block();
 
     if (response == null || !response.canDelete()) {
       throw new BoardDeleteNotAllowedException();
