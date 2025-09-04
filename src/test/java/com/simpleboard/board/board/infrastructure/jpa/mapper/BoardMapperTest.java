@@ -61,7 +61,7 @@ class BoardMapperTest {
     // then
     assertThat(domain).isNotNull();
     assertThat(domain.getBoardId()).isEqualTo(boardId);
-    assertThat(domain.getBoardName().toString()).isEqualTo(boardName);
+    assertThat(domain.getBoardName().toString()).isEqualTo(boardName.toString());
     assertThat(domain.getManager().memberId()).isEqualTo(managerId);
   }
 }
