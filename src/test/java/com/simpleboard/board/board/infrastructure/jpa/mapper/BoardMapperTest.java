@@ -50,10 +50,10 @@ class BoardMapperTest {
   void toDomain_maps_all_fields() {
     // given
     Long boardId = 10L;
-    String boardName = "free";
+    BoardName boardName = BoardName.of("free");
     Long managerId = 2002L;
 
-    BoardEntity entity = new BoardEntity(boardId, boardName, managerId);
+    BoardEntity entity = new BoardEntity(boardId, boardName.toString(), boardName.normalized(), managerId);
 
     // when
     Board domain = mapper.toDomain(entity);
