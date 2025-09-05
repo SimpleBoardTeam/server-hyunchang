@@ -27,9 +27,9 @@ public class BoardNamePrincipal {
    * @throws DuplicateBoardNameException 보드명이 이미 존재하는 경우
    * @since 1.0
    */
-  public void ensureUnique(String name) {
-    if (boardRepository.existsByNameNormalized(name)) {
-      throw new DuplicateBoardNameException("이미 존재하는 보드명: " + name);
+  public void ensureUnique(String normalizedName) {
+    if (boardRepository.existsByNameNormalized(normalizedName)) {
+      throw new DuplicateBoardNameException("이미 존재하는 보드명: " + normalizedName);
     }
   }
 }
