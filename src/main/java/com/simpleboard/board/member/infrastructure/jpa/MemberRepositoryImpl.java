@@ -19,8 +19,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
   @Override
   public Boolean existsByNickname(Nickname nickname) {
-    String nicknameValue = nickname.getValue();
-    return memberEntityRepository.existsByNickname_Value(nicknameValue);
+    return memberEntityRepository.existsByNickname(nickname);
   }
 
   @Override
