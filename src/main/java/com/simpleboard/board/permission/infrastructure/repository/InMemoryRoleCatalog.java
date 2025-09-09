@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * In-memory 구현체의 RoleCatalog.
  *
- * <p> Role 정보를 메모리에 고정 등록해 제공합니다.
+ * <p>Role 정보를 메모리에 고정 등록해 제공합니다.
  *
  * @domain repository-port
  */

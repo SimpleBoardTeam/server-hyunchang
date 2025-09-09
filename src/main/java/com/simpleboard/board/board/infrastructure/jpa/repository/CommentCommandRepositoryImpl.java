@@ -4,10 +4,9 @@ import com.simpleboard.board.board.domain.comment.entity.Comment;
 import com.simpleboard.board.board.domain.comment.repository.CommentCommandRepository;
 import com.simpleboard.board.board.infrastructure.jpa.converter.CommentConverter;
 import com.simpleboard.board.board.infrastructure.jpa.entity.CommentEntity;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 /**
  * <b>Board B.C Comment Command Repository 구현체</b>
@@ -20,21 +19,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentCommandRepositoryImpl implements CommentCommandRepository {
 
-    private final CommentEntityRepository commentEntityRepository;
-    private final CommentConverter converter;
+  private final CommentEntityRepository commentEntityRepository;
+  private final CommentConverter converter;
 
-    @Override
-    public Comment save(Comment comment) {
-        CommentEntity saved = commentEntityRepository.save(
-                converter.toJpaEntity(comment));
-        return converter.toDomainEntity(saved);
-    }
+  @Override
+  public Comment save(Comment comment) {
+    CommentEntity saved = commentEntityRepository.save(converter.toJpaEntity(comment));
+    return converter.toDomainEntity(saved);
+  }
 
-    @Override
-    public Optional<Comment> findById(Long id) {
-        CommentEntity comment = commentEntityRepository.findById(id).orElse(null);
-        if(comment == null)
-            return Optional.empty();
-        return Optional.of(converter.toDomainEntity(comment));
-    }
+  @Override
+  public Optional<Comment> findById(Long id) {
+    CommentEntity comment = commentEntityRepository.findById(id).orElse(null);
+    if (comment == null) return Optional.empty();
+    return Optional.of(converter.toDomainEntity(comment));
+  }
 }

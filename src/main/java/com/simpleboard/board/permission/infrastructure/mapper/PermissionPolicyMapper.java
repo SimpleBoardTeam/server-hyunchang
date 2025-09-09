@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 /**
  * <b>PermissionPolicy Domain Entity <-> JPA Entity Mapping 클래스</b>
  *
- * <p> PermissionPolicy 도메인과 엔티티 간 맵핑
+ * <p>PermissionPolicy 도메인과 엔티티 간 맵핑
  */
 @Component
 @RequiredArgsConstructor

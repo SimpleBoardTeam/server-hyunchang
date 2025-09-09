@@ -1,7 +1,9 @@
 package com.simpleboard.board.board.domain.board.service;
 
 import com.simpleboard.board.board.domain.board.exception.DuplicateBoardNameException;
-import com.simpleboard.board.board.domain.board.vo.BoardName;
+import com.simpleboard.board.board.domain.board.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * <b>BoardNameUniquenessChecker</b> Domain Service.
@@ -11,8 +13,10 @@ import com.simpleboard.board.board.domain.board.vo.BoardName;
  * @domain domain-service
  * @since 1.0
  */
-public interface BoardNamePrincipal {
-  boolean isUnique(BoardName name);
+@RequiredArgsConstructor
+@Component
+public class BoardNamePrincipal {
+  private final BoardRepository boardRepository;
 
   /**
    * 보드명의 유일성을 보장합니다.
@@ -23,9 +27,9 @@ public interface BoardNamePrincipal {
    * @throws DuplicateBoardNameException 보드명이 이미 존재하는 경우
    * @since 1.0
    */
-  default void ensureUnique(BoardName name) {
-    if (!isUnique(name)) {
-      throw new DuplicateBoardNameException("이미 존재하는 보드명: " + name);
+  public void ensureUnique(String normalizedName) {
+    if (boardRepository.existsByNameNormalized(normalizedName)) {
+      throw new DuplicateBoardNameException("이미 존재하는 보드명: " + normalizedName);
     }
   }
 }

@@ -22,7 +22,7 @@
                           AND pl2.vid = #{vid}
                           </when>
                           <when test="visitorType.name() == 'MEMBER'">
-                              AND pl2.likedMemberId = #{memberId}
+                              AND pl2.LIKED_MEMBER_ID = #{memberId}
                           </when>
                           <otherwise>
                               AND 0

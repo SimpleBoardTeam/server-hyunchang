@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class MemberCommentEntity extends CommentEntity{
+public class MemberCommentEntity extends CommentEntity {
 
-    private Long writerId;
+  private Long writerId;
 }

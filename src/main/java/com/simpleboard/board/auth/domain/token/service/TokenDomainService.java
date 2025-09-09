@@ -187,9 +187,9 @@ public class TokenDomainService {
     blacklist(claims);
   }
 
-  public void blockTokenUser(String refreshTokenRaw){
+  public void blockTokenUser(String refreshTokenRaw) {
     TokenClaims claims =
-            tokenProvider.verifyAndParseToken(refreshTokenRaw, Date.from(clockManager.now()));
+        tokenProvider.verifyAndParseToken(refreshTokenRaw, Date.from(clockManager.now()));
 
     // enroll token on blacklist
     blacklist(claims);

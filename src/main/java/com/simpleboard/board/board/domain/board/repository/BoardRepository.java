@@ -7,6 +7,8 @@ public interface BoardRepository {
 
   Board save(Board board);
 
+  Optional<Board> findByBoardName(String boardName);
+
   Optional<Board> findById(Long boardId);
 
   boolean existsByNameNormalized(String normalizedName);

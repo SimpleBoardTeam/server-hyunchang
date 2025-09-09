@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ *
+ *
  * <h2>PermissionFakeController (테스트용 권한 컨트롤러)</h2>
  *
- * <p>테스트 목적의 임시 API를 제공합니다.</p>
+ * <p>테스트 목적의 임시 API를 제공합니다.
  *
  * <table>
  *   <caption>API 목록</caption>
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  *   </tr>
  * </table>
  *
- * <p><b>권한</b> : 테스트 권한 생성/삭제</p>
+ * <p><b>권한</b> : 테스트 권한 생성/삭제
  *
  * @domain adapter-in
  */

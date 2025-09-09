@@ -58,9 +58,9 @@ class CommentCommandServiceTest {
 
   private CommentCommandService service =
       new CommentCommandServiceImpl(
-              postCommandRepository,
+          postCommandRepository,
           paramsConverter,
-              commentResultConverter,
+          commentResultConverter,
           commentRepository,
           memberFetchService);
 
@@ -89,10 +89,10 @@ class CommentCommandServiceTest {
   @DisplayName("createComment(): MEMBER 댓글 생성 성공")
   void createComment_member_success() {
     // given
-    given(postCommandRepository.findPostById(POST_ID)).willReturn(Optional.of(GuestPost.builder().build()));
-    given(memberFetchService.fetchAuthorSummary(MEMBER_ID)).willReturn(AuthorSummary.builder()
-            .authorId(MEMBER_ID)
-            .nickname(MEMBER_NICKNAME).build());
+    given(postCommandRepository.findPostById(POST_ID))
+        .willReturn(Optional.of(GuestPost.builder().build()));
+    given(memberFetchService.fetchAuthorSummary(MEMBER_ID))
+        .willReturn(AuthorSummary.builder().authorId(MEMBER_ID).nickname(MEMBER_NICKNAME).build());
 
     Visitor visitor = VisitorUtil.member(MEMBER_VID, MEMBER_ID);
 
@@ -118,7 +118,8 @@ class CommentCommandServiceTest {
   @DisplayName("createComment(): GUEST 댓글 생성 성공")
   void createComment_guest_success() {
     // given
-    given(postCommandRepository.findPostById(POST_ID)).willReturn(Optional.of(GuestPost.builder().build()));
+    given(postCommandRepository.findPostById(POST_ID))
+        .willReturn(Optional.of(GuestPost.builder().build()));
     Visitor guestVisitor = VisitorUtil.guest(GUEST_VID);
 
     CommentCreateCommand command =

@@ -13,30 +13,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TokenApplicationServiceImpl implements TokenApplicationService {
 
-    private final TokenDomainService tokenDomainService;
+  private final TokenDomainService tokenDomainService;
 
-    @Override
-    public TokenPair rotateRefreshToken(String refreshTokenRaw) {
-        return tokenDomainService.rotateRefreshToken(
-                RefreshTokenRotationParam.builder()
-                        .oldRefreshRaw(refreshTokenRaw).build());
-    }
+  @Override
+  public TokenPair rotateRefreshToken(String refreshTokenRaw) {
+    return tokenDomainService.rotateRefreshToken(
+        RefreshTokenRotationParam.builder().oldRefreshRaw(refreshTokenRaw).build());
+  }
 
-    @Override
-    public Token issueVerifyToken(String subject, VerifyPurpose purpose) {
-        return tokenDomainService.issueVerifyToken(
-                VerifyTokenIssueParam.builder()
-                        .subject(subject)
-                        .purpose(purpose).build());
-    }
+  @Override
+  public Token issueVerifyToken(String subject, VerifyPurpose purpose) {
+    return tokenDomainService.issueVerifyToken(
+        VerifyTokenIssueParam.builder().subject(subject).purpose(purpose).build());
+  }
 
-    @Override
-    public void enrollBlacklist(String tokenRaw) {
-        tokenDomainService.enrollBlacklist(tokenRaw);
-    }
+  @Override
+  public void enrollBlacklist(String tokenRaw) {
+    tokenDomainService.enrollBlacklist(tokenRaw);
+  }
 
-    @Override
-    public void blockSnatchedToken(String tokenRaw) {
-        tokenDomainService.blockTokenUser(tokenRaw);
-    }
+  @Override
+  public void blockSnatchedToken(String tokenRaw) {
+    tokenDomainService.blockTokenUser(tokenRaw);
+  }
 }
