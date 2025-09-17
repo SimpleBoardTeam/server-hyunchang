@@ -4,14 +4,13 @@ import com.simpleboard.board.board.domain.comment.entity.Comment;
 import com.simpleboard.board.board.domain.comment.repository.CommentCommandRepository;
 import com.simpleboard.board.board.infrastructure.jpa.converter.CommentConverter;
 import com.simpleboard.board.board.infrastructure.jpa.entity.CommentEntity;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * <b>Board B.C Comment Command Repository 구현체</b>
@@ -40,17 +39,15 @@ public class CommentCommandRepositoryImpl2 implements CommentCommandRepository {
     }
     CommentEntity entity = converter.toJpaEntity(comment);
 
-    if(entity.getParentId() == null){
+    if (entity.getParentId() == null) {
       throw new DataIntegrityViolationException("Parent id is null");
-    }
-    else if(entity.getParentId().equals(0L)){
-      //1. root 댓글이면 post를 lock
+    } else if (entity.getParentId().equals(0L)) {
+      // 1. root 댓글이면 post를 lock
       postEntityRepository.lockById(entity.getPostId());
     } else {
-      //2. 대댓글이면 parent comment를 lock
+      // 2. 대댓글이면 parent comment를 lock
       commentEntityRepository.lockById(entity.getParentId());
     }
-
 
     int attempt = 0;
     while (true) {
