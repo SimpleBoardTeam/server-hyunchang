@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -17,7 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 @AllArgsConstructor
 @Table(
     name = "COMMENT",
-    uniqueConstraints = {@UniqueConstraint(columnNames = {"POST_ID", "PARENT_ID", "SIBLING_SEQ"})})
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"PARENT_ID", "SIBLING_SEQ"})})
 @SuperBuilder
 @Getter
 public abstract class CommentEntity extends BaseEntity {
@@ -27,8 +26,6 @@ public abstract class CommentEntity extends BaseEntity {
   @Column(name = "COMMENT_ID")
   private Long id;
 
-  @Column(name = "PARENT_ID", nullable = false)
-  @ColumnDefault("0")
   private Long parentId;
 
   @Column(nullable = false)
