@@ -14,8 +14,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 @MybatisTest
-@ActiveProfiles("test")
+@ActiveProfiles("test-unit")
 @Import(PostQueryRepositoryImpl.class)
+@org.springframework.test.context.jdbc.Sql(
+    scripts = {"classpath:schema-post.sql", "classpath:data-post.sql"},
+    executionPhase = org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class PostQueryRepositoryImplMybatisTest {
 
   @Autowired PostQueryRepository repository;
