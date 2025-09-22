@@ -1,8 +1,9 @@
 package com.simpleboard.board.board.infrastructure.jpa.repository;
 
 import com.simpleboard.board.board.infrastructure.jpa.entity.CommentEntity;
-import jakarta.persistence.LockModeType;
 import java.util.Optional;
+
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -22,8 +23,7 @@ public interface CommentEntityRepository extends JpaRepository<CommentEntity, Lo
   CommentEntity save(CommentEntity commentEntity);
 
   @Query(
-      value =
-          "select sibling_seq from comment where parent_id = :parentId order by sibling_seq desc limit 1",
-      nativeQuery = true)
-  Integer maxSiblingSeqByParentId(@Param("parentId") Long parentId);
+      "select c.siblingSeq from CommentEntity c where c.parentId = :parentId"
+          + " order by c.siblingSeq desc limit 1")
+  Integer maxSiblingSeqByParentId(Long parentId);
 }
