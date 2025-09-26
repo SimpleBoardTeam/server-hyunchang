@@ -118,7 +118,6 @@ jobs:
 
       # 4) Spotless Check
       - name: Run Spotless check
-        if: needs.detect-changes.outputs.code_changed == 'true'
         run: ./gradlew --no-daemon spotlessCheck
 
       # 5) 단위 테스트
