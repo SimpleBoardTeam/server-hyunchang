@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <b>Board B.C Comment Command Repository 구현체</b>
@@ -20,21 +21,33 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class CommentCommandRepositoryImpl implements CommentCommandRepository {
+public class CommentCommandRepositoryImpl2 implements CommentCommandRepository {
 
-  private static final Logger log = LoggerFactory.getLogger(CommentCommandRepositoryImpl.class);
+  private static final Logger log = LoggerFactory.getLogger(CommentCommandRepositoryImpl2.class);
+  private final PostEntityRepository postEntityRepository;
   private final CommentEntityRepository commentEntityRepository;
   private final CommentConverter converter;
 
   private final Integer RETRY_LIMIT = 10;
 
   @Override
+  @Transactional
   public Comment save(Comment comment) {
     if (comment.getId() != null) {
       CommentEntity saved = commentEntityRepository.save(converter.toJpaEntity(comment));
       return converter.toDomainEntity(saved);
     }
     CommentEntity entity = converter.toJpaEntity(comment);
+
+    if (entity.getParentId() == null) {
+      throw new DataIntegrityViolationException("Parent id is null");
+    } else if (entity.getParentId().equals(0L)) {
+      // 1. root 댓글이면 post를 lock
+      postEntityRepository.lockById(entity.getPostId());
+    } else {
+      // 2. 대댓글이면 parent comment를 lock
+      commentEntityRepository.lockById(entity.getParentId());
+    }
 
     int attempt = 0;
     while (true) {
