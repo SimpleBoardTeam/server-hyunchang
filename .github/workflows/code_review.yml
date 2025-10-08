@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Simple LLM Code Review
-        uses: SnoopyComp/simple-llm-code-review@main
+        uses: SnoopyComp/simple-llm-code-review@develop
         with:
           language: korean
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
