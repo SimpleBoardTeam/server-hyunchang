@@ -21,4 +21,5 @@ jobs:
         uses: SnoopyComp/simple-llm-code-review@develop
         with:
           language: korean
+          cost: middle
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
