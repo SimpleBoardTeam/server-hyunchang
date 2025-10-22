@@ -13,8 +13,10 @@ import com.simpleboard.board.board.domain.common.vo.Visitor;
 import com.simpleboard.board.board.domain.common.vo.VisitorType;
 import com.simpleboard.board.board.infrastructure.jpa.converter.CommentConverter;
 import com.simpleboard.board.board.infrastructure.jpa.repository.CommentCommandRepositoryImpl;
+import com.simpleboard.board.board.infrastructure.jpa.repository.CommentEntityRepository;
 import com.simpleboard.board.testconfig.JpaAuditTestConfig;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,11 +31,12 @@ import org.springframework.test.context.ActiveProfiles;
  * <p>H2 DB를 활용한 JPA 레포지토리 테스트
  */
 @DataJpaTest
-@ActiveProfiles("test")
+@ActiveProfiles("test-unit")
 @Import({CommentCommandRepositoryImpl.class, CommentConverter.class, JpaAuditTestConfig.class})
-class CommentCommandRepositoryTest {
+class CommentCommandRepositoryUnitTest {
 
   @Autowired CommentCommandRepository repository;
+  @Autowired CommentEntityRepository entityRepository;
 
   @Nested
   @DisplayName("save")

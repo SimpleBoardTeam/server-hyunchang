@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <b>Board B.C Comment Command Repository 구현체</b>
@@ -20,15 +21,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class CommentCommandRepositoryImpl implements CommentCommandRepository {
+public class CommentCommandRepositoryImpl3 implements CommentCommandRepository {
 
-  private static final Logger log = LoggerFactory.getLogger(CommentCommandRepositoryImpl.class);
+  private static final Logger log = LoggerFactory.getLogger(CommentCommandRepositoryImpl3.class);
+  private final PostEntityRepository postEntityRepository;
   private final CommentEntityRepository commentEntityRepository;
   private final CommentConverter converter;
 
   private final Integer RETRY_LIMIT = 10;
 
   @Override
+  @Transactional
   public Comment save(Comment comment) {
     if (comment.getId() != null) {
       CommentEntity saved = commentEntityRepository.save(converter.toJpaEntity(comment));
@@ -36,21 +39,27 @@ public class CommentCommandRepositoryImpl implements CommentCommandRepository {
     }
     CommentEntity entity = converter.toJpaEntity(comment);
 
-    int attempt = 0;
-    while (true) {
-      try {
-        Integer lastSeq = commentEntityRepository.maxSiblingSeqByParentId(entity.getParentId());
-        lastSeq = lastSeq != null ? lastSeq : 0;
+    if (entity.getParentId() == null) {
+      throw new DataIntegrityViolationException("Parent id is null");
+    } else if (entity.getParentId().equals(0L)) {
+      // 1. root 댓글이면 post를 lock
+      Long parentId = postEntityRepository.lockById(entity.getPostId()).orElseThrow();
+      log.info("{}", parentId);
+    } else {
+      // 2. 대댓글이면 parent comment를 lock
+      commentEntityRepository.lockById(entity.getParentId());
+    }
 
-        entity.setSiblingSeq(lastSeq + 1);
+    try {
+      Integer lastSeq = commentEntityRepository.maxSiblingSeqByParentId(entity.getParentId());
+      lastSeq = lastSeq != null ? lastSeq : 0;
 
-        return converter.toDomainEntity(commentEntityRepository.save(entity));
-      } catch (DataIntegrityViolationException e) {
-        attempt++;
-        if (attempt >= RETRY_LIMIT) throw e;
-        log.info(
-            "Parent ID: {}  Attempt {}/{} failed", comment.getParentId(), attempt, RETRY_LIMIT);
-      }
+      entity.setSiblingSeq(lastSeq + 1);
+
+      return converter.toDomainEntity(commentEntityRepository.save(entity));
+    } catch (DataIntegrityViolationException e) {
+      log.info("Parent ID: {}  Attempt {} failed", comment.getParentId(), RETRY_LIMIT);
+      throw new DataIntegrityViolationException("Parent ID: " + comment.getParentId() + " failed");
     }
   }
 
